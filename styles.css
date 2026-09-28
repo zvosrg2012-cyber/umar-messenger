@@ -109,6 +109,10 @@ a{color:inherit}
 .composer input{min-width:0;flex:1;height:44px;border:1px solid var(--line);border-radius:14px;outline:0;background:var(--glass);color:var(--text);padding:0 14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:border-color .2s ease,background .2s ease,transform .2s ease}
 .composer input:focus{border-color:rgba(255,138,42,.55);background:rgba(55,55,55,.76);transform:translateY(-1px)}
 .composer-button{flex:0 0 42px}
+.attach-button{position:relative}
+.attach-icon{width:18px;height:18px;display:block;position:relative;transform:rotate(-45deg)}
+.attach-icon:before{content:"";position:absolute;left:5px;top:1px;width:9px;height:15px;border:2px solid #bdbdbd;border-radius:8px}
+.attach-icon:after{content:"";position:absolute;left:8px;top:5px;width:4px;height:9px;border:2px solid #bdbdbd;border-top:0;border-radius:0 0 5px 5px}
 .send-button{width:46px;height:44px;border:0;border-radius:14px;background:var(--orange);color:#111;font-size:19px;font-weight:900;cursor:pointer;transition:transform .15s ease,background .18s ease,box-shadow .18s ease}
 .send-button:hover{background:var(--orange-strong);transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,138,42,.22)}
 .send-button:active{transform:scale(.9)}
