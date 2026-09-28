@@ -1,41 +1,106 @@
 <!doctype html>
 <html lang="ru">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111b21"><title>Umar Messenger</title><link rel="stylesheet" href="styles.css"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f58631">
+  <meta name="description" content="Umar Messenger — современный адаптивный веб-мессенджер с низкополигональной визуальной системой.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Umar Messenger">
+  <meta property="og:description" content="Современный веб-мессенджер Umar.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="./">
+  <title>Umar Messenger — сообщения</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="sidebar-head"><div class="logo"><span>U</span><b>Umar</b></div><button class="round-btn" id="newChat" title="Новый чат">✎</button></div>
-    <div class="search"><span>⌕</span><input id="search" placeholder="Поиск"></div>
-    <div class="tabs"><button class="tab active" data-filter="all">Все</button><button class="tab" data-filter="unread">Непрочитанные</button></div>
-    <section class="chat-list" id="chatList">
-      <article class="chat active" data-name="Али" data-unread="2"><div class="avatar orange">А</div><div class="chat-info"><div class="chat-row"><strong>Али</strong><time>20:14</time></div><div class="preview"><span>Увидимся завтра</span><em>2</em></div></div></article>
-      <article class="chat" data-name="Мухаммад" data-unread="0"><div class="avatar blue">М</div><div class="chat-info"><div class="chat-row"><strong>Мухаммад</strong><time>19:48</time></div><div class="preview"><span>Отправил тебе файл</span></div></div></article>
-      <article class="chat" data-name="Семья" data-unread="4"><div class="avatar green">С</div><div class="chat-info"><div class="chat-row"><strong>Семья</strong><time>18:32</time></div><div class="preview"><span>Папа: Буду через 20 минут</span><em>4</em></div></div></article>
-      <article class="chat" data-name="Umar Team" data-unread="0"><div class="avatar purple">U</div><div class="chat-info"><div class="chat-row"><strong>Umar Team</strong><time>17:05</time></div><div class="preview"><span>Добро пожаловать в Umar Messenger</span></div></div></article>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Навигация и список чатов">
+      <header class="brandbar">
+        <a class="brand" href="#" aria-label="Umar Messenger">
+          <span class="brand-mark" aria-hidden="true">U</span>
+          <span>Umar</span>
+        </a>
+        <button class="icon-button accent-cut" id="newChatButton" type="button" aria-label="Создать новый чат" title="Новый чат">＋</button>
+      </header>
+
+      <div class="search-wrap">
+        <label class="search-field" for="searchInput">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Поиск чатов" autocomplete="off">
+          <kbd>⌘ K</kbd>
+        </label>
+      </div>
+
+      <nav class="filterbar" aria-label="Фильтр чатов">
+        <button class="filter is-active" data-filter="all" type="button">Все</button>
+        <button class="filter" data-filter="unread" type="button">Непрочитанные</button>
+      </nav>
+
+      <div class="chat-list" id="chatList" role="list" aria-label="Чаты"></div>
+
+      <footer class="sidebar-footer">
+        <button class="footer-action" id="profileButton" type="button">
+          <span class="footer-avatar">С</span>
+          <span><strong>Сергей</strong><small>Мой профиль</small></span>
+        </button>
+        <button class="icon-button" id="themeButton" type="button" aria-label="Переключить тему" title="Тема">☼</button>
+      </footer>
+    </aside>
+
+    <main class="conversation" id="conversation" aria-label="Переписка">
+      <header class="chat-header">
+        <button class="icon-button back-button" id="backButton" type="button" aria-label="Назад к чатам">‹</button>
+        <div class="avatar" id="headerAvatar" aria-hidden="true">А</div>
+        <div class="chat-meta">
+          <strong id="headerName">Али</strong>
+          <span id="headerStatus">в сети</span>
+        </div>
+        <div class="header-actions">
+          <button class="icon-button" id="chatSearchButton" type="button" aria-label="Поиск в чате">⌕</button>
+          <button class="icon-button" id="infoButton" type="button" aria-label="Информация о чате">⋮</button>
+        </div>
+      </header>
+
+      <section class="messages" id="messages" aria-live="polite" aria-label="Сообщения"></section>
+
+      <form class="composer" id="composer">
+        <button class="icon-button composer-button" id="emojiButton" type="button" aria-label="Добавить эмодзи">☺</button>
+        <button class="icon-button composer-button" id="attachButton" type="button" aria-label="Прикрепить файл">＋</button>
+        <input id="messageInput" type="text" maxlength="4000" placeholder="Написать сообщение..." autocomplete="off" aria-label="Текст сообщения">
+        <button class="send-button accent-cut" type="submit" aria-label="Отправить сообщение">➤</button>
+      </form>
+    </main>
+
+    <aside class="details-panel" id="detailsPanel" aria-label="Информация о чате">
+      <div class="details-cover"></div>
+      <div class="details-content">
+        <div class="details-avatar avatar" id="detailsAvatar">А</div>
+        <h2 id="detailsName">Али</h2>
+        <p id="detailsStatus">В сети</p>
+        <div class="details-actions">
+          <button type="button">🔔<span>Уведомления</span></button>
+          <button type="button">🔎<span>Поиск</span></button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h2 id="modalTitle">Новый чат</h2>
+        <button class="icon-button" id="closeModal" type="button" aria-label="Закрыть">×</button>
+      </div>
+      <label class="modal-label" for="newChatName">Имя контакта</label>
+      <input class="modal-input" id="newChatName" maxlength="40" placeholder="Например, Ахмад">
+      <div class="modal-actions">
+        <button class="secondary-button" id="cancelModal" type="button">Отмена</button>
+        <button class="primary-button" id="createChat" type="button">Создать</button>
+      </div>
     </section>
-    <div class="side-footer"><button>☰ <span>Меню</span></button><button id="themeBtn">☼ <span>Тема</span></button></div>
-  </aside>
-  <main class="conversation" id="conversation">
-    <header class="chat-head"><button class="back" id="back">‹</button><div class="avatar small orange" id="headAvatar">А</div><div class="head-info"><strong id="headName">Али</strong><span id="status">был(а) недавно</span></div><div class="head-actions"><button>⌕</button><button>⋮</button></div></header>
-    <div class="messages" id="messages">
-      <div class="day">Сегодня</div>
-      <div class="bubble them">Привет! 👋<small>20:12</small></div>
-      <div class="bubble them">Как дела? <small>20:13</small></div>
-      <div class="bubble me">Всё хорошо. Увидимся завтра!<small>20:14 ✓✓</small></div>
-    </div>
-    <form class="composer" id="composer"><button type="button" class="attach">＋</button><input id="message" autocomplete="off" placeholder="Написать сообщение..."><button class="send" type="submit">➤</button></form>
-  </main>
-</div>
-<script>
-const list=document.querySelector('#chatList'), search=document.querySelector('#search'), conv=document.querySelector('#conversation'), nameEl=document.querySelector('#headName'), avatarEl=document.querySelector('#headAvatar'), messages=document.querySelector('#messages'), composer=document.querySelector('#composer'), input=document.querySelector('#message');
-let current='Али';
-function openChat(c){document.querySelectorAll('.chat').forEach(x=>x.classList.remove('active'));c.classList.add('active');current=c.dataset.name;nameEl.textContent=current;avatarEl.textContent=current==='Umar Team'?'U':current[0];avatarEl.className='avatar small '+([...c.querySelector('.avatar').classList].find(x=>['orange','blue','green','purple'].includes(x))||'orange');c.dataset.unread='0';c.querySelector('em')?.remove();conv.classList.add('open');messages.innerHTML='<div class="day">Сегодня</div><div class="bubble them">Привет! 👋<small>20:12</small></div><div class="bubble them">Как дела?<small>20:13</small></div><div class="bubble me">Всё хорошо. Увидимся завтра!<small>20:14 ✓✓</small></div>';messages.scrollTop=messages.scrollHeight}
-document.querySelectorAll('.chat').forEach(c=>c.addEventListener('click',()=>openChat(c)));
-search.addEventListener('input',()=>{const q=search.value.toLowerCase();document.querySelectorAll('.chat').forEach(c=>c.hidden=!c.dataset.name.toLowerCase().includes(q))});
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.querySelectorAll('.chat').forEach(c=>c.hidden=t.dataset.filter==='unread'&&c.dataset.unread==='0')}));
-composer.addEventListener('submit',e=>{e.preventDefault();const v=input.value.trim();if(!v)return;const b=document.createElement('div');b.className='bubble me';b.innerHTML=v.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'<small>сейчас ✓✓</small>';messages.appendChild(b);input.value='';messages.scrollTop=messages.scrollHeight});
-document.querySelector('#newChat').onclick=()=>{const n=prompt('Имя нового чата');if(!n)return;const c=document.createElement('article');c.className='chat';c.dataset.name=n;c.dataset.unread='0';c.innerHTML='<div class="avatar purple">'+n[0].toUpperCase()+'</div><div class="chat-info"><div class="chat-row"><strong></strong><time>сейчас</time></div><div class="preview"><span>Новый чат</span></div></div>';c.querySelector('strong').textContent=n;list.prepend(c);c.addEventListener('click',()=>openChat(c));openChat(c)};
-document.querySelector('#back').onclick=()=>conv.classList.remove('open');
-document.querySelector('#themeBtn').onclick=()=>document.body.classList.toggle('light');
-</script>
-</body></html>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
