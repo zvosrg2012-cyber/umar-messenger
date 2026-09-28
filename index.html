@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ff8a2a">
 <meta name="description" content="Umar Messenger — современный веб-мессенджер.">
 <title>Umar Messenger — сообщения</title>
-<link rel="stylesheet" href="./styles.css?v=20260928-2">
+<link rel="stylesheet" href="./styles.css?v=20260928-4">
 </head>
 <body>
 <div class="app-shell">
@@ -17,7 +17,7 @@
 </header>
 <div class="search-wrap">
 <button class="search-menu" id="profileButton" type="button" aria-label="Открыть меню">☰</button>
-<label class="search-field" for="searchInput"><span class="search-icon" aria-hidden="true"></span><input id="searchInput" type="search" placeholder="Поиск чатов" autocomplete="off"><kbd>⌘ K</kbd></label>
+<label class="search-field" for="searchInput"><span class="search-icon" aria-hidden="true"></span><input id="searchInput" type="search" placeholder="Поиск чатов" autocomplete="off"></label>
 </div>
 <nav class="filterbar" aria-label="Фильтр чатов">
 <button class="filter is-active" data-filter="all" type="button">Все</button>
@@ -25,7 +25,6 @@
 </nav>
 <div class="chat-list" id="chatList" role="list" aria-label="Чаты"></div>
 </aside>
-
 <main class="conversation" id="conversation" aria-label="Переписка">
 <header class="chat-header">
 <button class="icon-button back-button" id="backButton" type="button" aria-label="Назад к чатам">‹</button>
@@ -44,7 +43,6 @@
 <button class="send-button" type="submit" aria-label="Отправить сообщение">➤</button>
 </form>
 </main>
-
 <aside class="details-panel" id="detailsPanel" aria-label="Информация о чате">
 <div class="details-cover"></div><div class="details-content">
 <div class="details-avatar avatar" id="detailsAvatar">А</div><h2 id="detailsName">Али</h2><p id="detailsStatus">В сети</p>
@@ -52,22 +50,18 @@
 </div>
 </aside>
 </div>
-
 <div class="settings-drawer" id="settingsDrawer" hidden>
-  <div class="settings-head"><div><strong>Настройки</strong><span>Umar Messenger</span></div><button class="icon-button" id="closeSettings" type="button" aria-label="Закрыть">×</button></div>
-  <div class="settings-profile"><div class="settings-avatar avatar orange">U</div><div><strong>Umar</strong><span>в сети</span></div></div>
-  <div class="settings-section">
-    <button class="settings-row" id="editProfileButton" type="button"><span class="settings-row-icon">✎</span><span><strong>Профиль</strong><small>Имя и статус</small></span><b>›</b></button>
-    <button class="settings-row" id="notificationsSettingsButton" type="button"><span class="settings-row-icon">🔔</span><span><strong>Уведомления</strong><small id="notificationState">Включены</small></span><b>›</b></button>
-    <button class="settings-row" id="appearanceButton" type="button"><span class="settings-row-icon">◐</span><span><strong>Оформление</strong><small>Тёмная тема</small></span><b>›</b></button>
-    <button class="settings-row" id="privacyButton" type="button"><span class="settings-row-icon">⌁</span><span><strong>Конфиденциальность</strong><small>Последний визит и безопасность</small></span><b>›</b></button>
-    <button class="settings-row" id="dataButton" type="button"><span class="settings-row-icon">▣</span><span><strong>Данные и хранилище</strong><small>Локальные данные чатов</small></span><b>›</b></button>
-  </div>
-  <div class="settings-section">
-    <button class="settings-row" id="aboutButton" type="button"><span class="settings-row-icon">?</span><span><strong>О приложении</strong><small>Umar Messenger</small></span><b>›</b></button>
-  </div>
+<div class="settings-head"><div><strong>Настройки</strong><span>Umar Messenger</span></div><button class="icon-button" id="closeSettings" type="button" aria-label="Закрыть">×</button></div>
+<div class="settings-profile"><div class="settings-avatar avatar orange">U</div><div><strong>Umar</strong><span>в сети</span></div></div>
+<div class="settings-section">
+<button class="settings-row" id="editProfileButton" type="button"><span class="settings-row-icon">✎</span><span><strong>Профиль</strong><small>Имя и статус</small></span><b>›</b></button>
+<button class="settings-row" id="notificationsSettingsButton" type="button"><span class="settings-row-icon">🔔</span><span><strong>Уведомления</strong><small id="notificationState">Включены</small></span><b>›</b></button>
+<button class="settings-row" id="appearanceButton" type="button"><span class="settings-row-icon">◐</span><span><strong>Оформление</strong><small>Тёмная тема</small></span><b>›</b></button>
+<button class="settings-row" id="privacyButton" type="button"><span class="settings-row-icon">⌁</span><span><strong>Конфиденциальность</strong><small>Последний визит и безопасность</small></span><b>›</b></button>
+<button class="settings-row" id="dataButton" type="button"><span class="settings-row-icon">▣</span><span><strong>Данные и хранилище</strong><small>Локальные данные чатов</small></span><b>›</b></button>
 </div>
-
+<div class="settings-section"><button class="settings-row" id="aboutButton" type="button"><span class="settings-row-icon">?</span><span><strong>О приложении</strong><small>Umar Messenger</small></span><b>›</b></button></div>
+</div>
 <div class="modal-backdrop" id="modalBackdrop" hidden>
 <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 <div class="modal-head"><h2 id="modalTitle">Новый чат</h2><button class="icon-button" id="closeModal" type="button" aria-label="Закрыть">×</button></div>
@@ -76,6 +70,6 @@
 <div class="modal-actions"><button class="secondary-button" id="cancelModal" type="button">Отмена</button><button class="primary-button" id="createChat" type="button">Создать</button></div>
 </section>
 </div>
-<script src="./app.js?v=20260928-3" defer></script>
+<script src="./app.js?v=20260928-4" defer></script>
 </body>
 </html>
