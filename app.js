@@ -10,7 +10,7 @@
     {id:"team",name:"Umar Team",color:"purple",status:"5 участников",unread:0,updated:"17:05",messages:[{mine:false,text:"Добро пожаловать в Umar Messenger",time:"17:05"}]}
   ];
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),modalBackdrop=$("#modalBackdrop"),newChatName=$("#newChatName"),settingsDrawer=$("#settingsDrawer"),fileInput=$("#fileInput");
+  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),settingsDrawer=$("#settingsDrawer"),emojiPicker=$("#emojiPicker"),emojiGrid=$("#emojiGrid");
   let state=loadState();
   function loadState(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved?.chats?.length)return saved}catch{}return{chats:structuredClone(initialChats),selected:"ali",filter:"all",theme:"dark"}}
   function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
@@ -54,27 +54,13 @@
   function closeModal(){modalBackdrop.hidden=true}
   function createChat(){const name=newChatName.value.trim();if(!name)return;const id="chat-"+Date.now();state.chats.unshift({id,name,color:palette[state.chats.length%palette.length],status:"новый чат",unread:0,updated:"сейчас",messages:[]});state.selected=id;saveState();closeModal();renderChats();renderConversation(true);conversation.classList.add("is-open")}
   $("#composer").addEventListener("submit",e=>{e.preventDefault();sendMessage(messageInput.value)});
-  $("#newChatButton").addEventListener("click",openModal);$("#createChat").addEventListener("click",createChat);$("#cancelModal").addEventListener("click",closeModal);$("#closeModal").addEventListener("click",closeModal);
-  modalBackdrop.addEventListener("click",e=>{if(e.target===modalBackdrop)closeModal()});newChatName.addEventListener("keydown",e=>{if(e.key==="Enter")createChat()});
-  $("#backButton").addEventListener("click",()=>conversation.classList.remove("is-open"));
+    $("#backButton").addEventListener("click",()=>conversation.classList.remove("is-open"));
   $("#infoButton").addEventListener("click",()=>detailsPanel.classList.toggle("is-open"));
   $("#chatSearchButton").addEventListener("click",()=>searchInput.focus());
   searchInput.addEventListener("input",renderChats);
   $$(".filter").forEach(button=>button.addEventListener("click",()=>{$$(".filter").forEach(x=>x.classList.remove("is-active"));button.classList.add("is-active");state.filter=button.dataset.filter;saveState();renderChats()}));
   $("#themeButton")?.addEventListener("click",()=>{state.theme=state.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=state.theme;saveState()});
-  $("#emojiButton").addEventListener("click",()=>{messageInput.value+=" 🙂";messageInput.focus()});
-  $("#attachButton").addEventListener("click",()=>fileInput?.click());
-  fileInput?.addEventListener("change",()=>{
-    const files=[...fileInput.files||[]];
-    if(!files.length)return;
-    const chat=selectedChat(),time=new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
-    files.forEach(file=>{
-      const size=file.size<1024?file.size+" Б":file.size<1024*1024?(file.size/1024).toFixed(1)+" КБ":(file.size/1024/1024).toFixed(1)+" МБ";
-      const type=file.type||"Файл"; chat.messages.push({mine:true,text:"📎 "+file.name+" · "+size+" · "+type,time,status:"✓"});
-    });
-    chat.updated=time;saveState();renderChats();renderConversation(true);fileInput.value="";
-  });
-  function openSettings(){if(!settingsDrawer)return;settingsDrawer.hidden=false;requestAnimationFrame(()=>settingsDrawer.classList.add("is-open"))}
+    function openSettings(){if(!settingsDrawer)return;settingsDrawer.hidden=false;requestAnimationFrame(()=>settingsDrawer.classList.add("is-open"))}
   function closeSettings(){if(!settingsDrawer)return;settingsDrawer.classList.remove("is-open");setTimeout(()=>settingsDrawer.hidden=true,220)}
   $("#profileButton")?.addEventListener("click",openSettings);
   $("#closeSettings")?.addEventListener("click",closeSettings);
@@ -94,7 +80,12 @@
   $("#privacyButton")?.addEventListener("click",()=>$("#privacyButton").querySelector("small").textContent="Настройки безопасности");
   $("#dataButton")?.addEventListener("click",()=>$("#dataButton").querySelector("small").textContent="Данные хранятся локально");
   $("#aboutButton")?.addEventListener("click",()=>$("#aboutButton").querySelector("small").textContent="LOWPOLY • версия 1.0");
-  document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput.focus()}if(e.key==="Escape"&&!modalBackdrop.hidden)closeModal()});
+  const emojiList="😀 😃 😄 😁 😆 😅 😂 🙂 🙃 😉 😊 😎 😍 🥰 😘 🤗 🤔 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 🤓 🥳 😇 😭 😢 😤 😡 🤬 😱 😳 🤩 😋 😛 😜 🤪 🫡 ❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💔 👍 👎 👌 ✌️ 🤝 🙏 👏 🎉 🔥 ⭐ 💯 🚀 ⚡ 🌙 ☀️ ☕ 🍕 🍔 ⚽ 🎮".split(" ");
+  emojiGrid.innerHTML=emojiList.map(e=>'<button type="button" class="emoji-item">'+e+'</button>').join("");
+  $("#emojiButton").addEventListener("click",()=>{emojiPicker.hidden=!emojiPicker.hidden;if(!emojiPicker.hidden)messageInput.focus()});
+  $("#closeEmoji").addEventListener("click",()=>emojiPicker.hidden=true);
+  emojiGrid.addEventListener("click",e=>{if(e.target.matches(".emoji-item")){messageInput.value+=e.target.textContent;messageInput.focus()}});
+  document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput.focus()}if(e.key==="Escape")emojiPicker.hidden=true});
   state.notifications=state.notifications!==false;
   document.documentElement.dataset.theme=state.theme;
   if(state.filter!=="all")$$(".filter").forEach(x=>x.classList.toggle("is-active",x.dataset.filter===state.filter));
