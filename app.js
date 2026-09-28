@@ -6,11 +6,9 @@
     {id:"ali",name:"Али",color:"orange",status:"в сети",unread:2,updated:"20:14",messages:[
       {mine:false,text:"Привет! 👋",time:"20:12"},{mine:false,text:"Как дела?",time:"20:13"},{mine:true,text:"Всё хорошо. Увидимся завтра!",time:"20:14",status:"✓✓"}]},
     {id:"muhammad",name:"Мухаммад",color:"blue",status:"был недавно",unread:0,updated:"19:48",messages:[{mine:false,text:"Отправил тебе файл",time:"19:48"}]},
-    {id:"family",name:"Семья",color:"green",status:"4 участника",unread:4,updated:"18:32",messages:[{mine:false,text:"Папа: Буду через 20 минут",time:"18:32"}]},
-    {id:"team",name:"Umar Team",color:"purple",status:"5 участников",unread:0,updated:"17:05",messages:[{mine:false,text:"Добро пожаловать в Umar Messenger",time:"17:05"}]}
-  ];
+      ];
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),settingsDrawer=$("#settingsDrawer"),emojiPicker=$("#emojiPicker"),emojiGrid=$("#emojiGrid");
+  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),settingsDrawer=$("#settingsDrawer"),emojiPicker=$("#emojiPicker"),emojiGrid=$("#emojiGrid"),deleteDialog=$("#deleteDialog"),deleteForBoth=$("#deleteForBoth");
   let state=loadState();
   function loadState(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved?.chats?.length)return saved}catch{}return{chats:structuredClone(initialChats),selected:"ali",filter:"all",theme:"dark"}}
   function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
@@ -56,6 +54,10 @@
   $("#composer").addEventListener("submit",e=>{e.preventDefault();sendMessage(messageInput.value)});
     $("#backButton").addEventListener("click",()=>conversation.classList.remove("is-open"));
   $("#infoButton").addEventListener("click",()=>detailsPanel.classList.toggle("is-open"));
+  function openDeleteDialog(){const chat=selectedChat();if(!chat)return;$("#deleteName").textContent=chat.name;$("#deleteUsername").textContent="@"+chat.id.replace(/^chat-/,"");$("#deleteAvatar").textContent=initials(chat.name);$("#deleteAvatar").className="delete-avatar avatar "+chat.color;deleteForBoth.checked=false;deleteDialog.hidden=false;detailsPanel.classList.remove("is-open")}
+  function closeDeleteDialog(){deleteDialog.hidden=true}
+  function deleteContact(){const id=state.selected;state.chats=state.chats.filter(c=>c.id!==id);state.selected=state.chats[0]?.id||null;saveState();closeDeleteDialog();renderChats();if(state.selected){renderConversation(true)}else{messages.innerHTML="";$("#headerName").textContent="Выберите чат";$("#headerStatus").textContent="";$("#headerAvatar").textContent="";}conversation.classList.remove("is-open");}
+  $("#deleteContactButton").addEventListener("click",openDeleteDialog);$("#cancelDelete").addEventListener("click",closeDeleteDialog);$("#confirmDelete").addEventListener("click",deleteContact);
   $("#chatSearchButton").addEventListener("click",()=>searchInput.focus());
   searchInput.addEventListener("input",renderChats);
   $$(".filter").forEach(button=>button.addEventListener("click",()=>{$$(".filter").forEach(x=>x.classList.remove("is-active"));button.classList.add("is-active");state.filter=button.dataset.filter;saveState();renderChats()}));
