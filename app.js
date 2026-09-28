@@ -10,7 +10,7 @@
     {id:"team",name:"Umar Team",color:"purple",status:"5 участников",unread:0,updated:"17:05",messages:[{mine:false,text:"Добро пожаловать в Umar Messenger",time:"17:05"}]}
   ];
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),modalBackdrop=$("#modalBackdrop"),newChatName=$("#newChatName"),settingsDrawer=$("#settingsDrawer");
+  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),modalBackdrop=$("#modalBackdrop"),newChatName=$("#newChatName"),settingsDrawer=$("#settingsDrawer"),fileInput=$("#fileInput");
   let state=loadState();
   function loadState(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved?.chats?.length)return saved}catch{}return{chats:structuredClone(initialChats),selected:"ali",filter:"all",theme:"dark"}}
   function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
@@ -63,7 +63,17 @@
   $$(".filter").forEach(button=>button.addEventListener("click",()=>{$$(".filter").forEach(x=>x.classList.remove("is-active"));button.classList.add("is-active");state.filter=button.dataset.filter;saveState();renderChats()}));
   $("#themeButton")?.addEventListener("click",()=>{state.theme=state.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=state.theme;saveState()});
   $("#emojiButton").addEventListener("click",()=>{messageInput.value+=" 🙂";messageInput.focus()});
-  $("#attachButton").addEventListener("click",()=>{messageInput.placeholder="Вложения подключаются через серверный API";setTimeout(()=>messageInput.placeholder="Написать сообщение...",1800)});
+  $("#attachButton").addEventListener("click",()=>fileInput?.click());
+  fileInput?.addEventListener("change",()=>{
+    const files=[...fileInput.files||[]];
+    if(!files.length)return;
+    const chat=selectedChat(),time=new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
+    files.forEach(file=>{
+      const size=file.size<1024?file.size+" Б":file.size<1024*1024?(file.size/1024).toFixed(1)+" КБ":(file.size/1024/1024).toFixed(1)+" МБ";
+      chat.messages.push({mine:true,text:"📎 "+file.name+" · "+size,time,status:"✓"});
+    });
+    chat.updated=time;saveState();renderChats();renderConversation(true);fileInput.value="";
+  });
   function openSettings(){if(!settingsDrawer)return;settingsDrawer.hidden=false;requestAnimationFrame(()=>settingsDrawer.classList.add("is-open"))}
   function closeSettings(){if(!settingsDrawer)return;settingsDrawer.classList.remove("is-open");setTimeout(()=>settingsDrawer.hidden=true,220)}
   $("#profileButton")?.addEventListener("click",openSettings);
