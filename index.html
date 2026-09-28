@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#ff8a2a">
-<meta name="description" content="Umar Messenger — современный веб-мессенджер.">
+<meta name="description" content="Umar Messenger — современный веб-мессенджер.">\n<link rel="icon" href="./icon.svg" type="image/svg+xml">\n<link rel="manifest" href="./manifest.webmanifest">
 <title>Umar Messenger — сообщения</title>
 <link rel="stylesheet" href="./styles.css?v=20260928-5">
 </head>
@@ -58,11 +58,11 @@
 <button class="settings-row" id="notificationsSettingsButton" type="button"><span class="settings-row-icon">🔔</span><span><strong>Уведомления</strong><small id="notificationState">Включены</small></span><b>›</b></button>
 <button class="settings-row" id="appearanceButton" type="button"><span class="settings-row-icon">◐</span><span><strong>Оформление</strong><small>Тёмная тема</small></span><b>›</b></button>
 <button class="settings-row" id="privacyButton" type="button"><span class="settings-row-icon">⌁</span><span><strong>Конфиденциальность</strong><small>Последний визит и безопасность</small></span><b>›</b></button>
-<button class="settings-row" id="dataButton" type="button"><span class="settings-row-icon">▣</span><span><strong>Данные и хранилище</strong><small>Локальные данные чатов</small></span><b>›</b></button>
+<button class="settings-row" id="dataButton" type="button"><span class="settings-row-icon">▣</span><span><strong>Данные и хранилище</strong><small id="dataState">Локальные данные чатов</small></span><b>›</b></button>\n<button class="settings-row" id="downloadAppButton" type="button"><span class="settings-row-icon">↓</span><span><strong>Скачать приложение</strong><small>Скачать иконку Umar на устройство</small></span><b>›</b></button>
 </div>
 <div class="settings-section"><button class="settings-row" id="aboutButton" type="button"><span class="settings-row-icon">?</span><span><strong>О приложении</strong><small>Umar Messenger</small></span><b>›</b></button></div>
 </div>
-<div class="delete-dialog" id="deleteDialog" hidden><section class="delete-card" role="dialog" aria-modal="true" aria-labelledby="deleteTitle"><div class="delete-profile"><div class="delete-avatar avatar orange" id="deleteAvatar">А</div><div><strong id="deleteName">Али</strong><span id="deleteUsername">@ali</span></div></div><h2 id="deleteTitle">Удалить контакт?</h2><p>Контакт и переписка будут удалены с этого устройства.</p><label class="delete-check"><input id="deleteForBoth" type="checkbox"><span>Удалить также переписку у собеседника</span></label><div class="delete-actions"><button class="secondary-button" id="cancelDelete" type="button">Отмена</button><button class="danger-button" id="confirmDelete" type="button">Удалить</button></div></section></div>
+<div class="settings-modal" id="settingsModal" hidden><section class="settings-modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle"><div class="settings-modal-head"><div><h2 id="settingsModalTitle">Настройки</h2><span id="settingsModalSubtitle">Изменить параметры</span></div><button class="icon-button" id="closeSettingsModal" type="button" aria-label="Закрыть">×</button></div><div id="settingsModalBody"></div></section></div>\n<div class="delete-dialog" id="deleteDialog" hidden><section class="delete-card" role="dialog" aria-modal="true" aria-labelledby="deleteTitle"><div class="delete-profile"><div class="delete-avatar avatar orange" id="deleteAvatar">А</div><div><strong id="deleteName">Али</strong><span id="deleteUsername">@ali</span></div></div><h2 id="deleteTitle">Удалить контакт?</h2><p>Контакт и переписка будут удалены с этого устройства.</p><label class="delete-check"><input id="deleteForBoth" type="checkbox"><span>Удалить также переписку у собеседника</span></label><div class="delete-actions"><button class="secondary-button" id="cancelDelete" type="button">Отмена</button><button class="danger-button" id="confirmDelete" type="button">Удалить</button></div></section></div>
 <div class="emoji-picker" id="emojiPicker" hidden aria-label="Выбор эмодзи"><div class="emoji-head"><strong>Эмодзи</strong><button class="icon-button" id="closeEmoji" type="button" aria-label="Закрыть">×</button></div><div class="emoji-grid" id="emojiGrid"></div></div>
 <script src="./app.js?v=20260928-5" defer></script>
 </body>
