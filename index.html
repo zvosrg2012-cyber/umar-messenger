@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ff8a2a">
 <meta name="description" content="Umar Messenger — современный веб-мессенджер.">
 <title>Umar Messenger — сообщения</title>
-<link rel="stylesheet" href="./styles.css?v=20260928-4">
+<link rel="stylesheet" href="./styles.css?v=20260928-5">
 </head>
 <body>
 <div class="app-shell">
@@ -38,7 +38,7 @@
 <section class="messages" id="messages" aria-live="polite" aria-label="Сообщения"></section>
 <form class="composer" id="composer">
 <button class="icon-button composer-button" id="emojiButton" type="button" aria-label="Добавить эмодзи">☺</button>
-<button class="icon-button composer-button" id="attachButton" type="button" aria-label="Прикрепить файл">＋</button>
+<button class="icon-button composer-button attach-button" id="attachButton" type="button" aria-label="Прикрепить файл" title="Прикрепить файл"><span class="attach-icon" aria-hidden="true"></span></button><input id="fileInput" type="file" hidden multiple>
 <input id="messageInput" type="text" maxlength="4000" placeholder="Написать сообщение..." autocomplete="off" aria-label="Текст сообщения">
 <button class="send-button" type="submit" aria-label="Отправить сообщение">➤</button>
 </form>
@@ -70,6 +70,6 @@
 <div class="modal-actions"><button class="secondary-button" id="cancelModal" type="button">Отмена</button><button class="primary-button" id="createChat" type="button">Создать</button></div>
 </section>
 </div>
-<script src="./app.js?v=20260928-4" defer></script>
+<script src="./app.js?v=20260928-5" defer></script>
 </body>
 </html>
