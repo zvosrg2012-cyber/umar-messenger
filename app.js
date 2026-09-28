@@ -67,21 +67,21 @@
   $("#profileButton")?.addEventListener("click",openSettings);
   $("#closeSettings")?.addEventListener("click",closeSettings);
   settingsDrawer?.addEventListener("click",e=>{if(e.target===settingsDrawer)closeSettings()});
-  $("#notificationsSettingsButton")?.addEventListener("click",()=>{
-    state.notifications=state.notifications===false;
-    saveState();
-    const el=$("#notificationState"); if(el) el.textContent=state.notifications?"Включены":"Выключены";
-  });
-  $("#notificationsButton")?.addEventListener("click",()=>{
-    state.notifications=state.notifications===false;
-    saveState();
-  });
+  const settingsModal=$("#settingsModal"),settingsModalBody=$("#settingsModalBody");
+  function openSettingsModal(title,subtitle,body){$("#settingsModalTitle").textContent=title;$("#settingsModalSubtitle").textContent=subtitle;settingsModalBody.innerHTML=body;settingsModal.hidden=false}
+  function closeSettingsModal(){settingsModal.hidden=true}
+  $("#closeSettingsModal")?.addEventListener("click",closeSettingsModal);
+  settingsModal?.addEventListener("click",e=>{if(e.target===settingsModal)closeSettingsModal()});
+  function syncSettings(){const n=$("#notificationState"),d=$("#dataState"),a=$("#appearanceButton small"),p=$("#privacyButton small");if(n)n.textContent=state.notifications!==false?"Включены":"Выключены";if(d)d.textContent=(state.chats?.length||0)+" чата(ов) на этом устройстве";if(a)a.textContent=state.theme==="light"?"Светлая тема":"Тёмная тема";if(p)p.textContent=state.lastSeen===false?"Скрыт":"Последний визит виден"}
+  $("#notificationsSettingsButton")?.addEventListener("click",()=>{openSettingsModal("Уведомления","Управление уведомлениями",'<div class="setting-control"><div><strong>Уведомления</strong><small>Включать уведомления о новых сообщениях</small></div><button class="toggle-button" id="modalNotifications" type="button"><span></span></button></div>');$("#modalNotifications").classList.toggle("is-on",state.notifications!==false);$("#modalNotifications").onclick=()=>{state.notifications=state.notifications===false;saveState();syncSettings();closeSettingsModal()}});
+  $("#notificationsButton")?.addEventListener("click",()=>$("#notificationsSettingsButton").click());
   $("#detailsSearchButton")?.addEventListener("click",()=>searchInput.focus());
-  $("#editProfileButton")?.addEventListener("click",()=>openSettings());
-  $("#appearanceButton")?.addEventListener("click",()=>{$("#appearanceButton").querySelector("small").textContent="Тёмная тема включена";});
-  $("#privacyButton")?.addEventListener("click",()=>$("#privacyButton").querySelector("small").textContent="Настройки безопасности");
-  $("#dataButton")?.addEventListener("click",()=>$("#dataButton").querySelector("small").textContent="Данные хранятся локально");
-  $("#aboutButton")?.addEventListener("click",()=>$("#aboutButton").querySelector("small").textContent="LOWPOLY • версия 1.0");
+  $("#editProfileButton")?.addEventListener("click",()=>{openSettingsModal("Профиль","Ваше имя и статус",'<label class="modal-label" for="profileName">Имя</label><input class="modal-input" id="profileName" maxlength="32"><label class="modal-label" for="profileStatus">Статус</label><input class="modal-input" id="profileStatus" maxlength="60"><div class="modal-actions"><button class="secondary-button" id="profileCancel" type="button">Отмена</button><button class="primary-button" id="profileSave" type="button">Сохранить</button></div>');$("#profileName").value=state.profile?.name||"Umar";$("#profileStatus").value=state.profile?.status||"в сети";$("#profileCancel").onclick=closeSettingsModal;$("#profileSave").onclick=()=>{state.profile={name:$("#profileName").value.trim()||"Umar",status:$("#profileStatus").value.trim()||"в сети"};saveState();$(".settings-profile strong").textContent=state.profile.name;$(".settings-profile span").textContent=state.profile.status;closeSettingsModal()}});
+  $("#appearanceButton")?.addEventListener("click",()=>{openSettingsModal("Оформление","Выберите тему",'<div class="theme-options"><button class="theme-option" id="darkTheme" type="button"><b>Тёмная</b><small>LOWPOLY dark</small></button><button class="theme-option" id="lightTheme" type="button"><b>Светлая</b><small>Светлая поверхность</small></button></div>');$("#"+(state.theme==="light"?"lightTheme":"darkTheme")).classList.add("is-active");$("#darkTheme").onclick=()=>{state.theme="dark";document.documentElement.dataset.theme="dark";saveState();syncSettings();closeSettingsModal()};$("#lightTheme").onclick=()=>{state.theme="light";document.documentElement.dataset.theme="light";saveState();syncSettings();closeSettingsModal()}});
+  $("#privacyButton")?.addEventListener("click",()=>{openSettingsModal("Конфиденциальность","Кто видит вашу активность",'<div class="setting-control"><div><strong>Последний визит</strong><small>Показывать время последнего посещения</small></div><button class="toggle-button" id="lastSeenToggle" type="button"><span></span></button></div><div class="setting-control"><div><strong>Статус прочтения</strong><small>Показывать отметки о прочтении сообщений</small></div><button class="toggle-button" id="readReceiptsToggle" type="button"><span></span></button></div>');$("#lastSeenToggle").classList.toggle("is-on",state.lastSeen!==false);$("#readReceiptsToggle").classList.toggle("is-on",state.readReceipts!==false);$("#lastSeenToggle").onclick=()=>{state.lastSeen=state.lastSeen===false;saveState();$("#lastSeenToggle").classList.toggle("is-on",state.lastSeen)};$("#readReceiptsToggle").onclick=()=>{state.readReceipts=state.readReceipts===false;saveState();$("#readReceiptsToggle").classList.toggle("is-on",state.readReceipts)}});
+  $("#dataButton")?.addEventListener("click",()=>{openSettingsModal("Данные и хранилище","Управление данными на этом устройстве",'<div class="data-card"><strong id="localChatCount"></strong><span>чатов сохранено локально</span></div><p class="settings-note">Демонстрационные сообщения хранятся только в браузере этого устройства.</p><button class="danger-button data-clear" id="clearDataButton" type="button">Очистить локальные данные</button>');$("#localChatCount").textContent=state.chats.length;$("#clearDataButton").onclick=()=>{if(confirm("Удалить все локальные чаты и настройки?")){localStorage.removeItem(STORAGE_KEY);location.reload()}}});
+  $("#downloadAppButton")?.addEventListener("click",()=>{const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="30" fill="#ff8a2a"/><path d="M34 31h60v66H34z" fill="#111"/><path d="M45 44h38v40H45z" fill="#ff8a2a"/><path d="M55 55h18v18H55z" fill="#111"/></svg>';const url=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml"})),a=document.createElement("a");a.href=url;a.download="umar-messenger-icon.svg";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)});
+  $("#aboutButton")?.addEventListener("click",()=>openSettingsModal("О приложении","Umar Messenger",'<div class="about-app"><div class="about-logo">U</div><strong>Umar Messenger</strong><span>LOWPOLY • версия 1.0</span><p>Веб-мессенджер с локальным хранением чатов, эмодзи и настройками интерфейса.</p></div>'));
   const emojiList="😀 😃 😄 😁 😆 😅 😂 🙂 🙃 😉 😊 😎 😍 🥰 😘 🤗 🤔 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 🤓 🥳 😇 😭 😢 😤 😡 🤬 😱 😳 🤩 😋 😛 😜 🤪 🫡 ❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💔 👍 👎 👌 ✌️ 🤝 🙏 👏 🎉 🔥 ⭐ 💯 🚀 ⚡ 🌙 ☀️ ☕ 🍕 🍔 ⚽ 🎮".split(" ");
   emojiGrid.innerHTML=emojiList.map(e=>'<button type="button" class="emoji-item">'+e+'</button>').join("");
   $("#emojiButton").addEventListener("click",()=>{emojiPicker.hidden=!emojiPicker.hidden;if(!emojiPicker.hidden)messageInput.focus()});
@@ -89,7 +89,8 @@
   emojiGrid.addEventListener("click",e=>{if(e.target.matches(".emoji-item")){messageInput.value+=e.target.textContent;messageInput.focus()}});
   document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput.focus()}if(e.key==="Escape")emojiPicker.hidden=true});
   state.notifications=state.notifications!==false;
-  document.documentElement.dataset.theme=state.theme;
+  state.profile=state.profile||{name:"Umar",status:"в сети"};state.lastSeen=state.lastSeen!==false;state.readReceipts=state.readReceipts!==false;
+  document.documentElement.dataset.theme=state.theme||"dark";$(".settings-profile strong").textContent=state.profile.name;$(".settings-profile span").textContent=state.profile.status;syncSettings();
   if(state.filter!=="all")$$(".filter").forEach(x=>x.classList.toggle("is-active",x.dataset.filter===state.filter));
   renderChats();renderConversation();
 })();
