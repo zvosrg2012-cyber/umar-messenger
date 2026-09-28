@@ -13,7 +13,7 @@
 <aside class="sidebar" aria-label="Навигация и список чатов">
 <header class="brandbar">
 <a class="brand" href="./" aria-label="Umar Messenger"><span class="brand-mark">U</span><span>Umar</span></a>
-<button class="icon-button add-button" id="newChatButton" type="button" aria-label="Создать новый чат" title="Создать новый чат"><span class="plus-icon" aria-hidden="true"></span></button>
+
 </header>
 <div class="search-wrap">
 <button class="search-menu" id="profileButton" type="button" aria-label="Открыть меню">☰</button>
@@ -37,8 +37,8 @@
 </header>
 <section class="messages" id="messages" aria-live="polite" aria-label="Сообщения"></section>
 <form class="composer" id="composer">
-<button class="icon-button composer-button" id="emojiButton" type="button" aria-label="Добавить эмодзи">☺</button>
-<button class="icon-button composer-button attach-button" id="attachButton" type="button" aria-label="Прикрепить файл" title="Прикрепить файл"><span class="attach-icon" aria-hidden="true"></span></button><input id="fileInput" type="file" hidden multiple>
+<button class="icon-button composer-button" id="emojiButton" type="button" aria-label="Открыть эмодзи" title="Эмодзи">☺</button>
+
 <input id="messageInput" type="text" maxlength="4000" placeholder="Написать сообщение..." autocomplete="off" aria-label="Текст сообщения">
 <button class="send-button" type="submit" aria-label="Отправить сообщение">➤</button>
 </form>
@@ -62,14 +62,7 @@
 </div>
 <div class="settings-section"><button class="settings-row" id="aboutButton" type="button"><span class="settings-row-icon">?</span><span><strong>О приложении</strong><small>Umar Messenger</small></span><b>›</b></button></div>
 </div>
-<div class="modal-backdrop" id="modalBackdrop" hidden>
-<section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-<div class="modal-head"><h2 id="modalTitle">Новый чат</h2><button class="icon-button" id="closeModal" type="button" aria-label="Закрыть">×</button></div>
-<label class="modal-label" for="newChatName">Имя контакта</label>
-<input class="modal-input" id="newChatName" maxlength="40" placeholder="Например, Ахмад">
-<div class="modal-actions"><button class="secondary-button" id="cancelModal" type="button">Отмена</button><button class="primary-button" id="createChat" type="button">Создать</button></div>
-</section>
-</div>
+<div class="emoji-picker" id="emojiPicker" hidden aria-label="Выбор эмодзи"><div class="emoji-head"><strong>Эмодзи</strong><button class="icon-button" id="closeEmoji" type="button" aria-label="Закрыть">×</button></div><div class="emoji-grid" id="emojiGrid"></div></div>
 <script src="./app.js?v=20260928-5" defer></script>
 </body>
 </html>
