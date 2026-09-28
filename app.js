@@ -66,7 +66,29 @@
   $("#attachButton").addEventListener("click",()=>{messageInput.placeholder="Вложения подключаются через серверный API";setTimeout(()=>messageInput.placeholder="Написать сообщение...",1800)});
   $("#profileButton").addEventListener("click",()=>alert("Меню Umar Messenger"));
   settingsDrawer.addEventListener("click",e=>{if(e.target===settingsDrawer)closeSettings()});
+  const settingsDrawer=$("#settingsDrawer");
+  function openSettings(){if(!settingsDrawer)return;settingsDrawer.hidden=false;requestAnimationFrame(()=>settingsDrawer.classList.add("is-open"))}
+  function closeSettings(){if(!settingsDrawer)return;settingsDrawer.classList.remove("is-open");setTimeout(()=>settingsDrawer.hidden=true,220)}
+  $("#profileButton")?.addEventListener("click",openSettings);
+  $("#closeSettings")?.addEventListener("click",closeSettings);
+  settingsDrawer?.addEventListener("click",e=>{if(e.target===settingsDrawer)closeSettings()});
+  $("#notificationsSettingsButton")?.addEventListener("click",()=>{
+    state.notifications=state.notifications===false;
+    saveState();
+    const el=$("#notificationState"); if(el) el.textContent=state.notifications?"Включены":"Выключены";
+  });
+  $("#notificationsButton")?.addEventListener("click",()=>{
+    state.notifications=state.notifications===false;
+    saveState();
+  });
+  $("#detailsSearchButton")?.addEventListener("click",()=>searchInput.focus());
+  $("#editProfileButton")?.addEventListener("click",()=>alert("Профиль подключим к серверному аккаунту."));
+  $("#appearanceButton")?.addEventListener("click",()=>alert("Оформление: тёмная тема. Переключатель темы подключим к серверным настройкам."));
+  $("#privacyButton")?.addEventListener("click",()=>alert("Конфиденциальность подключим к серверной авторизации."));
+  $("#dataButton")?.addEventListener("click",()=>alert("Данные и хранилище будут подключены к серверному API."));
+  $("#aboutButton")?.addEventListener("click",()=>alert("Umar Messenger — LOWPOLY messenger."));
   document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput.focus()}if(e.key==="Escape"&&!modalBackdrop.hidden)closeModal()});
+  state.notifications=state.notifications!==false;
   state.notifications=state.notifications!==false;
   document.documentElement.dataset.theme=state.theme;
   if(state.filter!=="all")$$(".filter").forEach(x=>x.classList.toggle("is-active",x.dataset.filter===state.filter));
