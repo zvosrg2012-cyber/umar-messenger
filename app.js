@@ -64,9 +64,6 @@
   $("#themeButton")?.addEventListener("click",()=>{state.theme=state.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=state.theme;saveState()});
   $("#emojiButton").addEventListener("click",()=>{messageInput.value+=" 🙂";messageInput.focus()});
   $("#attachButton").addEventListener("click",()=>{messageInput.placeholder="Вложения подключаются через серверный API";setTimeout(()=>messageInput.placeholder="Написать сообщение...",1800)});
-  $("#profileButton").addEventListener("click",()=>alert("Меню Umar Messenger"));
-  settingsDrawer.addEventListener("click",e=>{if(e.target===settingsDrawer)closeSettings()});
-  const settingsDrawer=$("#settingsDrawer");
   function openSettings(){if(!settingsDrawer)return;settingsDrawer.hidden=false;requestAnimationFrame(()=>settingsDrawer.classList.add("is-open"))}
   function closeSettings(){if(!settingsDrawer)return;settingsDrawer.classList.remove("is-open");setTimeout(()=>settingsDrawer.hidden=true,220)}
   $("#profileButton")?.addEventListener("click",openSettings);
@@ -82,13 +79,12 @@
     saveState();
   });
   $("#detailsSearchButton")?.addEventListener("click",()=>searchInput.focus());
-  $("#editProfileButton")?.addEventListener("click",()=>alert("Профиль подключим к серверному аккаунту."));
-  $("#appearanceButton")?.addEventListener("click",()=>alert("Оформление: тёмная тема. Переключатель темы подключим к серверным настройкам."));
-  $("#privacyButton")?.addEventListener("click",()=>alert("Конфиденциальность подключим к серверной авторизации."));
-  $("#dataButton")?.addEventListener("click",()=>alert("Данные и хранилище будут подключены к серверному API."));
-  $("#aboutButton")?.addEventListener("click",()=>alert("Umar Messenger — LOWPOLY messenger."));
+  $("#editProfileButton")?.addEventListener("click",()=>openSettings());
+  $("#appearanceButton")?.addEventListener("click",()=>{$("#appearanceButton").querySelector("small").textContent="Тёмная тема включена";});
+  $("#privacyButton")?.addEventListener("click",()=>$("#privacyButton").querySelector("small").textContent="Настройки безопасности");
+  $("#dataButton")?.addEventListener("click",()=>$("#dataButton").querySelector("small").textContent="Данные хранятся локально");
+  $("#aboutButton")?.addEventListener("click",()=>$("#aboutButton").querySelector("small").textContent="LOWPOLY • версия 1.0");
   document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput.focus()}if(e.key==="Escape"&&!modalBackdrop.hidden)closeModal()});
-  state.notifications=state.notifications!==false;
   state.notifications=state.notifications!==false;
   document.documentElement.dataset.theme=state.theme;
   if(state.filter!=="all")$$(".filter").forEach(x=>x.classList.toggle("is-active",x.dataset.filter===state.filter));
