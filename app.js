@@ -70,7 +70,7 @@
     const chat=selectedChat(),time=new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
     files.forEach(file=>{
       const size=file.size<1024?file.size+" Б":file.size<1024*1024?(file.size/1024).toFixed(1)+" КБ":(file.size/1024/1024).toFixed(1)+" МБ";
-      chat.messages.push({mine:true,text:"📎 "+file.name+" · "+size,time,status:"✓"});
+      const type=file.type||"Файл"; chat.messages.push({mine:true,text:"📎 "+file.name+" · "+size+" · "+type,time,status:"✓"});
     });
     chat.updated=time;saveState();renderChats();renderConversation(true);fileInput.value="";
   });
