@@ -4,46 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f58631">
-  <meta name="description" content="Umar Messenger — современный адаптивный веб-мессенджер с низкополигональной визуальной системой.">
+  <meta name="description" content="Umar Messenger — современный веб-мессенджер.">
   <meta name="robots" content="index,follow">
   <meta property="og:title" content="Umar Messenger">
   <meta property="og:description" content="Современный веб-мессенджер Umar.">
   <meta property="og:type" content="website">
-  <link rel="canonical" href="./">
   <title>Umar Messenger — сообщения</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./styles.css?v=20260928">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Навигация и список чатов">
       <header class="brandbar">
-        <a class="brand" href="#" aria-label="Umar Messenger">
-          <span class="brand-mark" aria-hidden="true">U</span>
-          <span>Umar</span>
-        </a>
-        <button class="icon-button accent-cut" id="newChatButton" type="button" aria-label="Создать новый чат" title="Новый чат">＋</button>
+        <a class="brand" href="./" aria-label="Umar Messenger"><span class="brand-mark" aria-hidden="true">U</span><span>Umar</span></a>
+        <button class="icon-button" id="newChatButton" type="button" aria-label="Создать новый чат" title="Новый чат">＋</button>
       </header>
-
       <div class="search-wrap">
-        <label class="search-field" for="searchInput">
-          <span aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="Поиск чатов" autocomplete="off">
-          <kbd>⌘ K</kbd>
-        </label>
+        <label class="search-field" for="searchInput"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Поиск чатов" autocomplete="off"><kbd>⌘ K</kbd></label>
       </div>
-
       <nav class="filterbar" aria-label="Фильтр чатов">
         <button class="filter is-active" data-filter="all" type="button">Все</button>
         <button class="filter" data-filter="unread" type="button">Непрочитанные</button>
       </nav>
-
       <div class="chat-list" id="chatList" role="list" aria-label="Чаты"></div>
-
       <footer class="sidebar-footer">
-        <button class="footer-action" id="profileButton" type="button">
-          <span class="footer-avatar">С</span>
-          <span><strong>Сергей</strong><small>Мой профиль</small></span>
-        </button>
+        <button class="footer-action" id="profileButton" type="button"><span class="footer-avatar">С</span><span><strong>Сергей</strong><small>Мой профиль</small></span></button>
         <button class="icon-button" id="themeButton" type="button" aria-label="Переключить тему" title="Тема">☼</button>
       </footer>
     </aside>
@@ -52,23 +37,18 @@
       <header class="chat-header">
         <button class="icon-button back-button" id="backButton" type="button" aria-label="Назад к чатам">‹</button>
         <div class="avatar" id="headerAvatar" aria-hidden="true">А</div>
-        <div class="chat-meta">
-          <strong id="headerName">Али</strong>
-          <span id="headerStatus">в сети</span>
-        </div>
+        <div class="chat-meta"><strong id="headerName">Али</strong><span id="headerStatus">в сети</span></div>
         <div class="header-actions">
           <button class="icon-button" id="chatSearchButton" type="button" aria-label="Поиск в чате">⌕</button>
           <button class="icon-button" id="infoButton" type="button" aria-label="Информация о чате">⋮</button>
         </div>
       </header>
-
       <section class="messages" id="messages" aria-live="polite" aria-label="Сообщения"></section>
-
       <form class="composer" id="composer">
         <button class="icon-button composer-button" id="emojiButton" type="button" aria-label="Добавить эмодзи">☺</button>
         <button class="icon-button composer-button" id="attachButton" type="button" aria-label="Прикрепить файл">＋</button>
         <input id="messageInput" type="text" maxlength="4000" placeholder="Написать сообщение..." autocomplete="off" aria-label="Текст сообщения">
-        <button class="send-button accent-cut" type="submit" aria-label="Отправить сообщение">➤</button>
+        <button class="send-button" type="submit" aria-label="Отправить сообщение">➤</button>
       </form>
     </main>
 
@@ -76,31 +56,20 @@
       <div class="details-cover"></div>
       <div class="details-content">
         <div class="details-avatar avatar" id="detailsAvatar">А</div>
-        <h2 id="detailsName">Али</h2>
-        <p id="detailsStatus">В сети</p>
-        <div class="details-actions">
-          <button type="button">🔔<span>Уведомления</span></button>
-          <button type="button">🔎<span>Поиск</span></button>
-        </div>
+        <h2 id="detailsName">Али</h2><p id="detailsStatus">В сети</p>
+        <div class="details-actions"><button type="button">🔔<span>Уведомления</span></button><button type="button">🔎<span>Поиск</span></button></div>
       </div>
     </aside>
   </div>
 
   <div class="modal-backdrop" id="modalBackdrop" hidden>
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-head">
-        <h2 id="modalTitle">Новый чат</h2>
-        <button class="icon-button" id="closeModal" type="button" aria-label="Закрыть">×</button>
-      </div>
+      <div class="modal-head"><h2 id="modalTitle">Новый чат</h2><button class="icon-button" id="closeModal" type="button" aria-label="Закрыть">×</button></div>
       <label class="modal-label" for="newChatName">Имя контакта</label>
       <input class="modal-input" id="newChatName" maxlength="40" placeholder="Например, Ахмад">
-      <div class="modal-actions">
-        <button class="secondary-button" id="cancelModal" type="button">Отмена</button>
-        <button class="primary-button" id="createChat" type="button">Создать</button>
-      </div>
+      <div class="modal-actions"><button class="secondary-button" id="cancelModal" type="button">Отмена</button><button class="primary-button" id="createChat" type="button">Создать</button></div>
     </section>
   </div>
-
-  <script src="app.js" defer></script>
+  <script src="./app.js?v=20260928" defer></script>
 </body>
 </html>
