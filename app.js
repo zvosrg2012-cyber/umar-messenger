@@ -10,7 +10,7 @@
     {id:"team",name:"Umar Team",color:"purple",status:"5 участников",unread:0,updated:"17:05",messages:[{mine:false,text:"Добро пожаловать в Umar Messenger",time:"17:05"}]}
   ];
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),modalBackdrop=$("#modalBackdrop"),newChatName=$("#newChatName");
+  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),modalBackdrop=$("#modalBackdrop"),newChatName=$("#newChatName"),settingsDrawer=$("#settingsDrawer");
   let state=loadState();
   function loadState(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved?.chats?.length)return saved}catch{}return{chats:structuredClone(initialChats),selected:"ali",filter:"all",theme:"dark"}}
   function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
@@ -65,7 +65,9 @@
   $("#emojiButton").addEventListener("click",()=>{messageInput.value+=" 🙂";messageInput.focus()});
   $("#attachButton").addEventListener("click",()=>{messageInput.placeholder="Вложения подключаются через серверный API";setTimeout(()=>messageInput.placeholder="Написать сообщение...",1800)});
   $("#profileButton").addEventListener("click",()=>alert("Меню Umar Messenger"));
+  settingsDrawer.addEventListener("click",e=>{if(e.target===settingsDrawer)closeSettings()});
   document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput.focus()}if(e.key==="Escape"&&!modalBackdrop.hidden)closeModal()});
+  state.notifications=state.notifications!==false;
   document.documentElement.dataset.theme=state.theme;
   if(state.filter!=="all")$$(".filter").forEach(x=>x.classList.toggle("is-active",x.dataset.filter===state.filter));
   renderChats();renderConversation();
