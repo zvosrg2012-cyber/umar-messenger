@@ -1,24 +1,41 @@
 <!doctype html>
 <html lang="ru">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Umar Messenger</title><link rel="stylesheet" href="styles.css"></head>
-<body><main class="app">
-<header class="topbar"><div class="brand"><span class="mark">◆</span><span>UMAR</span></div><button class="icon-btn" id="themeBtn" aria-label="Тема">◐</button></header>
-<section class="hero"><div><span class="eyebrow">MESSENGER</span><h1 id="pageTitle">Чаты</h1></div><button class="new-chat" id="newChat">＋</button></section>
-<div class="search"><span>⌕</span><input id="search" placeholder="Поиск по чатам"></div>
-<section class="chat-list" id="chatList">
-<article class="chat active" data-name="Али"><div class="avatar">А</div><div class="chat-main"><div class="row"><strong>Али</strong><time>20:14</time></div><p>Увидимся завтра. ◆</p></div><span class="badge">2</span></article>
-<article class="chat" data-name="Мухаммад"><div class="avatar">М</div><div class="chat-main"><div class="row"><strong>Мухаммад</strong><time>19:48</time></div><p>Отправил тебе файл</p></div></article>
-<article class="chat" data-name="Семья"><div class="avatar">С</div><div class="chat-main"><div class="row"><strong>Семья</strong><time>18:32</time></div><p>Папа: Буду через 20 минут</p></div><span class="badge">4</span></article>
-<article class="chat" data-name="Umar Team"><div class="avatar">◆</div><div class="chat-main"><div class="row"><strong>Umar Team</strong><time>17:05</time></div><p>Добро пожаловать в Umar Messenger</p></div></article>
-</section>
-<section class="empty" id="empty">Ничего не найдено</section>
-<nav class="bottom-nav"><button class="nav-item selected" data-page="Чаты"><span>◆</span><small>Чаты</small></button><button class="nav-item" data-page="Контакты"><span>◇</span><small>Контакты</small></button><button class="nav-item" data-page="Настройки"><span>◈</span><small>Настройки</small></button></nav>
-</main>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111b21"><title>Umar Messenger</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-head"><div class="logo"><span>U</span><b>Umar</b></div><button class="round-btn" id="newChat" title="Новый чат">✎</button></div>
+    <div class="search"><span>⌕</span><input id="search" placeholder="Поиск"></div>
+    <div class="tabs"><button class="tab active" data-filter="all">Все</button><button class="tab" data-filter="unread">Непрочитанные</button></div>
+    <section class="chat-list" id="chatList">
+      <article class="chat active" data-name="Али" data-unread="2"><div class="avatar orange">А</div><div class="chat-info"><div class="chat-row"><strong>Али</strong><time>20:14</time></div><div class="preview"><span>Увидимся завтра</span><em>2</em></div></div></article>
+      <article class="chat" data-name="Мухаммад" data-unread="0"><div class="avatar blue">М</div><div class="chat-info"><div class="chat-row"><strong>Мухаммад</strong><time>19:48</time></div><div class="preview"><span>Отправил тебе файл</span></div></div></article>
+      <article class="chat" data-name="Семья" data-unread="4"><div class="avatar green">С</div><div class="chat-info"><div class="chat-row"><strong>Семья</strong><time>18:32</time></div><div class="preview"><span>Папа: Буду через 20 минут</span><em>4</em></div></div></article>
+      <article class="chat" data-name="Umar Team" data-unread="0"><div class="avatar purple">U</div><div class="chat-info"><div class="chat-row"><strong>Umar Team</strong><time>17:05</time></div><div class="preview"><span>Добро пожаловать в Umar Messenger</span></div></div></article>
+    </section>
+    <div class="side-footer"><button>☰ <span>Меню</span></button><button id="themeBtn">☼ <span>Тема</span></button></div>
+  </aside>
+  <main class="conversation" id="conversation">
+    <header class="chat-head"><button class="back" id="back">‹</button><div class="avatar small orange" id="headAvatar">А</div><div class="head-info"><strong id="headName">Али</strong><span id="status">был(а) недавно</span></div><div class="head-actions"><button>⌕</button><button>⋮</button></div></header>
+    <div class="messages" id="messages">
+      <div class="day">Сегодня</div>
+      <div class="bubble them">Привет! 👋<small>20:12</small></div>
+      <div class="bubble them">Как дела? <small>20:13</small></div>
+      <div class="bubble me">Всё хорошо. Увидимся завтра!<small>20:14 ✓✓</small></div>
+    </div>
+    <form class="composer" id="composer"><button type="button" class="attach">＋</button><input id="message" autocomplete="off" placeholder="Написать сообщение..."><button class="send" type="submit">➤</button></form>
+  </main>
+</div>
 <script>
-const chats=[...document.querySelectorAll('.chat')], search=document.querySelector('#search'), empty=document.querySelector('#empty'), title=document.querySelector('#pageTitle');
-search.addEventListener('input',()=>{const q=search.value.toLowerCase();let n=0;chats.forEach(c=>{const ok=c.dataset.name.toLowerCase().includes(q);c.hidden=!ok;if(ok)n++});empty.hidden=n>0});
-chats.forEach(c=>c.addEventListener('click',()=>{chats.forEach(x=>x.classList.remove('active'));c.classList.add('active');c.querySelector('.badge')?.remove();const name=c.dataset.name;c.querySelector('p').textContent='Чат открыт • тестовый режим';}));
-document.querySelector('#newChat').addEventListener('click',()=>{const name=prompt('Имя нового чата:');if(!name)return;const c=document.createElement('article');c.className='chat';c.dataset.name=name;c.innerHTML='<div class="avatar">+</div><div class="chat-main"><div class="row"><strong></strong><time>сейчас</time></div><p>Новый тестовый чат</p></div>';c.querySelector('strong').textContent=name;document.querySelector('#chatList').prepend(c);c.addEventListener('click',()=>{chats.forEach(x=>x.classList.remove('active'));c.classList.add('active');c.querySelector('p').textContent='Чат открыт • тестовый режим'});});
-document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');title.textContent=b.dataset.page;if(b.dataset.page!=='Чаты'){document.querySelector('#chatList').style.display='none';document.querySelector('.search').style.display='none';empty.hidden=false;empty.textContent=b.dataset.page+' • тестовый экран';}else{document.querySelector('#chatList').style.display='';document.querySelector('.search').style.display='flex';empty.hidden=true;}}));
-document.querySelector('#themeBtn').addEventListener('click',()=>document.body.classList.toggle('light'));
-</script></body></html>
+const list=document.querySelector('#chatList'), search=document.querySelector('#search'), conv=document.querySelector('#conversation'), nameEl=document.querySelector('#headName'), avatarEl=document.querySelector('#headAvatar'), messages=document.querySelector('#messages'), composer=document.querySelector('#composer'), input=document.querySelector('#message');
+let current='Али';
+function openChat(c){document.querySelectorAll('.chat').forEach(x=>x.classList.remove('active'));c.classList.add('active');current=c.dataset.name;nameEl.textContent=current;avatarEl.textContent=current==='Umar Team'?'U':current[0];avatarEl.className='avatar small '+([...c.querySelector('.avatar').classList].find(x=>['orange','blue','green','purple'].includes(x))||'orange');c.dataset.unread='0';c.querySelector('em')?.remove();conv.classList.add('open');messages.innerHTML='<div class="day">Сегодня</div><div class="bubble them">Привет! 👋<small>20:12</small></div><div class="bubble them">Как дела?<small>20:13</small></div><div class="bubble me">Всё хорошо. Увидимся завтра!<small>20:14 ✓✓</small></div>';messages.scrollTop=messages.scrollHeight}
+document.querySelectorAll('.chat').forEach(c=>c.addEventListener('click',()=>openChat(c)));
+search.addEventListener('input',()=>{const q=search.value.toLowerCase();document.querySelectorAll('.chat').forEach(c=>c.hidden=!c.dataset.name.toLowerCase().includes(q))});
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.querySelectorAll('.chat').forEach(c=>c.hidden=t.dataset.filter==='unread'&&c.dataset.unread==='0')}));
+composer.addEventListener('submit',e=>{e.preventDefault();const v=input.value.trim();if(!v)return;const b=document.createElement('div');b.className='bubble me';b.innerHTML=v.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'<small>сейчас ✓✓</small>';messages.appendChild(b);input.value='';messages.scrollTop=messages.scrollHeight});
+document.querySelector('#newChat').onclick=()=>{const n=prompt('Имя нового чата');if(!n)return;const c=document.createElement('article');c.className='chat';c.dataset.name=n;c.dataset.unread='0';c.innerHTML='<div class="avatar purple">'+n[0].toUpperCase()+'</div><div class="chat-info"><div class="chat-row"><strong></strong><time>сейчас</time></div><div class="preview"><span>Новый чат</span></div></div>';c.querySelector('strong').textContent=n;list.prepend(c);c.addEventListener('click',()=>openChat(c));openChat(c)};
+document.querySelector('#back').onclick=()=>conv.classList.remove('open');
+document.querySelector('#themeBtn').onclick=()=>document.body.classList.toggle('light');
+</script>
+</body></html>
