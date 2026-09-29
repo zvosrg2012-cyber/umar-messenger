@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#ff8a2a">
-<meta name="description" content="Umar Messenger — современный веб-мессенджер.">\n<link rel="icon" href="./icon.svg" type="image/svg+xml">\n<link rel="manifest" href="./manifest.webmanifest">
+<meta name="description" content="Umar Messenger — современный веб-мессенджер.">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="manifest" href="./manifest.webmanifest">
 <title>Umar Messenger — сообщения</title>
 <link rel="stylesheet" href="./styles.css?v=20260929-6">
 </head>
@@ -12,59 +14,28 @@
 <div class="auth-screen" id="authScreen" hidden><div class="auth-card"><div class="auth-brand"><span class="brand-mark">U</span><strong>Umar Messenger</strong></div><div id="authViews"></div></div></div>
 <div class="app-shell" id="appShell" hidden>
 <aside class="sidebar" aria-label="Навигация и список чатов">
-<header class="brandbar">
-<a class="brand" href="./" aria-label="Umar Messenger"><span class="brand-mark">U</span><span>Umar</span></a>
-
-</header>
-<div class="search-wrap">
-<button class="search-menu" id="profileButton" type="button" aria-label="Открыть меню">☰</button>
-<label class="search-field" for="searchInput"><span class="search-icon" aria-hidden="true"></span><input id="searchInput" type="search" placeholder="Поиск чатов" autocomplete="off"></label>
-</div>
-<nav class="filterbar" aria-label="Фильтр чатов">
-<button class="filter is-active" data-filter="all" type="button">Все</button>
-<button class="filter" data-filter="unread" type="button">Непрочитанные</button>
-</nav>
+<header class="brandbar"><a class="brand" href="./" aria-label="Umar Messenger"><span class="brand-mark">U</span><span>Umar</span></a></header>
+<div class="search-wrap"><button class="search-menu" id="profileButton" type="button" aria-label="Открыть меню">☰</button><label class="search-field" for="searchInput"><span class="search-icon" aria-hidden="true"></span><input id="searchInput" type="search" placeholder="Поиск чатов" autocomplete="off"></label></div>
+<nav class="filterbar" aria-label="Фильтр чатов"><button class="filter is-active" data-filter="all" type="button">Все</button><button class="filter" data-filter="unread" type="button">Непрочитанные</button></nav>
 <div class="chat-list" id="chatList" role="list" aria-label="Чаты"></div>
 </aside>
 <main class="conversation" id="conversation" aria-label="Переписка">
-<header class="chat-header">
-<button class="icon-button back-button" id="backButton" type="button" aria-label="Назад к чатам">‹</button>
-<div class="avatar" id="headerAvatar">А</div>
-<div class="chat-meta"><strong id="headerName">Али</strong><span id="headerStatus">в сети</span></div>
-<div class="header-actions">
-<button class="icon-button" id="chatSearchButton" type="button" aria-label="Поиск в чате">⌕</button>
-<button class="icon-button" id="infoButton" type="button" aria-label="Информация о чате">⋮</button>
-</div>
-</header>
+<header class="chat-header"><button class="icon-button back-button" id="backButton" type="button" aria-label="Назад к чатам">‹</button><div class="avatar" id="headerAvatar">А</div><div class="chat-meta"><strong id="headerName">Али</strong><span id="headerStatus">в сети</span></div><div class="header-actions"><button class="icon-button" id="chatSearchButton" type="button" aria-label="Поиск в чате">⌕</button><button class="icon-button" id="infoButton" type="button" aria-label="Информация о чате">⋮</button></div></header>
 <section class="messages" id="messages" aria-live="polite" aria-label="Сообщения"></section>
-<form class="composer" id="composer">
-<button class="icon-button composer-button" id="emojiButton" type="button" aria-label="Открыть эмодзи" title="Эмодзи">☺</button>
-
-<input id="messageInput" type="text" maxlength="4000" placeholder="Написать сообщение..." autocomplete="off" aria-label="Текст сообщения">
-<button class="send-button" type="submit" aria-label="Отправить сообщение">➤</button>
-</form>
+<form class="composer" id="composer"><button class="icon-button composer-button" id="emojiButton" type="button" aria-label="Открыть эмодзи" title="Эмодзи">☺</button><input id="messageInput" type="text" maxlength="4000" placeholder="Написать сообщение..." autocomplete="off" aria-label="Текст сообщения"><button class="send-button" type="submit" aria-label="Отправить сообщение">➤</button></form>
 </main>
-<aside class="details-panel" id="detailsPanel" aria-label="Информация о чате">
-<div class="details-cover"></div><div class="details-content">
-<div class="details-avatar avatar" id="detailsAvatar">А</div><h2 id="detailsName">Али</h2><p id="detailsStatus">В сети</p>
-<div class="details-actions"><button id="notificationsButton" type="button">🔔<span>Уведомления</span></button><button id="detailsSearchButton" type="button">🔎<span>Поиск</span></button></div><button class="delete-contact-button" id="deleteContactButton" type="button">Удалить контакт</button></div>
+<aside class="details-panel" id="detailsPanel" aria-label="Информация о чате"><div class="details-cover"></div><div class="details-content"><div class="details-avatar avatar" id="detailsAvatar">А</div><h2 id="detailsName">Али</h2><p id="detailsStatus">В сети</p><div class="details-actions"><button id="notificationsButton" type="button">🔔<span>Уведомления</span></button><button id="detailsSearchButton" type="button">🔎<span>Поиск</span></button></div><button class="delete-contact-button" id="deleteContactButton" type="button">Удалить контакт</button></div></aside>
 </div>
-</aside>
-</div>
-<div class="settings-drawer" id="settingsDrawer" hidden>
-<div class="settings-head"><div><strong>Настройки</strong><span>Umar Messenger</span></div><button class="icon-button" id="closeSettings" type="button" aria-label="Закрыть">×</button></div>
-<div class="settings-profile"><div class="settings-avatar avatar orange">U</div><div><strong>Umar</strong><span>в сети</span></div></div>
-<div class="settings-section">
-<button class="settings-row" id="editProfileButton" type="button"><span class="settings-row-icon">✎</span><span><strong>Профиль</strong><small>Имя и статус</small></span><b>›</b></button>
-<button class="settings-row" id="notificationsSettingsButton" type="button"><span class="settings-row-icon">🔔</span><span><strong>Уведомления</strong><small id="notificationState">Включены</small></span><b>›</b></button>
-<button class="settings-row" id="appearanceButton" type="button"><span class="settings-row-icon">◐</span><span><strong>Оформление</strong><small>Тёмная тема</small></span><b>›</b></button>
-<button class="settings-row" id="privacyButton" type="button"><span class="settings-row-icon">⌁</span><span><strong>Конфиденциальность</strong><small>Последний визит и безопасность</small></span><b>›</b></button>
-<button class="settings-row" id="dataButton" type="button"><span class="settings-row-icon">▣</span><span><strong>Данные и хранилище</strong><small id="dataState">Локальные данные чатов</small></span><b>›</b></button>\n<button class="settings-row" id="downloadAppButton" type="button"><span class="settings-row-icon">↓</span><span><strong>Скачать приложение</strong><small>Скачать иконку Umar на устройство</small></span><b>›</b></button>
-</div>
-<div class="settings-section"><button class="settings-row" id="aboutButton" type="button"><span class="settings-row-icon">?</span><span><strong>О приложении</strong><small>Umar Messenger</small></span><b>›</b></button></div>
-</div>
-<div class="settings-modal" id="settingsModal" hidden><section class="settings-modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle"><div class="settings-modal-head"><div><h2 id="settingsModalTitle">Настройки</h2><span id="settingsModalSubtitle">Изменить параметры</span></div><button class="icon-button" id="closeSettingsModal" type="button" aria-label="Закрыть">×</button></div><div id="settingsModalBody"></div></section></div>\n<div class="delete-dialog" id="deleteDialog" hidden><section class="delete-card" role="dialog" aria-modal="true" aria-labelledby="deleteTitle"><div class="delete-profile"><div class="delete-avatar avatar orange" id="deleteAvatar">А</div><div><strong id="deleteName">Али</strong><span id="deleteUsername">@ali</span></div></div><h2 id="deleteTitle">Удалить контакт?</h2><p>Контакт и переписка будут удалены с этого устройства.</p><label class="delete-check"><input id="deleteForBoth" type="checkbox"><span>Удалить также переписку у собеседника</span></label><div class="delete-actions"><button class="secondary-button" id="cancelDelete" type="button">Отмена</button><button class="danger-button" id="confirmDelete" type="button">Удалить</button></div></section></div>
+<div class="settings-drawer" id="settingsDrawer" hidden><div class="settings-head"><div><strong>Настройки</strong><span>Umar Messenger</span></div><button class="icon-button" id="closeSettings" type="button" aria-label="Закрыть">×</button></div><div class="settings-profile"><div class="settings-avatar avatar orange">U</div><div><strong>Umar</strong><span>в сети</span></div></div><div class="settings-section"><button class="settings-row" id="editProfileButton" type="button"><span class="settings-row-icon">✎</span><span><strong>Профиль</strong><small>Имя и статус</small></span><b>›</b></button><button class="settings-row" id="notificationsSettingsButton" type="button"><span class="settings-row-icon">🔔</span><span><strong>Уведомления</strong><small id="notificationState">Включены</small></span><b>›</b></button><button class="settings-row" id="appearanceButton" type="button"><span class="settings-row-icon">◐</span><span><strong>Оформление</strong><small>Тёмная тема</small></span><b>›</b></button><button class="settings-row" id="privacyButton" type="button"><span class="settings-row-icon">⌁</span><span><strong>Конфиденциальность</strong><small>Последний визит и безопасность</small></span><b>›</b></button><button class="settings-row" id="dataButton" type="button"><span class="settings-row-icon">▣</span><span><strong>Данные и хранилище</strong><small id="dataState">Локальные данные чатов</small></span><b>›</b></button><button class="settings-row" id="downloadAppButton" type="button"><span class="settings-row-icon">↓</span><span><strong>Установить приложение</strong><small>Добавить Umar на устройство</small></span><b>›</b></button></div><div class="settings-section"><button class="settings-row" id="aboutButton" type="button"><span class="settings-row-icon">?</span><span><strong>О приложении</strong><small>Umar Messenger</small></span><b>›</b></button></div></div>
+<div class="settings-modal" id="settingsModal" hidden><section class="settings-modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle"><div class="settings-modal-head"><div><h2 id="settingsModalTitle">Настройки</h2><span id="settingsModalSubtitle">Изменить параметры</span></div><button class="icon-button" id="closeSettingsModal" type="button" aria-label="Закрыть">×</button></div><div id="settingsModalBody"></div></section></div>
+<div class="delete-dialog" id="deleteDialog" hidden><section class="delete-card" role="dialog" aria-modal="true" aria-labelledby="deleteTitle"><div class="delete-profile"><div class="delete-avatar avatar orange" id="deleteAvatar">А</div><div><strong id="deleteName">Али</strong><span id="deleteUsername">@ali</span></div></div><h2 id="deleteTitle">Удалить контакт?</h2><p>Контакт и переписка будут удалены с этого устройства.</p><label class="delete-check"><input id="deleteForBoth" type="checkbox"><span>Удалить также переписку у собеседника</span></label><div class="delete-actions"><button class="secondary-button" id="cancelDelete" type="button">Отмена</button><button class="danger-button" id="confirmDelete" type="button">Удалить</button></div></section></div>
 <div class="emoji-picker" id="emojiPicker" hidden aria-label="Выбор эмодзи"><div class="emoji-head"><strong>Эмодзи</strong><button class="icon-button" id="closeEmoji" type="button" aria-label="Закрыть">×</button></div><div class="emoji-grid" id="emojiGrid"></div></div>
-<script src="./app.js?v=20260929-6" defer></script>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}</script></body>
+<script>
+window.UMAR_SUPABASE_URL="https://jeopyifbjlhgtjebsozf.supabase.co";
+window.UMAR_SUPABASE_KEY="sb_publishable_mr49XEsYcaR0gOOIO7MSag_MEhrX4dB";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./app.js?v=20260929-7" defer></script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}</script>
+</body>
 </html>
