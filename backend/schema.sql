@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS "Users" (
+  id BIGSERIAL PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  username TEXT NOT NULL UNIQUE,
+  display_name TEXT NOT NULL DEFAULT '',
+  avatar_url TEXT NULL
+);
