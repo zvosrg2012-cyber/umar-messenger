@@ -1,100 +1,62 @@
 (() => {
-  "use strict";
-  const STORAGE_KEY="umar-messenger-v3";
-  const palette=["orange","blue","green","purple"];
-  const initialChats=[
-    {id:"ali",name:"Али",color:"orange",status:"в сети",unread:2,updated:"20:14",messages:[
-      {mine:false,text:"Привет! 👋",time:"20:12"},{mine:false,text:"Как дела?",time:"20:13"},{mine:true,text:"Всё хорошо. Увидимся завтра!",time:"20:14",status:"✓✓"}]},
-    {id:"muhammad",name:"Мухаммад",color:"blue",status:"был недавно",unread:0,updated:"19:48",messages:[{mine:false,text:"Отправил тебе файл",time:"19:48"}]},
-      ];
-  const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-  const chatList=$("#chatList"),messages=$("#messages"),searchInput=$("#searchInput"),messageInput=$("#messageInput"),conversation=$("#conversation"),detailsPanel=$("#detailsPanel"),settingsDrawer=$("#settingsDrawer"),emojiPicker=$("#emojiPicker"),emojiGrid=$("#emojiGrid"),deleteDialog=$("#deleteDialog"),deleteForBoth=$("#deleteForBoth");
-  let state=loadState();
-  let deferredInstallPrompt=null;
-  function loadState(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved?.chats?.length)return saved}catch{}return{chats:structuredClone(initialChats),selected:"ali",filter:"all",theme:"dark"}}
-  function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
-  window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();deferredInstallPrompt=event;const b=$("#downloadAppButton");if(b){b.querySelector("strong").textContent="Установить приложение";b.querySelector("small").textContent="Добавить Umar на устройство"}});
-  window.addEventListener("appinstalled",()=>{deferredInstallPrompt=null});
-  function installApp(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.then(()=>{deferredInstallPrompt=null}).catch(()=>{});return}openSettingsModal("Установка Umar","Добавьте сайт как приложение",'<div class="about-app"><div class="about-logo">U</div><strong>Umar Messenger</strong><p>В Chrome откройте меню браузера и выберите «Установить Umar Messenger».</p></div>')}
-  function selectedChat(){return state.chats.find(c=>c.id===state.selected)||state.chats[0]}
-  function initials(name){return name.trim().split(/\s+/).map(x=>x[0]).slice(0,2).join("").toUpperCase()||"U"}
-  function escapeHTML(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]))}
-
-  function renderChats(){
-    const query=searchInput.value.trim().toLowerCase();
-    chatList.innerHTML="";
-    state.chats.filter(c=>state.filter==="all"||c.unread>0).filter(c=>c.name.toLowerCase().includes(query)).forEach(chat=>{
-      const item=document.createElement("article");
-      item.className="chat"+(chat.id===state.selected?" is-active":"");
-      item.dataset.chatId=chat.id;item.tabIndex=0;item.setAttribute("role","listitem");
-      item.innerHTML=`<div class="avatar ${chat.color}">${escapeHTML(initials(chat.name))}</div><div class="chat-copy"><div class="chat-top"><strong>${escapeHTML(chat.name)}</strong><time>${escapeHTML(chat.updated)}</time></div><div class="chat-bottom"><span class="chat-preview">${escapeHTML(chat.messages.at(-1)?.text||"Новый чат")}</span>${chat.unread?`<span class="unread">${chat.unread}</span>`:""}</div></div>`;
-      chatList.appendChild(item);
-    });
-  }
-
-  function renderConversation(animate=false){
-    const chat=selectedChat();if(!chat)return;
-    $("#headerName").textContent=chat.name;$("#headerStatus").textContent=chat.status;$("#headerAvatar").textContent=initials(chat.name);$("#headerAvatar").className="avatar "+chat.color;
-    $("#detailsName").textContent=chat.name;$("#detailsStatus").textContent=chat.status;$("#detailsAvatar").textContent=initials(chat.name);$("#detailsAvatar").className="details-avatar avatar "+chat.color;
-    messages.innerHTML='<div class="day">Сегодня</div>';
-    chat.messages.forEach(m=>{const row=document.createElement("div");row.className="message"+(m.mine?" mine":"");row.innerHTML=`<div class="bubble">${escapeHTML(m.text)}<span class="message-meta">${escapeHTML(m.time)} ${m.mine?escapeHTML(m.status||"✓"):""}</span></div>`;messages.appendChild(row)});
-    if(animate){conversation.classList.remove("chat-switch");void conversation.offsetWidth;conversation.classList.add("chat-switch")}
-    requestAnimationFrame(()=>messages.scrollTop=messages.scrollHeight);
-  }
-
-  function selectChat(id){
-    if(!state.chats.some(c=>c.id===id)||state.selected===id)return;
-    state.selected=id;const chat=selectedChat();chat.unread=0;saveState();
-    renderChats();renderConversation(true);conversation.classList.add("is-open");
-    if(window.innerWidth<=760)messageInput.focus({preventScroll:true});
-  }
-
-  chatList.addEventListener("click",e=>{const item=e.target.closest(".chat[data-chat-id]");if(item)selectChat(item.dataset.chatId)});
-  chatList.addEventListener("keydown",e=>{const item=e.target.closest(".chat[data-chat-id]");if(item&&(e.key==="Enter"||e.key===" ")){e.preventDefault();selectChat(item.dataset.chatId)}});
-  function sendMessage(value){value=value.trim();if(!value)return;const chat=selectedChat(),time=new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});chat.messages.push({mine:true,text:value,time,status:"✓"});chat.updated=time;saveState();renderChats();renderConversation(true);messageInput.value="";messageInput.focus()}
-  function openModal(){modalBackdrop.hidden=false;newChatName.value="";requestAnimationFrame(()=>newChatName.focus())}
-  function closeModal(){modalBackdrop.hidden=true}
-  function createChat(){const name=newChatName.value.trim();if(!name)return;const id="chat-"+Date.now();state.chats.unshift({id,name,color:palette[state.chats.length%palette.length],status:"новый чат",unread:0,updated:"сейчас",messages:[]});state.selected=id;saveState();closeModal();renderChats();renderConversation(true);conversation.classList.add("is-open")}
-  $("#composer").addEventListener("submit",e=>{e.preventDefault();sendMessage(messageInput.value)});
-    $("#backButton").addEventListener("click",()=>conversation.classList.remove("is-open"));
-  $("#infoButton").addEventListener("click",()=>detailsPanel.classList.toggle("is-open"));
-  function openDeleteDialog(){const chat=selectedChat();if(!chat)return;$("#deleteName").textContent=chat.name;$("#deleteUsername").textContent="@"+chat.id.replace(/^chat-/,"");$("#deleteAvatar").textContent=initials(chat.name);$("#deleteAvatar").className="delete-avatar avatar "+chat.color;deleteForBoth.checked=false;deleteDialog.hidden=false;detailsPanel.classList.remove("is-open")}
-  function closeDeleteDialog(){deleteDialog.hidden=true}
-  function deleteContact(){const id=state.selected;state.chats=state.chats.filter(c=>c.id!==id);state.selected=state.chats[0]?.id||null;saveState();closeDeleteDialog();renderChats();if(state.selected){renderConversation(true)}else{messages.innerHTML="";$("#headerName").textContent="Выберите чат";$("#headerStatus").textContent="";$("#headerAvatar").textContent="";}conversation.classList.remove("is-open");}
-  $("#deleteContactButton").addEventListener("click",openDeleteDialog);$("#cancelDelete").addEventListener("click",closeDeleteDialog);$("#confirmDelete").addEventListener("click",deleteContact);
-  $("#chatSearchButton").addEventListener("click",()=>searchInput.focus());
-  searchInput.addEventListener("input",renderChats);
-  $$(".filter").forEach(button=>button.addEventListener("click",()=>{$$(".filter").forEach(x=>x.classList.remove("is-active"));button.classList.add("is-active");state.filter=button.dataset.filter;saveState();renderChats()}));
-  $("#themeButton")?.addEventListener("click",()=>{state.theme=state.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=state.theme;saveState()});
-    function openSettings(){if(!settingsDrawer)return;settingsDrawer.hidden=false;requestAnimationFrame(()=>settingsDrawer.classList.add("is-open"))}
-  function closeSettings(){if(!settingsDrawer)return;settingsDrawer.classList.remove("is-open");setTimeout(()=>settingsDrawer.hidden=true,220)}
-  $("#profileButton")?.addEventListener("click",openSettings);
-  $("#closeSettings")?.addEventListener("click",closeSettings);
-  settingsDrawer?.addEventListener("click",e=>{if(e.target===settingsDrawer)closeSettings()});
-  const settingsModal=$("#settingsModal"),settingsModalBody=$("#settingsModalBody");
-  function openSettingsModal(title,subtitle,body){$("#settingsModalTitle").textContent=title;$("#settingsModalSubtitle").textContent=subtitle;settingsModalBody.innerHTML=body;settingsModal.hidden=false}
-  function closeSettingsModal(){settingsModal.hidden=true}
-  $("#closeSettingsModal")?.addEventListener("click",closeSettingsModal);
-  settingsModal?.addEventListener("click",e=>{if(e.target===settingsModal)closeSettingsModal()});
-  function syncSettings(){const n=$("#notificationState"),d=$("#dataState"),a=$("#appearanceButton small"),p=$("#privacyButton small");if(n)n.textContent=state.notifications!==false?"Включены":"Выключены";if(d)d.textContent=(state.chats?.length||0)+" чата(ов) на этом устройстве";if(a)a.textContent=state.theme==="light"?"Светлая тема":"Тёмная тема";if(p)p.textContent=state.lastSeen===false?"Скрыт":"Последний визит виден"}
-  $("#notificationsSettingsButton")?.addEventListener("click",()=>{openSettingsModal("Уведомления","Управление уведомлениями",'<div class="setting-control"><div><strong>Уведомления</strong><small>Включать уведомления о новых сообщениях</small></div><button class="toggle-button" id="modalNotifications" type="button"><span></span></button></div>');$("#modalNotifications").classList.toggle("is-on",state.notifications!==false);$("#modalNotifications").onclick=()=>{state.notifications=state.notifications===false;saveState();syncSettings();closeSettingsModal()}});
-  $("#notificationsButton")?.addEventListener("click",()=>$("#notificationsSettingsButton").click());
-  $("#detailsSearchButton")?.addEventListener("click",()=>searchInput.focus());
-  $("#editProfileButton")?.addEventListener("click",()=>{openSettingsModal("Профиль","Ваше имя и статус",'<label class="modal-label" for="profileName">Имя</label><input class="modal-input" id="profileName" maxlength="32"><label class="modal-label" for="profileStatus">Статус</label><input class="modal-input" id="profileStatus" maxlength="60"><div class="modal-actions"><button class="secondary-button" id="profileCancel" type="button">Отмена</button><button class="primary-button" id="profileSave" type="button">Сохранить</button></div>');$("#profileName").value=state.profile?.name||"Umar";$("#profileStatus").value=state.profile?.status||"в сети";$("#profileCancel").onclick=closeSettingsModal;$("#profileSave").onclick=()=>{state.profile={name:$("#profileName").value.trim()||"Umar",status:$("#profileStatus").value.trim()||"в сети"};saveState();$(".settings-profile strong").textContent=state.profile.name;$(".settings-profile span").textContent=state.profile.status;closeSettingsModal()}});
-  $("#appearanceButton")?.addEventListener("click",()=>{openSettingsModal("Оформление","Выберите тему",'<div class="theme-options"><button class="theme-option" id="darkTheme" type="button"><b>Тёмная</b><small>LOWPOLY dark</small></button><button class="theme-option" id="lightTheme" type="button"><b>Светлая</b><small>Светлая поверхность</small></button></div>');$("#"+(state.theme==="light"?"lightTheme":"darkTheme")).classList.add("is-active");$("#darkTheme").onclick=()=>{state.theme="dark";document.documentElement.dataset.theme="dark";saveState();syncSettings();closeSettingsModal()};$("#lightTheme").onclick=()=>{state.theme="light";document.documentElement.dataset.theme="light";saveState();syncSettings();closeSettingsModal()}});
-  $("#privacyButton")?.addEventListener("click",()=>{openSettingsModal("Конфиденциальность","Кто видит вашу активность",'<div class="setting-control"><div><strong>Последний визит</strong><small>Показывать время последнего посещения</small></div><button class="toggle-button" id="lastSeenToggle" type="button"><span></span></button></div><div class="setting-control"><div><strong>Статус прочтения</strong><small>Показывать отметки о прочтении сообщений</small></div><button class="toggle-button" id="readReceiptsToggle" type="button"><span></span></button></div>');$("#lastSeenToggle").classList.toggle("is-on",state.lastSeen!==false);$("#readReceiptsToggle").classList.toggle("is-on",state.readReceipts!==false);$("#lastSeenToggle").onclick=()=>{state.lastSeen=state.lastSeen===false;saveState();$("#lastSeenToggle").classList.toggle("is-on",state.lastSeen)};$("#readReceiptsToggle").onclick=()=>{state.readReceipts=state.readReceipts===false;saveState();$("#readReceiptsToggle").classList.toggle("is-on",state.readReceipts)}});
-  $("#dataButton")?.addEventListener("click",()=>{openSettingsModal("Данные и хранилище","Управление данными на этом устройстве",'<div class="data-card"><strong id="localChatCount"></strong><span>чатов сохранено локально</span></div><p class="settings-note">Демонстрационные сообщения хранятся только в браузере этого устройства.</p><button class="danger-button data-clear" id="clearDataButton" type="button">Очистить локальные данные</button>');$("#localChatCount").textContent=state.chats.length;$("#clearDataButton").onclick=()=>{if(confirm("Удалить все локальные чаты и настройки?")){localStorage.removeItem(STORAGE_KEY);location.reload()}}});
-  $("#downloadAppButton")?.addEventListener("click",installApp);
-  $("#aboutButton")?.addEventListener("click",()=>openSettingsModal("О приложении","Umar Messenger",'<div class="about-app"><div class="about-logo">U</div><strong>Umar Messenger</strong><span>LOWPOLY • версия 1.0</span><p>Веб-мессенджер с локальным хранением чатов, эмодзи и настройками интерфейса.</p></div>'));
-  const emojiList="😀 😃 😄 😁 😆 😅 😂 🙂 🙃 😉 😊 😎 😍 🥰 😘 🤗 🤔 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 🤓 🥳 😇 😭 😢 😤 😡 🤬 😱 😳 🤩 😋 😛 😜 🤪 🫡 ❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💔 👍 👎 👌 ✌️ 🤝 🙏 👏 🎉 🔥 ⭐ 💯 🚀 ⚡ 🌙 ☀️ ☕ 🍕 🍔 ⚽ 🎮".split(" ");
-  emojiGrid.innerHTML=emojiList.map(e=>'<button type="button" class="emoji-item">'+e+'</button>').join("");
-  $("#emojiButton").addEventListener("click",()=>{emojiPicker.hidden=!emojiPicker.hidden;if(!emojiPicker.hidden)messageInput.focus()});
-  $("#closeEmoji").addEventListener("click",()=>emojiPicker.hidden=true);
-  emojiGrid.addEventListener("click",e=>{if(e.target.matches(".emoji-item")){messageInput.value+=e.target.textContent;messageInput.focus()}});
-  document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput.focus()}if(e.key==="Escape")emojiPicker.hidden=true});
-  state.notifications=state.notifications!==false;
-  state.profile=state.profile||{name:"Umar",status:"в сети"};state.lastSeen=state.lastSeen!==false;state.readReceipts=state.readReceipts!==false;
-  document.documentElement.dataset.theme=state.theme||"dark";$(".settings-profile strong").textContent=state.profile.name;$(".settings-profile span").textContent=state.profile.status;syncSettings();
-  if(state.filter!=="all")$$(".filter").forEach(x=>x.classList.toggle("is-active",x.dataset.filter===state.filter));
-  renderChats();renderConversation();
+"use strict";
+const API_BASE = window.UMAR_API_BASE || "/api";
+const STORAGE_KEY="umar-messenger-v4";
+const palette=["orange","blue","green","purple"];
+const initialChats=[
+{id:"ali",name:"Али",color:"orange",status:"в сети",unread:2,updated:"20:14",messages:[{mine:false,text:"Привет! 👋",time:"20:12"},{mine:false,text:"Как дела?",time:"20:13"},{mine:true,text:"Всё хорошо. Увидимся завтра!",time:"20:14",status:"✓✓"}]},
+{id:"muhammad",name:"Мухаммад",color:"blue",status:"был недавно",unread:0,updated:"19:48",messages:[{mine:false,text:"Отправил тебе файл",time:"19:48"}]}
+];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const authScreen=$("#authScreen"),authViews=$("#authViews"),appShell=$("#appShell");
+let state=loadState(),deferredInstallPrompt=null;
+function loadState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}}catch{return{}}}
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function initials(name){return name.trim().split(/\s+/).map(x=>x[0]).slice(0,2).join("").toUpperCase()||"U"}
+function esc(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function token(){return localStorage.getItem("umar_access_token")}
+function showAuth(mode="login"){
+ authScreen.hidden=false; appShell.hidden=true;
+ authViews.innerHTML=mode==="login"?`
+<h1 class="auth-title">Вход</h1><p class="auth-subtitle">Войдите в Umar Messenger со своим аккаунтом.</p>
+<form class="auth-form" id="loginForm"><label class="auth-label">Email<input class="auth-input" id="loginEmail" type="email" autocomplete="email" required></label><label class="auth-label">Пароль<input class="auth-input" id="loginPassword" type="password" autocomplete="current-password" required></label><div class="auth-error" id="authError"></div><button class="auth-button">Войти</button><button class="auth-link" id="goSignup" type="button">Еще нет аккаунта? Зарегистрироваться</button></form>`:`
+<h1 class="auth-title">Регистрация</h1><p class="auth-subtitle">Создайте аккаунт. Email и никнейм должны быть уникальными.</p>
+<form class="auth-form" id="signupForm"><label class="auth-label">Email<input class="auth-input" id="signupEmail" type="email" autocomplete="email" required></label><label class="auth-label">Пароль<input class="auth-input" id="signupPassword" type="password" minlength="8" autocomplete="new-password" required></label><label class="auth-label">Повторите пароль<input class="auth-input" id="signupPassword2" type="password" minlength="8" autocomplete="new-password" required></label><label class="auth-label">Желаемый никнейм<input class="auth-input" id="signupUsername" type="text" pattern="[a-zA-Z0-9_]{3,32}" placeholder="alex99" required></label><div class="auth-error" id="authError"></div><button class="auth-button">Создать аккаунт</button><button class="auth-link" id="goLogin" type="button">Уже есть аккаунт? Войти</button></form>`;
+ if(mode==="login"){$("#goSignup").onclick=()=>showAuth("signup");$("#loginForm").onsubmit=login}else{$("#goLogin").onclick=()=>showAuth("login");$("#signupForm").onsubmit=signup}
+}
+function showSetup(user){
+ authScreen.hidden=false;appShell.hidden=true;
+ authViews.innerHTML=`<div class="setup-avatar avatar orange" id="setupAvatar">${esc(initials(user.display_name||"U"))}</div><h1 class="auth-title">Настройте профиль</h1><p class="auth-subtitle">Это появится один раз после регистрации.</p><form class="auth-form" id="setupForm"><label class="auth-label">Имя<input class="auth-input" id="setupName" maxlength="40" value="${esc(user.display_name||"")} " required></label><div class="avatar-upload"><label>Загрузить фото<input id="setupAvatarFile" type="file" accept="image/*"></label></div><div class="auth-error" id="authError"></div><button class="auth-button">Готово</button></form>`;
+ $("#setupAvatarFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$("#setupAvatar").style.backgroundImage="url('"+r.result+"')";$("#setupAvatar").style.backgroundSize="cover";$("#setupAvatar").textContent=""};r.readAsDataURL(f)};
+ $("#setupForm").onsubmit=async e=>{e.preventDefault();const err=$("#authError");err.textContent="";try{const res=await api("/auth/profile",{method:"PATCH",body:JSON.stringify({display_name:$("#setupName").value.trim()})});state.user=res.user;state.setupDone=true;saveState();startApp()}catch(x){err.textContent=x.message}}
+}
+async function api(path,options={}){const headers={"Content-Type":"application/json",...(options.headers||{})};const t=token();if(t)headers.Authorization="Bearer "+t;const res=await fetch(API_BASE+path,{...options,headers});let data={};try{data=await res.json()}catch{}if(!res.ok)throw new Error(data.error||"Сервер недоступен");return data}
+async function login(e){e.preventDefault();const err=$("#authError");err.textContent="";try{const data=await api("/auth/login",{method:"POST",body:JSON.stringify({email:$("#loginEmail").value,password:$("#loginPassword").value})});localStorage.setItem("umar_access_token",data.token);state.user=data.user;state.setupDone=data.user.display_name?.trim().length>0;saveState();data.user.display_name?.trim().length?startApp():showSetup(data.user)}catch(x){err.textContent=x.message}}
+async function signup(e){e.preventDefault();const err=$("#authError"),p=$("#signupPassword").value,p2=$("#signupPassword2").value;if(p!==p2){err.textContent="Пароли не совпадают";return}err.textContent="";try{const data=await api("/auth/register",{method:"POST",body:JSON.stringify({email:$("#signupEmail").value,password:p,username:$("#signupUsername").value})});localStorage.setItem("umar_access_token",data.token);state.user=data.user;state.setupDone=false;saveState();showSetup(data.user)}catch(x){err.textContent=x.message}}
+function startApp(){authScreen.hidden=true;appShell.hidden=false;state.chats=state.chats?.length?state.chats:structuredClone(initialChats);state.selected=state.selected||state.chats[0]?.id;state.filter=state.filter||"all";state.theme=state.theme||"dark";state.profile=state.profile||{name:state.user?.display_name||"Umar",status:"в сети"};state.notifications=state.notifications!==false;state.lastSeen=state.lastSeen!==false;state.readReceipts=state.readReceipts!==false;document.documentElement.dataset.theme=state.theme;renderAll()}
+function renderChats(){const list=$("#chatList"),q=$("#searchInput").value.trim().toLowerCase();list.innerHTML="";state.chats.filter(c=>state.filter==="all"||c.unread>0).filter(c=>c.name.toLowerCase().includes(q)).forEach(c=>{const el=document.createElement("article");el.className="chat"+(c.id===state.selected?" is-active":"");el.dataset.chatId=c.id;el.tabIndex=0;el.innerHTML=`<div class="avatar ${c.color}">${esc(initials(c.name))}</div><div class="chat-copy"><div class="chat-top"><strong>${esc(c.name)}</strong><time>${esc(c.updated)}</time></div><div class="chat-bottom"><span class="chat-preview">${esc(c.messages.at(-1)?.text||"Новый чат")}</span>${c.unread?`<span class="unread">${c.unread}</span>`:""}</div></div>`;list.appendChild(el)})}
+function selectedChat(){return state.chats.find(c=>c.id===state.selected)||state.chats[0]}
+function renderConversation(){const c=selectedChat();if(!c)return;$("#headerName").textContent=c.name;$("#headerStatus").textContent=c.status;$("#headerAvatar").textContent=initials(c.name);$("#headerAvatar").className="avatar "+c.color;$("#detailsName").textContent=c.name;$("#detailsStatus").textContent=c.status;$("#detailsAvatar").textContent=initials(c.name);$("#detailsAvatar").className="details-avatar avatar "+c.color;$("#messages").innerHTML='<div class="day">Сегодня</div>'+c.messages.map(m=>`<div class="message ${m.mine?"mine":""}"><div class="bubble">${esc(m.text)}<span class="message-meta">${esc(m.time)} ${m.mine?esc(m.status||"✓"):""}</span></div></div>`).join("");requestAnimationFrame(()=>$("#messages").scrollTop=$("#messages").scrollHeight)}
+function renderAll(){renderChats();renderConversation();syncSettings()}
+function selectChat(id){if(!state.chats.some(c=>c.id===id))return;state.selected=id;selectedChat().unread=0;saveState();renderAll();$("#conversation").classList.add("is-open")}
+function sendMessage(v){v=v.trim();if(!v)return;const c=selectedChat(),time=new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});c.messages.push({mine:true,text:v,time,status:"✓"});c.updated=time;saveState();renderAll();$("#messageInput").value=""}
+function openSettings(){const d=$("#settingsDrawer");d.hidden=false;requestAnimationFrame(()=>d.classList.add("is-open"))}function closeSettings(){const d=$("#settingsDrawer");d.classList.remove("is-open");setTimeout(()=>d.hidden=true,220)}
+function openSettingsModal(t,s,b){$("#settingsModalTitle").textContent=t;$("#settingsModalSubtitle").textContent=s;$("#settingsModalBody").innerHTML=b;$("#settingsModal").hidden=false}function closeSettingsModal(){$("#settingsModal").hidden=true}
+function syncSettings(){$("#notificationState").textContent=state.notifications?"Включены":"Выключены";$("#dataState").textContent=(state.chats?.length||0)+" чата(ов) на этом устройстве";$("#appearanceButton small").textContent=state.theme==="light"?"Светлая тема":"Тёмная тема";$("#privacyButton small").textContent=state.lastSeen?"Последний визит виден":"Скрыт";$(".settings-profile strong").textContent=state.profile?.name||"Umar";$(".settings-profile span").textContent=state.profile?.status||"в сети"}
+function installApp(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>deferredInstallPrompt=null);return}openSettingsModal("Установка Umar","Добавьте сайт как приложение",'<div class="about-app"><div class="about-logo">U</div><strong>Umar Messenger</strong><p>В Chrome откройте меню браузера и выберите «Установить Umar Messenger».</p></div>')}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstallPrompt=e;$("#downloadAppButton strong").textContent="Установить приложение";$("#downloadAppButton small").textContent="Добавить Umar на устройство"});
+window.addEventListener("appinstalled",()=>deferredInstallPrompt=null);
+$("#chatList").onclick=e=>{const x=e.target.closest(".chat");if(x)selectChat(x.dataset.chatId)};$("#searchInput").oninput=renderChats;$$(".filter").forEach(b=>b.onclick=()=>{$$(".filter").forEach(x=>x.classList.remove("is-active"));b.classList.add("is-active");state.filter=b.dataset.filter;saveState();renderChats()});
+$("#composer").onsubmit=e=>{e.preventDefault();sendMessage($("#messageInput").value)};$("#backButton").onclick=()=>$("#conversation").classList.remove("is-open");$("#infoButton").onclick=()=>$("#detailsPanel").classList.toggle("is-open");$("#chatSearchButton").onclick=()=>$("#searchInput").focus();
+$("#profileButton").onclick=openSettings;$("#closeSettings").onclick=closeSettings;$("#settingsDrawer").onclick=e=>{if(e.target.id==="settingsDrawer")closeSettings()};$("#closeSettingsModal").onclick=closeSettingsModal;$("#settingsModal").onclick=e=>{if(e.target.id==="settingsModal")closeSettingsModal()};
+$("#deleteContactButton").onclick=()=>{const c=selectedChat();if(!c)return;$("#deleteName").textContent=c.name;$("#deleteUsername").textContent="@"+c.id.replace(/^chat-/,"");$("#deleteAvatar").textContent=initials(c.name);$("#deleteDialog").hidden=false};$("#cancelDelete").onclick=()=>$("#deleteDialog").hidden=true;$("#confirmDelete").onclick=()=>{state.chats=state.chats.filter(c=>c.id!==state.selected);state.selected=state.chats[0]?.id;$("#deleteDialog").hidden=true;saveState();renderAll()};
+$("#notificationsSettingsButton").onclick=()=>{openSettingsModal("Уведомления","Управление уведомлениями",'<div class="setting-control"><div><strong>Уведомления</strong><small>Новые сообщения</small></div><button class="toggle-button is-on" id="nToggle"><span></span></button></div>');$("#nToggle").classList.toggle("is-on",state.notifications);$("#nToggle").onclick=()=>{state.notifications=!state.notifications;saveState();syncSettings();closeSettingsModal()}};
+$("#appearanceButton").onclick=()=>{openSettingsModal("Оформление","Выберите тему",'<div class="theme-options"><button class="theme-option" id="darkTheme"><b>Тёмная</b><small>LOWPOLY dark</small></button><button class="theme-option" id="lightTheme"><b>Светлая</b><small>Светлая поверхность</small></button></div>');$("#"+(state.theme==="light"?"lightTheme":"darkTheme")).classList.add("is-active");$("#darkTheme").onclick=()=>{state.theme="dark";document.documentElement.dataset.theme="dark";saveState();syncSettings();closeSettingsModal()};$("#lightTheme").onclick=()=>{state.theme="light";document.documentElement.dataset.theme="light";saveState();syncSettings();closeSettingsModal()}};
+$("#editProfileButton").onclick=()=>{openSettingsModal("Профиль","Ваше имя и статус",'<label class="modal-label">Имя</label><input class="modal-input" id="pName" maxlength="32"><label class="modal-label">Статус</label><input class="modal-input" id="pStatus" maxlength="60"><div class="modal-actions"><button class="secondary-button" id="pCancel">Отмена</button><button class="primary-button" id="pSave">Сохранить</button></div>');$("#pName").value=state.profile.name;$("#pStatus").value=state.profile.status;$("#pCancel").onclick=closeSettingsModal;$("#pSave").onclick=()=>{state.profile={name:$("#pName").value.trim()||"Umar",status:$("#pStatus").value.trim()||"в сети"};saveState();syncSettings();closeSettingsModal()}};
+$("#privacyButton").onclick=()=>{openSettingsModal("Конфиденциальность","Кто видит активность",'<div class="setting-control"><div><strong>Последний визит</strong><small>Показывать время последнего посещения</small></div><button class="toggle-button is-on" id="lastToggle"><span></span></button></div><div class="setting-control"><div><strong>Статус прочтения</strong><small>Отметки о прочтении</small></div><button class="toggle-button is-on" id="readToggle"><span></span></button></div>');$("#lastToggle").classList.toggle("is-on",state.lastSeen);$("#readToggle").classList.toggle("is-on",state.readReceipts);$("#lastToggle").onclick=()=>{state.lastSeen=!state.lastSeen;saveState();syncSettings();$("#lastToggle").classList.toggle("is-on",state.lastSeen)};$("#readToggle").onclick=()=>{state.readReceipts=!state.readReceipts;saveState();$("#readToggle").classList.toggle("is-on",state.readReceipts)}};
+$("#dataButton").onclick=()=>{openSettingsModal("Данные и хранилище","Данные этого устройства",`<div class="data-card"><strong>${state.chats.length}</strong><span>чатов сохранено локально</span></div><button class="danger-button data-clear" id="clearData">Очистить локальные данные</button>`);$("#clearData").onclick=()=>{if(confirm("Удалить локальные данные?")){localStorage.removeItem(STORAGE_KEY);location.reload()}}};
+$("#downloadAppButton").onclick=installApp;$("#aboutButton").onclick=()=>openSettingsModal("О приложении","Umar Messenger",'<div class="about-app"><div class="about-logo">U</div><strong>Umar Messenger</strong><span>LOWPOLY • версия 1.0</span><p>Веб-мессенджер.</p></div>');
+const emojis="😀 😃 😄 😁 😆 😂 🙂 😉 😊 😎 😍 🥰 🤗 🤔 😐 🙄 😏 😥 😮 😴 🥳 😭 😢 😤 😡 😱 🤩 😋 😜 🫡 ❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💔 👍 👎 👌 ✌️ 🤝 🙏 👏 🎉 🔥 ⭐ 💯 🚀 ⚡ 🌙 ☀️ ☕ 🍕 🍔 ⚽ 🎮".split(" ");$("#emojiGrid").innerHTML=emojis.map(e=>'<button type="button" class="emoji-item">'+e+"</button>").join("");$("#emojiButton").onclick=()=>$("#emojiPicker").hidden=!$("#emojiPicker").hidden;$("#closeEmoji").onclick=()=>$("#emojiPicker").hidden=true;$("#emojiGrid").onclick=e=>{if(e.target.classList.contains("emoji-item")){$("#messageInput").value+=e.target.textContent;$("#messageInput").focus()}};
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#searchInput").focus()}if(e.key==="Escape"){$("#emojiPicker").hidden=true;$("#settingsModal").hidden=true}});
+(async()=>{if(token()){try{const d=await api("/auth/me");state.user=d.user;saveState();d.user.display_name?.trim()?startApp():showSetup(d.user)}catch{localStorage.removeItem("umar_access_token");showAuth("login")}}else showAuth("login")})();
 })();
