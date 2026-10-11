@@ -1,0 +1,9 @@
+{
+  "name": "umar-ai-mod-search-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Secure Gemini-assisted Minecraft mod search using Modrinth",
+  "engines": {
+    "node": ">=20"
+  }
+}
