@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#10100f">
-<meta name="description" content="UMAR AI — умный поиск модов. Найди мод, который подходит именно тебе.">
-<title>UMAR AI — найди свой мод</title>
+<meta name="description" content="UMAR AI — конструктор Minecraft-сборок. Подбирай проекты по версиям, загрузчикам и категориям.">
+<title>UMAR AI — конструктор Minecraft-сборок</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,31 +16,63 @@
 /* UMAR AI real Modrinth results */
 .source-note{font-size:11px;color:#928b81;margin-top:12px}.source-note a{color:#ffb779;text-decoration:none}.mod-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.mod-card{display:flex;align-items:flex-start;gap:13px;min-width:0;padding:15px;border:1px solid #ffffff12;border-radius:17px;background:linear-gradient(145deg,#1a1a18,#141413);transition:transform .24s,border-color .24s,box-shadow .24s;overflow:hidden}.mod-card:hover,.mod-card:focus-within{transform:translateY(-3px);border-color:#ff8a3570;box-shadow:0 14px 35px #0005}.mod-icon{width:54px;height:54px;flex:0 0 54px;border-radius:13px;object-fit:cover;background:#28231d;border:1px solid #ffffff12}.mod-placeholder{display:grid;place-items:center;color:#ffad66;font-size:25px}.mod-content{min-width:0;flex:1}.mod-title-row{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}.mod-title-row h3{font-size:13px;line-height:1.5;margin:0;color:#f5f1e9;overflow-wrap:anywhere}.mod-source{flex:0 0 auto;font-size:8px;letter-spacing:.7px;color:#a7a198;border:1px solid #ffffff15;padding:4px 5px;border-radius:5px}.mod-description{font-size:11px;line-height:1.65;color:#a6a098;margin:8px 0 10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.mod-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:10px;color:#89847c}.mod-meta b{color:#d8d1c7;font-weight:600}.mod-extra{display:none;opacity:0;transition:opacity .22s}.mod-card:hover .mod-extra,.mod-card:focus-within .mod-extra{display:block;opacity:1;margin-top:12px}.mod-extra p{font-size:11px;line-height:1.7;color:#c0b9ae;margin:9px 0 12px}.mod-tags{display:flex;gap:5px;flex-wrap:wrap}.mod-tag{font-size:9px;color:#e4b78f;background:#ff8a3510;border:1px solid #ff8a3522;padding:4px 6px;border-radius:6px}.mod-link{display:flex;justify-content:space-between;align-items:center;gap:8px;text-decoration:none;background:linear-gradient(120deg,#ffad62,#ff7b27);color:#21150d;font-size:11px;font-weight:800;padding:10px 12px;border-radius:10px}.mod-link:hover{filter:brightness(1.08)}.empty-results{margin-top:12px;padding:20px;border:1px solid #ffffff12;border-radius:14px;color:#b9b3a9;font-size:13px;line-height:1.7}.find-btn:disabled{opacity:.7;cursor:wait;transform:none}.spinner{display:inline-block;width:13px;height:13px;border:2px solid #ffb77966;border-top-color:#ffb779;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}@keyframes spin{to{transform:rotate(360deg)}}@media(max-width:650px){.mod-grid{grid-template-columns:1fr}.mod-card{padding:13px}.mod-extra{display:block;opacity:1;margin-top:10px}.mod-icon{width:48px;height:48px;flex-basis:48px}}
 
+
+/* Filters and build constructor */
+.filters-panel{max-width:750px;margin:16px auto 0;padding:17px;border:1px solid #ffffff13;border-radius:17px;background:linear-gradient(145deg,#191917,#141413);text-align:left}
+.filters-heading,.build-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.filters-heading strong,.build-head strong{display:block;font-size:13px}.filters-heading span,.build-head span{display:block;color:#89847c;font-size:10px;margin-top:4px}
+.filter-reset,.build-secondary{border:1px solid #ffffff18;background:#ffffff06;color:#c9c2b8;border-radius:9px;padding:8px 10px;font-size:10px}
+.filters-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.filters-grid label{display:flex;flex-direction:column;gap:6px;color:#a6a098;font-size:10px}
+.filters-grid select{width:100%;min-width:0;border:1px solid #ffffff17;border-radius:9px;background:#111110;color:#e9e4dc;padding:10px 9px;font:inherit;font-size:11px;outline:none}
+.filters-grid select:focus{border-color:#ff8a3580}
+.build-panel{max-width:750px;margin:18px auto 0;padding:17px;border:1px solid #ff8a3540;border-radius:17px;background:linear-gradient(145deg,#201912,#151412);text-align:left}
+.build-head{margin-bottom:12px}.build-actions{display:flex;gap:7px;flex-wrap:wrap}.build-secondary:hover,.filter-reset:hover{border-color:#ff8a3560;color:#ffc08b}
+.build-items{display:grid;gap:7px}.build-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 11px;border:1px solid #ffffff10;border-radius:10px;background:#ffffff04;font-size:11px}.build-item a{color:#f1c49b;text-decoration:none}.build-item button{border:0;background:transparent;color:#a6a098;font-size:10px}
+.build-note{color:#817b72;font-size:10px;line-height:1.6;margin:12px 0 0}
+.build-add{margin-top:8px;border:1px solid #ff8a3545;border-radius:8px;background:#ff8a3510;color:#ffbb83;padding:7px 9px;font-size:10px;font-weight:800}.build-add:hover{background:#ff8a3520}.build-add.added{color:#a7e3b6;border-color:#7fd69a55;background:#7fd69a0d}
+@media(max-width:650px){.filters-panel{padding:13px}.filters-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.filters-grid select{padding:10px 7px}.build-head{align-items:flex-start;flex-direction:column}.build-actions{width:100%}.build-secondary{flex:1}}
+
 </style>
 </head>
 <body>
 <header class="topbar">
 <a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
-<div class="top-actions"><div class="status"><span class="dot"></span> Интерфейс готовится</div><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
+<div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
 </header>
 <main>
 <section class="hero">
-<div class="eyebrow"><span class="spark">✳</span> Умный поиск модов</div>
-<h1>Твой мир.<br><span class="gradient">Твои моды.</span></h1>
-<p class="subtitle">Опиши, что ищешь, — <strong>UMAR AI</strong> поможет подобрать моды для твоей игры. Просто, удобно, по твоим правилам.</p>
+<div class="eyebrow"><span class="spark">✳</span> Конструктор Minecraft-сборок</div>
+<h1>Собери мир.<br><span class="gradient">По-своему.</span></h1>
+<p class="subtitle"><strong>UMAR AI</strong> помогает собрать свой Minecraft-мир: подбери моды, шейдеры и ресурспаки по версии игры, загрузчику и категориям, а затем собери всё в одну подборку.</p>
 <form class="search-box" id="searchForm">
-<div class="search-top"><div class="ai-mini">✳</div><textarea id="prompt" aria-label="Опиши, какой мод ищешь" placeholder="Например: найди моды на реалистичную графику для Minecraft..." maxlength="1200" rows="3"></textarea></div>
-<div class="search-bottom"><span class="search-hint">Опиши идею своими словами</span><div class="search-actions"><button class="clear-btn" id="clearBtn" type="button">Очистить</button><button class="find-btn" type="submit">Найти мод <span>↗</span></button></div></div>
+<div class="search-top"><div class="ai-mini">✳</div><textarea id="prompt" aria-label="Опиши свою сборку" placeholder="Например: сборка для выживания с исследованием, новыми биомами и оптимизацией..." maxlength="1200" rows="3"></textarea></div>
+<div class="search-bottom"><span class="search-hint">Опиши идею своими словами</span><div class="search-actions"><button class="clear-btn" id="clearBtn" type="button">Очистить</button><button class="find-btn" type="submit">Подобрать проекты <span>↗</span></button></div></div>
 </form>
-<div class="suggestions"><span class="suggestion-label">Попробуй поиск:</span><button class="chip" type="button" data-prompt="Красивые шейдеры для Minecraft">✦ Шейдеры</button><button class="chip" type="button" data-prompt="Моды на оружие и технику для Minecraft">⚙ Оружие и техника</button><button class="chip" type="button" data-prompt="Моды на новые биомы и приключения">⌁ Приключения</button></div>
+<div class="filters-panel" aria-label="Фильтры сборки">
+  <div class="filters-heading"><div><strong>Настрой сборку</strong><span>Фильтры каталога Modrinth</span></div><button type="button" class="filter-reset" id="resetFilters">Сбросить</button></div>
+  <div class="filters-grid">
+    <label>Тип проекта<select id="filterType"><option value="mod">Моды</option><option value="modpack">Готовые сборки</option><option value="resourcepack">Ресурспаки</option><option value="shader">Шейдеры</option></select></label>
+    <label>Версия Minecraft<select id="filterVersion"><option value="">Любая версия</option><option>1.21.10</option><option>1.21.8</option><option>1.21.7</option><option>1.21.6</option><option>1.21.5</option><option>1.21.4</option><option>1.21.1</option><option>1.20.6</option><option>1.20.4</option><option>1.20.1</option><option>1.19.4</option><option>1.19.2</option><option>1.18.2</option><option>1.16.5</option></select></label>
+    <label>Загрузчик<select id="filterLoader"><option value="">Любой загрузчик</option><option value="fabric">Fabric</option><option value="forge">Forge</option><option value="neoforge">NeoForge</option><option value="quilt">Quilt</option><option value="liteloader">LiteLoader</option><option value="bukkit">Bukkit</option><option value="paper">Paper</option><option value="purpur">Purpur</option><option value="spigot">Spigot</option><option value="velocity">Velocity</option><option value="waterfall">Waterfall</option><option value="bungeecord">BungeeCord</option><option value="datapack">Datapack</option><option value="minecraft">Minecraft</option></select></label>
+    <label>Категория<select id="filterCategory"><option value="">Любая категория</option><option value="adventure">Приключения</option><option value="optimization">Оптимизация</option><option value="technology">Технологии</option><option value="magic">Магия</option><option value="decoration">Декор</option><option value="worldgen">Генерация мира</option><option value="mobs">Мобы</option><option value="equipment">Экипировка</option><option value="food">Еда</option><option value="storage">Хранение</option><option value="utility">Утилиты</option><option value="transportation">Транспорт</option><option value="game-mechanics">Механики</option><option value="library">Библиотеки</option><option value="social">Социальные</option><option value="combat">Сражения</option><option value="challenging">Сложность</option><option value="cursed">Необычные</option></select></label>
+    <label>Окружение<select id="filterEnvironment"><option value="">Любое окружение</option><option value="client_and_server">Клиент и сервер</option><option value="client_only">Только клиент</option><option value="server_only">Только сервер</option><option value="dedicated_server_only">Выделенный сервер</option><option value="singleplayer_only">Одиночная игра</option><option value="client_or_server">Клиент или сервер</option></select></label>
+    <label>Лицензия<select id="filterLicense"><option value="">Любая лицензия</option><option value="MIT">MIT</option><option value="Apache-2.0">Apache-2.0</option><option value="LGPL-3.0-or-later">LGPL-3.0</option><option value="GPL-3.0-or-later">GPL-3.0</option><option value="MPL-2.0">MPL-2.0</option><option value="ARR">All Rights Reserved</option></select></label>
+    <label>Открытый исходный код<select id="filterOpenSource"><option value="">Не важно</option><option value="true">Только открытый код</option><option value="false">Не открыт</option></select></label>
+    <label>Минимум загрузок<select id="filterDownloads"><option value="0">Любое число</option><option value="1000">1 000+</option><option value="10000">10 000+</option><option value="100000">100 000+</option><option value="1000000">1 000 000+</option></select></label>
+    <label>Сортировка<select id="filterSort"><option value="relevance">По релевантности</option><option value="downloads">По загрузкам</option><option value="follows">По подписчикам</option><option value="newest">Сначала новые</option><option value="updated">Недавно обновлённые</option></select></label>
+  </div>
+</div>
+<div class="suggestions"><span class="suggestion-label">Попробуй поиск:</span><button class="chip" type="button" data-prompt="Красивые шейдеры для Minecraft">✦ Шейдеры</button><button class="chip" type="button" data-prompt="Моды на технику и транспорт для Minecraft">⚙ Техника и транспорт</button><button class="chip" type="button" data-prompt="Моды на новые биомы и приключения">⌁ Приключения</button></div>
 <div class="result-area" id="resultArea" aria-live="polite"></div>
+<div class="build-panel" id="buildPanel" hidden><div class="build-head"><div><strong>Моя сборка</strong><span id="buildCount">0 проектов</span></div><div class="build-actions"><button type="button" id="copyBuild" class="build-secondary">Скопировать состав</button><button type="button" id="clearBuild" class="build-secondary">Очистить</button></div></div><div id="buildItems" class="build-items"></div><p class="build-note">Это подборка проектов. Для готового устанавливаемого .mrpack-файла потребуется отдельная сборка и проверка совместимости зависимостей.</p></div>
 </section>
 <section class="section">
-<div class="section-head"><span class="section-kicker">Твой поиск начинается здесь</span><h2>Больше, чем просто поиск</h2><p>Создаём удобный способ находить моды под твой игровой стиль.</p></div>
+<div class="section-head"><span class="section-kicker">От идеи до сборки</span><h2>Собери свой Minecraft</h2><p>Выбирай версии, загрузчики и категории, добавляй проекты в подборку и копируй состав сборки.</p></div>
 <div class="features">
-<article class="feature"><div class="feature-icon">⌕</div><h3>Поиск по описанию</h3><p>Расскажи обычными словами, что хочешь изменить в игре. Не нужно знать точные названия модов.</p><span class="soon">✦ Скоро появится</span></article>
-<article class="feature"><div class="feature-icon">◇</div><h3>Подбор под твою игру</h3><p>Идеи для новых механик, графики, карт и приключений — в одном месте.</p><span class="soon">✦ Скоро появится</span></article>
-<article class="feature"><div class="feature-icon">↗</div><h3>Удобно и понятно</h3><p>Понятный интерфейс без лишнего шума. Только твой запрос и нужное направление поиска.</p><span class="soon">✦ Уже в дизайне</span></article>
+<article class="feature"><div class="feature-icon">⌕</div><h3>Подбор по идее</h3><p>Опиши, какой игровой опыт хочешь получить, и найди проекты для своей будущей сборки.</p><span class="soon">✦ Поиск доступен</span></article>
+<article class="feature"><div class="feature-icon">◇</div><h3>Фильтры Modrinth</h3><p>Сужай результаты по версиям Minecraft, загрузчикам, категориям, окружению и другим параметрам.</p><span class="soon">✦ Уже доступно</span></article>
+<article class="feature"><div class="feature-icon">↗</div><h3>Конструктор подборки</h3><p>Добавляй подходящие проекты в свою сборку и копируй список, чтобы продолжить настройку.</p><span class="soon">✦ Уже доступно</span></article>
 </div>
 </section>
 <section class="support-section" id="support">
