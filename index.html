@@ -57,7 +57,7 @@ let toastTimer;
 function showToast(message='Скоро будет доступно ✨'){toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2600)}
 document.querySelectorAll('[data-prompt]').forEach(button=>button.addEventListener('click',()=>{promptBox.value=button.dataset.prompt;promptBox.focus();promptBox.dispatchEvent(new Event('input'));}));
 document.getElementById('clearBtn').addEventListener('click',()=>{promptBox.value='';resultArea.innerHTML='';promptBox.focus()});
-const API_URL = 'PASTE_YOUR_VERCEL_URL_HERE/api/search';
+const API_URL = 'https://umar-messenger.vercel.app/api/search';
 function formatDownloads(value){return new Intl.NumberFormat('ru-RU',{notation:value>=1000000?'compact':'standard',maximumFractionDigits:1}).format(value||0)}
 function renderMods(data){
  const mods=Array.isArray(data.mods)?data.mods:[];
