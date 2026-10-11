@@ -232,7 +232,7 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 .scene-vent:before{content:"";position:absolute;inset:7px;background:repeating-linear-gradient(0deg,#080b0d 0 3px,#b0bec2 4px 5px,#20272b 6px 9px);animation:ventFlow .22s steps(2,end) infinite;box-shadow:inset 0 0 12px #000}
 .scene-vent:after{content:"";position:absolute;left:-7px;right:-7px;top:-5px;height:5px;background:#7b888e;border:1px solid #a8b3b5}
 .scene-vent.vent-a{left:18%}.scene-vent.vent-b{right:17%;top:14%;transform:scale(.9);animation:ventRattle 3.4s ease-in-out infinite}
-@keyframes ventFlow{0%{background-position:0 0}100%{background-position:0 9px}}
+@keyframes ventFlow{0%{background-position:0 0}100%{background-position:0 5px}}
 @keyframes ventRattle{0%,92%,100%{translate:0 0}94%{translate:1px 0}96%{translate:-1px 1px}98%{translate:1px -1px}}
 .scene-exit{position:absolute;left:4%;bottom:115px;top:auto;width:104px;height:190px;border:3px solid #52656b;border-radius:3px;background:linear-gradient(90deg,#15251f,#294537 48%,#182a22);box-shadow:0 0 0 6px #0b1114,0 0 26px #3bff8b18,inset 0 0 0 5px #101b16;transform:perspective(800px) rotateY(4deg)}
 .scene-exit:before{content:"EXIT";position:absolute;left:50%;top:-34px;transform:translateX(-50%);padding:5px 14px;border:1px solid #69ff9b88;border-radius:3px;background:#17462b;color:#9dffba;font:900 12px/1.2 monospace;letter-spacing:3px;text-shadow:0 0 10px #59ff94;box-shadow:0 0 18px #39ff8b35}
