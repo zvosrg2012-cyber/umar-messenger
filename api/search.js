@@ -2,6 +2,34 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "*";
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 const MAX_QUERY_LENGTH = 1200;
 
+function fallbackEnglishQuery(query) {
+  const terms = [
+    [/\b(?:майнкрафт|майнкрафта|minecraft)\b/gi, "Minecraft"],
+    [/\b(?:моды|мод|модов)\b/gi, "mods"],
+    [/\b(?:оптимизация|оптимизацию|производительность|фпс|лаги)\b/gi, "performance optimization FPS"],
+    [/\b(?:техника|технологии|технику)\b/gi, "technology machines"],
+    [/\b(?:транспорт|машины|автомобили)\b/gi, "vehicles cars"],
+    [/\b(?:магия|магические|заклинания)\b/gi, "magic spells"],
+    [/\b(?:декор|декорации|мебель|украшения)\b/gi, "decoration furniture"],
+    [/\b(?:приключения)\b/gi, "adventure"],
+    [/\b(?:биомы|биомов)\b/gi, "biomes world generation"],
+    [/\b(?:мобы|монстры|существа|животные)\b/gi, "mobs creatures animals"],
+    [/\b(?:оружие|мечи)\b/gi, "weapons combat"],
+    [/\b(?:броня|экипировка)\b/gi, "armor equipment"],
+    [/\b(?:еда|фермерство|фермы|растения)\b/gi, "food farming crops"],
+    [/\b(?:хранение|сундуки|инвентарь)\b/gi, "storage inventory"],
+    [/\b(?:карта|мини-карта|миникарта|радар)\b/gi, "map minimap"],
+    [/\b(?:шейдеры|шейдер)\b/gi, "shaders"],
+    [/\b(?:текстуры|текстур|ресурспак|ресурспаки)\b/gi, "resource pack textures"],
+    [/\b(?:красивые|красивый|реалистичные|реалистичный)\b/gi, "beautiful realistic"],
+    [/\b(?:новые|новый|добавить|добавь|нужны|нужен|хочу|для|на|с|и|в|по|про)\b/gi, ""]
+  ];
+  let translated = query;
+  for (const [pattern, replacement] of terms) translated = translated.replace(pattern, replacement);
+  translated = translated.replace(/[а-яё]+/gi, " ").replace(/[^a-z0-9\s-]/gi, " ").replace(/\s+/g, " ").trim();
+  return translated.slice(0, 120) || "Minecraft mods";
+}
+
 function send(res, status, body) {
   res.status(status).setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("Cache-Control", "no-store");
@@ -111,7 +139,30 @@ module.exports = async function handler(req, res) {
       if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 350 * (attempt + 1)));
     }
     if (!modRes || !modRes.ok) throw lastModrinthError || new Error("Modrinth search unavailable");
-    const data = await modRes.json();
+    let data = await modRes.json();
+    if ((!Array.isArray(data.hits) || data.hits.length === 0) && !englishTranslation) {
+      const fallbackQuery = fallbackEnglishQuery(query);
+      if (fallbackQuery && fallbackQuery.toLowerCase() !== searchQuery.toLowerCase()) {
+        const fallbackParams = new URLSearchParams(params);
+        fallbackParams.set("query", fallbackQuery);
+        try {
+          const fallbackRes = await fetch("https://api.modrinth.com/v2/search?" + fallbackParams.toString(), {
+            headers: { "User-Agent": "UMAR-AI/1.0 (Minecraft mod discovery)" },
+            signal: AbortSignal.timeout(12000)
+          });
+          if (fallbackRes.ok) {
+            const fallbackData = await fallbackRes.json();
+            if (Array.isArray(fallbackData.hits) && fallbackData.hits.length) {
+              data = fallbackData;
+              searchQuery = fallbackQuery;
+              aiSummary = "Автоперевод ИИ недоступен — поиск повторён по английским ключевым словам.";
+            }
+          }
+        } catch (error) {
+          console.error("Fallback Modrinth search failed:", error.message);
+        }
+      }
+    }
     const mods = (Array.isArray(data.hits) ? data.hits : []).map(hit => {
       const slug = String(hit.slug || "");
       return {
