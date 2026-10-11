@@ -33,80 +33,59 @@
 @media(max-width:620px){.filters-panel{padding:15px;border-radius:18px}.filters-top{align-items:flex-start}.filters-title strong{font-size:15px}.filters-title span{font-size:11px;line-height:1.4}.filter-reset{padding:8px;font-size:10px}.choice-row{grid-template-columns:repeat(2,minmax(0,1fr))}.choice-card{min-height:73px}.filter-controls,.filter-bottom{grid-template-columns:1fr}.filter-field{padding:13px}.filter-section{padding:16px 0}.build-head{align-items:flex-start;flex-direction:column}.build-actions{width:100%}.build-secondary{flex:1}}
 
 
-/* UMAR AI neon bento redesign */
-:root{--bg:#090b16;--panel:#121629;--panel2:#191d35;--line:rgba(177,185,255,.15);--muted:#9ca5c8;--text:#f8f9ff;--orange:#a78bfa;--orange2:#d4c6ff}
-body{background:linear-gradient(135deg,#090b16 0%,#0c1020 52%,#101024 100%);color:#f8f9ff}
-body:before{background:radial-gradient(ellipse at 12% 12%,rgba(143,75,255,.20),transparent 32%),radial-gradient(ellipse at 88% 28%,rgba(255,45,168,.12),transparent 27%),radial-gradient(ellipse at 60% 75%,rgba(0,220,190,.09),transparent 34%)}
-.topbar{max-width:1320px;border-bottom-color:#aeb5ff1b}
-.brand-icon{background:linear-gradient(145deg,#c4b5fd,#8b5cf6);color:#130f2b;box-shadow:0 5px 25px #8b5cf644;border-radius:12px}
-.brand span em,.footer-brand span{color:#c4b5fd}
-.status{background:#11182b;border-color:#293253;color:#c7d1ee}.dot{background:#5df2b0;box-shadow:0 0 12px #5df2b077}
-.support-btn{border-color:#343957;background:#151a30}.support-btn:hover{border-color:#a78bfa;background:#a78bfa13}
-.hero{max-width:1100px;padding-top:66px}
-.eyebrow{border-color:#a78bfa55;background:#8b5cf61a;color:#d4c6ff;letter-spacing:1.3px}
-.hero h1 .gradient{background:linear-gradient(100deg,#c4b5fd 0%,#f472d0 52%,#5eead4 100%);-webkit-background-clip:text;background-clip:text}
-.subtitle{color:#aeb5d2}.subtitle strong{color:#f8f9ff}
-.search-box{max-width:820px;border-color:#303654;border-radius:24px;background:linear-gradient(145deg,#171c34,#101426);box-shadow:0 24px 90px #0008,0 0 0 5px #8b5cf60a}
-.search-box:focus-within{border-color:#a78bfa;box-shadow:0 24px 90px #0008,0 0 0 4px #a78bfa19}
-.ai-mini{background:#8b5cf62b;color:#d4c6ff}
-.search-box textarea::placeholder{color:#7d86a8}
-.find-btn{background:linear-gradient(115deg,#a3ff68,#54e58a);color:#082014;box-shadow:0 7px 25px #54e58a2b;border-radius:13px}
-.find-btn:hover{filter:brightness(1.07);box-shadow:0 8px 30px #54e58a42}
-.clear-btn{color:#aab2d0}
-.chip{border-color:#2b3150;background:#11162a;color:#c4cbe5}
-.chip:hover{border-color:#a78bfa;color:#e2d9ff;background:#8b5cf61a}
-.filters-panel{border-color:#33395c;border-radius:25px;background:linear-gradient(145deg,#171b32ed,#101426f5);box-shadow:0 25px 75px #0004}
-.filters-title-icon{background:linear-gradient(145deg,#8b5cf63b,#ec48992b);border-color:#a78bfa55;color:#d4c6ff}
-.filter-reset,.build-secondary{border-color:#343957;background:#171c32;color:#d1d7f1}
-.filter-reset:hover,.build-secondary:hover{border-color:#a78bfa;color:#e6dcff}
-.filter-section{border-top-color:#ffffff12}
-.filter-emoji{background:#202543;color:#c4b5fd}
-.choice-card{border-color:#2e3556;background:#11162a;color:#c5cce7;border-radius:15px}
-.choice-card:hover{border-color:#a78bfa}
-.choice-card.selected{border-color:#a78bfa;background:linear-gradient(145deg,#8b5cf63a,#ec489916);color:#eee8ff;box-shadow:inset 0 0 0 1px #a78bfa20}
-.filter-field{border-color:#2d3455;background:#0d1225cc;border-radius:16px}
-.filter-field select{border-color:#343b60;background:#171c32;color:#f5f6ff;border-radius:11px}
-.filter-field select:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #a78bfa19}
-.field-name{color:#d8def8}.field-hint,.filter-section-title small{color:#8e98bd}
-.build-panel{border-color:#3b3c70;background:linear-gradient(130deg,#211b40,#111629);border-radius:22px}
-.build-item{border-color:#333657;background:#10152a}.build-item a{color:#c4b5fd}
-.build-add{border-color:#9b80fa60;background:#8b5cf61a;color:#d4c6ff}.build-add:hover{background:#8b5cf62c}
-.build-add.added{color:#82f5b2;border-color:#54e58a55;background:#54e58a10}
-.result-card{border-color:#6e50bb88;background:linear-gradient(130deg,#201b3e,#15192e);border-radius:20px}
-.result-title span,.section-kicker{color:#c4b5fd!important}
-.result-card p{color:#c3c9e3}.source-note a{color:#5eead4}
-.mod-card{border-color:#2d3454;background:linear-gradient(145deg,#171c33,#101426);border-radius:18px}
-.mod-card:hover,.mod-card:focus-within{border-color:#a78bfa;box-shadow:0 15px 35px #0006}
-.mod-icon{background:#252746;border-color:#373c60}
-.mod-title-row h3{color:#f5f6ff}.mod-source{border-color:#3c4267;color:#aeb9df}
-.mod-description,.mod-meta{color:#aab3d3}.mod-meta b{color:#e2e7ff}
-.mod-tag{color:#b9fff0;background:#00bfa61a;border-color:#00d7bb38}
-.mod-link{background:linear-gradient(115deg,#a3ff68,#54e58a);color:#082014}
-.build-note{color:#9ca5c8}
-.section{max-width:1120px}.section-kicker{letter-spacing:2px}
-.section h2{color:#f6f7ff}
-.section-head p{color:#9ca5c8}
-.features{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.feature{position:relative;overflow:hidden;min-height:210px;padding:24px;border-radius:22px;border-color:#303657;background:linear-gradient(145deg,#171c34,#101426);box-shadow:0 15px 40px #0002}
-.feature:after{content:"";position:absolute;right:-35px;top:-45px;width:120px;height:120px;border-radius:30px;transform:rotate(22deg);background:linear-gradient(135deg,#8b5cf62c,#ec48991b);pointer-events:none}
-.feature:nth-child(2){background:linear-gradient(145deg,#102b32,#101a2b);border-color:#1e6569}
-.feature:nth-child(2):after{background:linear-gradient(135deg,#14b8a62e,#5eead414)}
-.feature:nth-child(3){background:linear-gradient(145deg,#30152f,#17152b);border-color:#67345e}
-.feature:nth-child(3):after{background:linear-gradient(135deg,#ec48992e,#a78bfa16)}
-.feature-icon{position:relative;z-index:1;background:#8b5cf626;border-color:#a78bfa42;color:#d4c6ff}
-.feature:nth-child(2) .feature-icon{background:#14b8a622;border-color:#2dd4bf44;color:#5eead4}
-.feature:nth-child(3) .feature-icon{background:#ec489922;border-color:#f472d044;color:#f9a8d4}
-.feature h3{position:relative;z-index:1;color:#f8f9ff}
-.feature p{position:relative;z-index:1;color:#aeb6d4}
-.soon{position:relative;z-index:1;color:#a3ffbb;background:#54e58a12;border:1px solid #54e58a25}
-.support-card{border-color:#3b3867;background:linear-gradient(105deg,#211b40,#111629 70%);border-radius:24px}
-.support-card:after{background:#a78bfa1a}
-.telegram-icon{background:#8b5cf62b;color:#d4c6ff}
-.soon-btn{border-color:#a78bfa55;background:#8b5cf61b;color:#d4c6ff;border-radius:13px}
-.soon-btn:hover{background:#8b5cf62b}
-.footer{border-top-color:#292f4d;color:#777f9f}.footer-brand{color:#d3d8ef}
-.toast{background:#1a2038;border-color:#a78bfa66;color:#e8e3ff}
-@media(max-width:650px){.hero{padding-top:52px}.features{grid-template-columns:1fr}.feature{min-height:0}.filters-panel{background:linear-gradient(145deg,#171b32,#101426)}}
+/* UMAR AI — structural gaming layout, orange accent retained */
+:root{--bg:#0b0b0d;--panel:#171715;--panel2:#1d1c19;--line:rgba(255,255,255,.09);--muted:#96948f;--text:#f7f5f0;--orange:#ff8a35;--orange2:#ffad66}
+body{background:linear-gradient(145deg,#0b0b0d 0%,#111019 52%,#0c1213 100%)}
+body:before{background:radial-gradient(ellipse at 14% 14%,rgba(255,138,53,.15),transparent 31%),radial-gradient(ellipse at 85% 30%,rgba(174,64,255,.12),transparent 27%),radial-gradient(ellipse at 66% 78%,rgba(0,190,166,.08),transparent 30%)}
+.topbar{max-width:1320px;height:80px}
+.hero{max-width:1160px;padding-top:58px;text-align:left}
+.hero .eyebrow{margin-left:2px}
+.hero h1{max-width:760px;font-size:clamp(50px,7.5vw,88px);letter-spacing:-5px;margin:22px 0 15px}
+.hero h1 .gradient{background:linear-gradient(100deg,#ffd09d 0%,#ff8a35 55%,#f36b1b 100%);-webkit-background-clip:text;background-clip:text}
+.subtitle{max-width:650px;margin:0;color:#aaa69f;font-size:15px}
+.search-box{max-width:none;margin:28px 0 0;border-radius:20px;background:linear-gradient(145deg,#1a1a1a,#121212);border-color:#ffffff18}
+.search-box:focus-within{border-color:#ff8a3580}
+.find-btn{background:linear-gradient(120deg,#ffad62,#ff7b27);color:#21150d}
+.filters-panel{max-width:none;margin:16px 0 0;border-radius:20px;background:linear-gradient(145deg,#191816,#111110);border-color:#ffffff15}
+.suggestions{justify-content:flex-start}
+.result-area{max-width:none}
+.hero-showcase{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(260px,.95fr);gap:20px;align-items:stretch;margin:30px 0 0;min-height:220px}
+.showcase-copy{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:26px 29px;border:1px solid #ff8a3540;border-radius:22px;background:linear-gradient(120deg,#2b1b13,#191615 68%,#17121e)}
+.showcase-kicker{font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:#ffb779}
+.showcase-copy h2{font-size:clamp(23px,3vw,34px);line-height:1.16;letter-spacing:-1.2px;margin:12px 0 10px;max-width:420px}
+.showcase-copy p{font-size:12px;line-height:1.8;color:#b5aea5;max-width:390px;margin:0}
+.showcase-art{position:relative;min-height:220px;overflow:hidden;border-radius:22px;border:1px solid #2b5b56;background:radial-gradient(ellipse at 60% 65%,#176e65 0%,#123a39 38%,#14201f 76%);isolation:isolate}
+.showcase-art:before{content:"";position:absolute;inset:0;background:linear-gradient(145deg,transparent 30%,#081312b8),repeating-linear-gradient(0deg,transparent 0 31px,#ffffff08 32px),repeating-linear-gradient(90deg,transparent 0 31px,#ffffff08 32px);opacity:.55}
+.art-orb{position:absolute;width:115px;height:115px;border-radius:50%;right:13%;top:10%;background:radial-gradient(circle at 35% 30%,#ffd9a3,#ff8a35 48%,#b93c1d 78%);box-shadow:0 0 45px #ff8a3550}
+.voxel{position:absolute;width:72px;height:72px;transform:rotate(30deg) skew(-5deg,-5deg);border-radius:8px;box-shadow:14px 18px 0 #070c0b70,0 0 30px #0003}
+.voxel:before,.voxel:after{content:"";position:absolute;inset:0;border-radius:7px}
+.voxel-one{left:17%;bottom:18%;background:linear-gradient(135deg,#a8d86b,#4d8d4d 70%);border:1px solid #d5ff9a66}
+.voxel-one:before{transform:translate(18px,-18px);background:linear-gradient(135deg,#d4f59b,#74b95c);opacity:.85}
+.voxel-one:after{transform:translate(35px,0);background:linear-gradient(135deg,#3b7549,#234c3b);opacity:.9}
+.voxel-two{left:46%;bottom:23%;width:54px;height:54px;background:linear-gradient(135deg,#c3a4ff,#8051cf);border:1px solid #eadcff66;transform:rotate(30deg) skew(-5deg,-5deg) scale(.82)}
+.voxel-three{left:34%;top:14%;width:32px;height:32px;background:linear-gradient(135deg,#ffb2e3,#d83c99);transform:rotate(30deg) skew(-5deg,-5deg) scale(.8)}
+.art-label{position:absolute;left:20px;top:18px;padding:7px 10px;border:1px solid #ffffff22;border-radius:9px;background:#08161588;color:#d4fff5;font-size:9px;letter-spacing:1.2px;font-weight:800}
+.art-caption{position:absolute;right:17px;bottom:16px;color:#c7f5e9;font-size:10px;text-align:right;line-height:1.7}
+.section{max-width:1160px;margin-top:72px}
+.section-head{text-align:left;max-width:650px;margin-bottom:22px}
+.section h2{font-size:clamp(26px,4vw,36px);letter-spacing:-1.3px}
+.section-head p{line-height:1.7}
+.features{grid-template-columns:1.15fr 1fr 1fr;gap:15px}
+.feature{position:relative;overflow:hidden;min-height:220px;padding:23px;border-radius:20px;background:linear-gradient(145deg,#1b1a18,#121212);border-color:#ffffff12}
+.feature:after{content:"";position:absolute;width:135px;height:135px;right:-35px;top:-35px;border-radius:35px;transform:rotate(25deg);background:linear-gradient(135deg,#ff8a3530,#ff8a3505);pointer-events:none}
+.feature:nth-child(2){background:linear-gradient(145deg,#122a29,#121917);border-color:#1b5b53}
+.feature:nth-child(2):after{background:linear-gradient(135deg,#00c4a72d,#00c4a700)}
+.feature:nth-child(3){background:linear-gradient(145deg,#271526,#171218);border-color:#59304d}
+.feature:nth-child(3):after{background:linear-gradient(135deg,#e84fa42e,#e84fa400)}
+.feature-icon{position:relative;z-index:1;width:48px;height:48px;border-radius:15px;background:#ff8a3520;border-color:#ff8a3540;color:#ffb779;font-size:22px}
+.feature:nth-child(2) .feature-icon{background:#00c4a71b;border-color:#00c4a744;color:#72f2d9}
+.feature:nth-child(3) .feature-icon{background:#e84fa41c;border-color:#e84fa444;color:#ff9ed7}
+.feature h3,.feature p,.feature .soon{position:relative;z-index:1}
+.feature h3{font-size:15px;margin-top:19px}
+.feature p{font-size:12px;max-width:300px}
+.support-card{border-radius:21px;background:linear-gradient(105deg,#281a12,#171513 70%);border-color:#ff8a3533}
+.support-card:after{background:#ff8a3518}
+@media(max-width:760px){.hero{padding:48px 17px 0}.hero h1{letter-spacing:-3px}.hero-showcase{grid-template-columns:1fr}.showcase-art{min-height:190px}.showcase-copy{padding:23px}.features{grid-template-columns:1fr}.feature{min-height:0}.section-head{text-align:left}.topbar{height:68px}.hero-showcase{margin-top:23px}}
 
 </style>
 </head>
@@ -120,6 +99,7 @@ body:before{background:radial-gradient(ellipse at 12% 12%,rgba(143,75,255,.20),t
 <div class="eyebrow"><span class="spark">✳</span> Конструктор Minecraft-сборок</div>
 <h1>Собери мир.<br><span class="gradient">По-своему.</span></h1>
 <p class="subtitle"><strong>UMAR AI</strong> помогает собрать свой Minecraft-мир: подбери моды, шейдеры и ресурспаки по версии игры, загрузчику и категориям, а затем собери всё в одну подборку.</p>
+<div class="hero-showcase"><div class="showcase-copy"><span class="showcase-kicker">ТВОЙ МИР · ТВОИ ПРАВИЛА</span><h2>Не просто ищи моды.<br>Создай свою игру.</h2><p>Подбирай новые механики, меняй атмосферу и собирай собственный Minecraft — от идеи до списка проектов.</p></div><div class="showcase-art" aria-label="Декоративная иллюстрация кубического игрового мира"><span class="art-label">UMAR WORLD / 01</span><span class="art-orb"></span><span class="voxel voxel-one"></span><span class="voxel voxel-two"></span><span class="voxel voxel-three"></span><span class="art-caption">BUILD YOUR WORLD<br>BLOCK BY BLOCK</span></div></div>
 <form class="search-box" id="searchForm">
 <div class="search-top"><div class="ai-mini">✳</div><textarea id="prompt" aria-label="Опиши свою сборку" placeholder="Например: сборка для выживания с исследованием, новыми биомами и оптимизацией..." maxlength="1200" rows="3"></textarea></div>
 <div class="search-bottom"><span class="search-hint">Опиши идею своими словами</span><div class="search-actions"><button class="clear-btn" id="clearBtn" type="button">Очистить</button><button class="find-btn" type="submit">Подобрать проекты <span>↗</span></button></div></div>
