@@ -333,16 +333,10 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 @media(max-width:650px){.wall-panel{width:64px;height:64px}.wall-panel.p1{left:8%;top:30%}.wall-panel.p2{left:calc(8% + 32px);top:calc(30% + 32px)}.wall-panel.p4{left:calc(70% - 32px);top:42%}.wall-panel.p5{left:70%;top:calc(42% + 32px)}}
 
 
-/* Final surface pass: every metal wall tile has four screws; insulation stays screw-free. Floating mods are shipping cartons. */
-.wall-panel:not(.loose):before{background:radial-gradient(circle at 5px 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at 5px calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px)}
-.wall-panel.loose:before{display:none!important}
-.float-mod{background:repeating-linear-gradient(0deg,#00000008 0 2px,#ffffff08 2px 4px),linear-gradient(145deg,#d0a36b,#a87948)!important;border:1px solid #76502e!important;border-radius:4px!important;box-shadow:inset 0 0 0 2px #e1bd89,0 7px 18px #0008!important;color:#2b1b0d!important}
-.float-mod:before{content:"";position:absolute;inset:4px;border:1px dashed #704b2b;pointer-events:none;opacity:.65}
-.float-mod:after{content:attr(data-mark);position:absolute;right:5px;top:-8px;padding:2px 4px;background:#f3e8cf;color:#342416;border:1px solid #765536;font-size:9px;font-weight:900;transform:rotate(4deg);box-shadow:1px 2px 2px #0004;pointer-events:none}
-.float-mod-icon{border-radius:2px!important;background:#e7c796!important;border:1px solid #76502e!important}
-.float-mod-name{color:#2b1b0d!important;font-weight:900!important}
-.float-mod-spark{color:#50341b!important}
-.float-mod.is-grabbed{background:linear-gradient(145deg,#e4bc83,#b98954)!important;border-color:#f1d4a6!important}
+/* Final hardware pass: every wall tile and floating mod card has four corner screws. */
+.wall-panel:before{background:radial-gradient(circle at 5px 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at 5px calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px)!important}
+.float-mod:before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(circle at 5px 5px,#cbd2d4 0 1px,#465057 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#cbd2d4 0 1px,#465057 1.5px 2.6px,transparent 3px),radial-gradient(circle at 5px calc(100% - 5px),#cbd2d4 0 1px,#465057 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#cbd2d4 0 1px,#465057 1.5px 2.6px,transparent 3px)}
+.float-mod:after{content:none!important}
 </style>
 </head>
 <body>
@@ -533,7 +527,7 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
  }
  function escapeName(value){return String(value).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
  function spawn(i){
-  const el=document.createElement("div");el.className="float-mod";const shippingMarks=["FRAGILE ◇","↑ ↑","KEEP DRY","HANDLE WITH CARE","RECYCLE ♻","THIS SIDE UP","⚠ CHECK"];el.dataset.mark=shippingMarks[Math.floor(Math.random()*shippingMarks.length)];el.setAttribute("role","link");el.setAttribute("tabindex","0");
+  const el=document.createElement("div");el.className="float-mod";el.setAttribute("role","link");el.setAttribute("tabindex","0");
   sky.appendChild(el);
   const item={el,x:Math.random()*Math.max(1,innerWidth-170),y:-80-Math.random()*Math.max(1,innerHeight),vx:(Math.random()-.5)*.22,vy:.18+Math.random()*.24,rot:(Math.random()-.5)*12,vr:(Math.random()-.5)*.045,held:false,falling:true,disposing:false,life:0};
   items.push(item);
