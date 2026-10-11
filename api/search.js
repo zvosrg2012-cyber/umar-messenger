@@ -89,11 +89,11 @@ module.exports = async function handler(req, res) {
       } else {
         const detail = await aiRes.text().catch(() => "");
         console.error("Gemini API status:", aiRes.status, detail.slice(0, 500));
-        aiSummary = "ИИ-перевод запроса временно недоступен. Поиск выполнен по исходному тексту; для русских запросов попробуй добавить английские ключевые слова.";
+        aiSummary = "Результаты поиска по твоему запросу.";
       }
     } catch (error) {
       console.error("Gemini request failed:", error.message);
-      aiSummary = "ИИ-подбор временно недоступен — результаты найдены по исходному запросу.";
+      aiSummary = "Результаты поиска по твоему запросу.";
     }
   } else {
     aiSummary = "ИИ-подбор временно недоступен — результаты найдены по исходному запросу.";
@@ -155,7 +155,7 @@ module.exports = async function handler(req, res) {
             if (Array.isArray(fallbackData.hits) && fallbackData.hits.length) {
               data = fallbackData;
               searchQuery = fallbackQuery;
-              aiSummary = "Автоперевод ИИ недоступен — поиск повторён по английским ключевым словам.";
+              aiSummary = "Результаты поиска по твоему запросу.";
             }
           }
         } catch (error) {
