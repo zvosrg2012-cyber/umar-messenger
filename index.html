@@ -214,16 +214,65 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 .scene-floor:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 78px,#7d8b9240 79px,#080a0c 81px),repeating-linear-gradient(0deg,transparent 0 38px,#7d8b9222 39px,#080a0c 41px)}
 .trash-chute{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(290px,48vw);height:82px;border:2px solid #606a70;border-radius:12px 12px 28px 28px;background:linear-gradient(180deg,#384147,#101417 34%,#020304 76%);box-shadow:0 0 25px #ff8a3520,inset 0 0 0 6px #171d21,inset 0 -18px 25px #000}
 .trash-chute:before{content:"";position:absolute;left:10%;right:10%;top:8px;height:8px;border-radius:50%;background:#ff8a35;opacity:.65;filter:blur(5px);box-shadow:0 0 22px #ff8a35}
-.trash-chute:after{content:"WASTE DROP  /  DISPOSAL";position:absolute;left:0;right:0;top:-21px;text-align:center;color:#b7c0c2;font:800 8px monospace;letter-spacing:2px;text-shadow:0 0 8px #ff8a3550}
+.trash-chute:after{content:"";}
 .float-mod{background:linear-gradient(135deg,#202a2ddf,#0c1114ed);border-color:#9bc4d03b;box-shadow:0 7px 24px #0008,0 0 18px #6bc7dc0a}
 .float-mod-icon{background:#5da9bd1b}.float-mod.is-grabbed{border-color:#8be8ff;background:#172c35f5;box-shadow:0 0 28px #55dfff55}
 .float-mod.is-falling{border-color:#ff8a35;background:#352016ed;box-shadow:0 0 24px #ff8a3560}
 @media(max-width:650px){.scene-exit{transform:scale(.72);transform-origin:top left}.scene-exit.exit-b{transform:scale(.72);transform-origin:top right}.scene-vent{transform:scale(.7)}.scene-vent.vent-b{transform:scale(.62)}.scene-floor{height:94px}.trash-chute{height:65px;width:min(240px,55vw)}}
 
+
+/* Rebuilt grounded industrial room: one wall-mounted exit, animated vents and detailed shredder */
+.industrial-scene{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:linear-gradient(180deg,#111a20 0%,#202a30 44%,#111619 74%,#080a0c 100%)}
+.industrial-scene:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#18232bd9 0%,#26313988 38%,#0c1014dd 100%),repeating-linear-gradient(0deg,transparent 0 66px,#b6c6ce15 67px,#050709a0 70px),repeating-linear-gradient(90deg,transparent 0 66px,#b6c6ce12 67px,#0507098c 70px);box-shadow:inset 0 0 140px #000b}
+.industrial-scene:after{content:"";position:absolute;left:0;right:0;top:0;height:65%;background:linear-gradient(90deg,#080c10 0%,transparent 14%,transparent 86%,#080c10 100%);opacity:.7}
+.scene-pipe{position:absolute;top:0;width:20px;height:47vh;border:1px solid #65727a88;background:linear-gradient(90deg,#0c1115,#65737a 20%,#202a30 46%,#7e8d92 67%,#141a1e);box-shadow:0 0 22px #80a3b51c,4px 0 10px #0008}
+.scene-pipe:after{content:"";position:absolute;left:-8px;right:-8px;top:68%;height:14px;border:1px solid #7c8b91a0;background:linear-gradient(#68777e,#1b2227);box-shadow:0 0 8px #000}
+.scene-pipe.pipe-a{left:8%;height:56vh}.scene-pipe.pipe-b{right:9%;height:43vh;width:14px}
+.scene-vent{position:absolute;top:10%;width:128px;height:52px;border:2px solid #718087;border-radius:4px;background:linear-gradient(#47545b,#151b20);box-shadow:0 8px 24px #0009,inset 0 1px #e5f0f522}
+.scene-vent:before{content:"";position:absolute;inset:7px;background:repeating-linear-gradient(0deg,#080b0d 0 3px,#b0bec2 4px 5px,#20272b 6px 9px);animation:ventFlow .22s steps(2,end) infinite;box-shadow:inset 0 0 12px #000}
+.scene-vent:after{content:"";position:absolute;left:-7px;right:-7px;top:-5px;height:5px;background:#7b888e;border:1px solid #a8b3b5}
+.scene-vent.vent-a{left:18%}.scene-vent.vent-b{right:17%;top:14%;transform:scale(.9);animation:ventRattle 3.4s ease-in-out infinite}
+@keyframes ventFlow{0%{background-position:0 0}100%{background-position:0 9px}}
+@keyframes ventRattle{0%,92%,100%{translate:0 0}94%{translate:1px 0}96%{translate:-1px 1px}98%{translate:1px -1px}}
+.scene-exit{position:absolute;left:4%;bottom:115px;top:auto;width:104px;height:190px;border:3px solid #52656b;border-radius:3px;background:linear-gradient(90deg,#15251f,#294537 48%,#182a22);box-shadow:0 0 0 6px #0b1114,0 0 26px #3bff8b18,inset 0 0 0 5px #101b16;transform:perspective(800px) rotateY(4deg)}
+.scene-exit:before{content:"EXIT";position:absolute;left:50%;top:-34px;transform:translateX(-50%);padding:5px 14px;border:1px solid #69ff9b88;border-radius:3px;background:#17462b;color:#9dffba;font:900 12px/1.2 monospace;letter-spacing:3px;text-shadow:0 0 10px #59ff94;box-shadow:0 0 18px #39ff8b35}
+.scene-exit:after{content:"";position:absolute;top:48%;right:10px;width:7px;height:7px;border-radius:50%;background:#b6ffcb;box-shadow:0 0 8px #61ff9d,0 0 18px #61ff9d}
+.scene-floor{position:absolute;left:0;right:0;bottom:0;height:115px;border-top:3px solid #73838a;background:repeating-linear-gradient(0deg,#1b2226 0 3px,#11171a 4px 8px),repeating-linear-gradient(90deg,transparent 0 78px,#7d8b9245 79px,#07090b 82px);box-shadow:0 -18px 50px #000b}
+.scene-floor:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 78px,#aab8bd30 79px,#080a0c 82px),repeating-linear-gradient(0deg,transparent 0 38px,#7d8b9230 39px,#080a0c 42px)}
+.trash-chute{position:absolute;left:50%;bottom:9px;transform:translateX(-50%);width:min(330px,48vw);height:92px;border:3px solid #68777d;border-radius:9px 9px 24px 24px;background:linear-gradient(180deg,#56636a 0%,#1a2227 20%,#080b0d 78%);box-shadow:0 0 0 6px #0b1013,0 0 34px #ff8a3525,inset 0 0 0 5px #202a30,inset 0 -20px 25px #000;overflow:hidden}
+.trash-chute:before{content:"";position:absolute;z-index:2;left:7%;right:7%;top:0;height:9px;background:linear-gradient(90deg,#ff8a35,#ffe2a2,#ff8a35);opacity:.9;filter:drop-shadow(0 0 9px #ff8a35);animation:shredderWarning 1.7s ease-in-out infinite}
+.trash-chute:after{content:"";position:absolute;z-index:3;left:0;right:0;bottom:0;height:18px;background:repeating-linear-gradient(90deg,#07090b 0 12px,#6c7a80 13px 15px,#11171a 16px 22px);border-top:2px solid #6e7d83;box-shadow:0 -5px 16px #000}
+@keyframes shredderWarning{0%,100%{opacity:.35}50%{opacity:1}}
+.shredder-mouth{position:absolute;left:10%;right:10%;top:15px;bottom:19px;border:2px solid #6e7d83;border-radius:50% 50% 5px 5px;background:radial-gradient(ellipse at 50% 20%,#ffb35d55,#080a0c 70%);overflow:hidden;box-shadow:inset 0 0 22px #000}
+.shredder-roller{position:absolute;top:12%;bottom:7%;width:42%;border:3px solid #89979b;border-radius:50%;background:repeating-conic-gradient(from 0deg,#242d32 0deg 10deg,#91a0a3 11deg 17deg,#303a40 18deg 26deg);box-shadow:0 0 13px #000,inset 0 0 12px #000;animation:rollerSpin 2.5s linear infinite}
+.shredder-roller:after{content:"";position:absolute;left:35%;top:35%;width:30%;height:30%;border-radius:50%;background:radial-gradient(circle,#b7c2c4,#242c30 70%);border:2px solid #080b0d}
+.roller-a{left:9%;animation-direction:normal}.roller-b{right:9%;animation-direction:reverse}
+@keyframes rollerSpin{to{rotate:360deg}}
+.worker{position:absolute;right:11%;bottom:92px;width:104px;height:164px;filter:drop-shadow(0 8px 8px #0009);transform-origin:bottom center;animation:workerShift 4.6s ease-in-out infinite}
+.worker-head{position:absolute;left:34px;top:8px;width:36px;height:34px;border-radius:45% 45% 40% 40%;background:linear-gradient(90deg,#9c765b,#e0b58c 45%,#a67c60);border:2px solid #4c4038}
+.worker-hair{position:absolute;left:32px;top:3px;width:40px;height:14px;border-radius:50% 50% 15% 15%;background:#26292b}
+.worker-helmet{position:absolute;left:27px;top:0;width:49px;height:13px;border-radius:9px 9px 3px 3px;background:linear-gradient(#ffe07c,#b57d28);border:2px solid #765523}
+.worker-body{position:absolute;left:22px;top:43px;width:59px;height:62px;border-radius:12px 12px 7px 7px;background:linear-gradient(90deg,#8c4e22,#df8436 48%,#a85b24);border:2px solid #603b25}
+.worker-vest{position:absolute;inset:0;background:linear-gradient(90deg,transparent 25%,#f6d67a 27% 34%,transparent 36% 64%,#f6d67a 66% 73%,transparent 75%)}
+.worker-arm{position:absolute;top:51px;width:15px;height:47px;border-radius:9px;background:#d58a52;border:2px solid #71482e;transform-origin:top center}
+.worker-arm.left{left:13px;transform:rotate(19deg)}.worker-arm.right{right:8px;transform:rotate(-33deg);animation:writeNotes .85s ease-in-out infinite alternate}
+.worker-leg{position:absolute;top:99px;width:20px;height:50px;border-radius:5px;background:linear-gradient(90deg,#30383d,#5b656b);border:2px solid #20262a}
+.worker-leg.left{left:28px}.worker-leg.right{left:53px}
+.worker-boot{position:absolute;top:142px;width:30px;height:12px;border-radius:5px;background:#171b1e;border:2px solid #687176}
+.worker-boot.left{left:20px}.worker-boot.right{left:48px}
+.worker-clipboard{position:absolute;right:-4px;top:70px;width:31px;height:39px;border:3px solid #a5a18b;border-radius:3px;background:repeating-linear-gradient(0deg,#d8d0ad 0 3px,#8d8b78 4px 5px);transform:rotate(-8deg);animation:clipboardMove .85s ease-in-out infinite alternate}
+.worker-clipboard:before{content:"";position:absolute;top:-4px;left:7px;right:7px;height:5px;background:#626b6c;border-radius:2px}
+.worker:after{content:"";position:absolute;left:20px;right:16px;bottom:0;height:7px;border-radius:50%;background:#0009;filter:blur(4px)}
+@keyframes writeNotes{from{transform:rotate(-28deg)}to{transform:rotate(-57deg)}}
+@keyframes clipboardMove{from{transform:rotate(-8deg) translateY(0)}to{transform:rotate(-13deg) translateY(2px)}}
+@keyframes workerShift{0%,100%{translate:0 0}50%{translate:0 -2px}}
+.float-mod.is-disposing{opacity:.1;filter:blur(2px);pointer-events:none}
+@media(max-width:650px){.scene-exit{left:3%;bottom:94px;transform:scale(.68);transform-origin:bottom left}.scene-vent{transform:scale(.7);transform-origin:top left}.scene-vent.vent-b{transform:scale(.62);transform-origin:top right}.scene-floor{height:94px}.trash-chute{height:72px;width:min(240px,55vw)}.shredder-mouth{top:10px}.worker{right:4%;transform:scale(.7);transform-origin:bottom right;bottom:78px}.scene-pipe.pipe-a{left:3%}.scene-pipe.pipe-b{right:3%}}
+
 </style>
 </head>
 <body>
-<div class="industrial-scene" aria-hidden="true"><div class="scene-pipe pipe-a"></div><div class="scene-pipe pipe-b"></div><div class="scene-vent vent-a"></div><div class="scene-vent vent-b"></div><div class="scene-exit exit-a"></div><div class="scene-exit exit-b"></div><div class="scene-floor"></div><div class="trash-chute"></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
+<div class="industrial-scene" aria-hidden="true"><div class="scene-pipe pipe-a"></div><div class="scene-pipe pipe-b"></div><div class="scene-vent vent-a"></div><div class="scene-vent vent-b"></div><div class="scene-exit"></div><div class="scene-floor"></div><div class="trash-chute"><div class="shredder-mouth"><div class="shredder-roller roller-a"></div><div class="shredder-roller roller-b"></div></div></div><div class="worker" aria-label="Рабочий записывает результаты"><div class="worker-helmet"></div><div class="worker-hair"></div><div class="worker-head"></div><div class="worker-body"><div class="worker-vest"></div></div><div class="worker-arm left"></div><div class="worker-arm right"></div><div class="worker-clipboard"></div><div class="worker-leg left"></div><div class="worker-leg right"></div><div class="worker-boot left"></div><div class="worker-boot right"></div></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
 <header class="topbar">
 <a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
 <div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="true">♫ Музыка: вкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
@@ -424,7 +473,7 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
  }
  for(let i=0;i<18;i++)spawn(i);
  function respawn(p){
-  p.x=Math.random()*Math.max(1,innerWidth-p.el.offsetWidth);p.y=-p.el.offsetHeight-Math.random()*180;p.vx=(Math.random()-.5)*.8;p.vy=.2+Math.random()*.5;p.rot=(Math.random()-.5)*15;p.vr=(Math.random()-.5)*.2;p.falling=false;p.disposing=false;p.life=0;p.el.classList.remove("is-falling");
+  p.x=Math.random()*Math.max(1,innerWidth-p.el.offsetWidth);p.y=-p.el.offsetHeight-Math.random()*180;p.vx=(Math.random()-.5)*.8;p.vy=.2+Math.random()*.5;p.rot=(Math.random()-.5)*15;p.vr=(Math.random()-.5)*.2;p.falling=false;p.disposing=false;p.life=0;p.el.classList.remove("is-falling","is-disposing");
   if(projectPool.length)setProject(p,projectPool[Math.floor(Math.random()*projectPool.length)]);
  }
  function frame(){
@@ -437,16 +486,16 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
     const center=p.x+p.el.offsetWidth/2;
     if(p.y+p.el.offsetHeight>pitTop){
      p.falling=true;p.el.classList.add("is-falling");
-     const target=pitX+(Math.random()-.5)*pitW*.55;
-     p.vx+=(target-center)*.0018;
+     const target=pitX+(Math.random()-.5)*pitW*.42;
+     p.vx+=(target-center)*.0022;
      p.vx=Math.max(-4,Math.min(4,p.vx));
-     p.vy=Math.max(p.vy,1.3);
-     if(p.y>pitTop+16&&Math.abs(center-pitX)<pitW*.53){p.disposing=true;p.life+=1;if(p.life>7||p.y>h-8){respawn(p);continue}}
+     p.vy=Math.max(p.vy,1.4);
+     if(p.y>pitTop+12&&Math.abs(center-pitX)<pitW*.48){p.disposing=true;p.life+=1;p.el.classList.add("is-disposing");p.vy=Math.max(p.vy,2.1);p.rot+=p.vr*2;if(p.life>26){respawn(p);continue}}
     }
     if(p.y>h+30){respawn(p);continue}
     if(!p.falling&&Math.abs(p.vx)<.09&&Math.abs(p.vy)<.09){p.vx+=Math.sin(performance.now()/1400+p.x)*.01;p.vy+=Math.cos(performance.now()/1600+p.y)*.01}
    }
-   p.el.style.transform="translate3d("+p.x+"px,"+p.y+"px,0) rotate("+p.rot+"deg)";
+   p.el.style.transform="translate3d("+p.x+"px,"+p.y+"px,0) rotate("+p.rot+"deg) scale("+(p.disposing?Math.max(.08,1-p.life/27):1)+")";
   }
   raf=requestAnimationFrame(frame);
  }
