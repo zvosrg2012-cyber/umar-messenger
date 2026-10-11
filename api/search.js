@@ -140,7 +140,7 @@ module.exports = async function handler(req, res) {
     }
     if (!modRes || !modRes.ok) throw lastModrinthError || new Error("Modrinth search unavailable");
     let data = await modRes.json();
-    if ((!Array.isArray(data.hits) || data.hits.length === 0) && !englishTranslation) {
+    if (!englishTranslation && /[а-яё]/i.test(query)) {
       const fallbackQuery = fallbackEnglishQuery(query);
       if (fallbackQuery && fallbackQuery.toLowerCase() !== searchQuery.toLowerCase()) {
         const fallbackParams = new URLSearchParams(params);
