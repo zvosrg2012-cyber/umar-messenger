@@ -1,5 +1,5 @@
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "*";
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 const MAX_QUERY_LENGTH = 500;
 
 function send(res, status, body) {
@@ -59,7 +59,7 @@ module.exports = async function handler(req, res) {
       } else {
         const detail = await aiRes.text().catch(() => "");
         console.error("Gemini API status:", aiRes.status, detail.slice(0, 500));
-        aiSummary = "ИИ-подбор временно недоступен — результаты найдены по исходному запросу.";
+        aiSummary = "ИИ-перевод запроса временно недоступен. Поиск выполнен по исходному тексту; для русских запросов попробуй добавить английские ключевые слова.";
       }
     } catch (error) {
       console.error("Gemini request failed:", error.message);
