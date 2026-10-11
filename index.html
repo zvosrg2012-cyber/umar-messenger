@@ -173,11 +173,11 @@ body{background:radial-gradient(ellipse at 50% -10%,#302016 0%,#15120f 34%,#0b0b
 body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,transparent 34%),radial-gradient(ellipse at 87% 42%,#8d5aff14,transparent 31%),radial-gradient(ellipse at 54% 90%,#00c4a710,transparent 35%);background-size:160% 160%;animation:umarGlow 26s ease-in-out infinite alternate}
 @keyframes umarGlow{0%{background-position:0% 10%;filter:hue-rotate(0)}100%{background-position:100% 85%;filter:hue-rotate(-12deg)}}
 .mod-sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:layout paint}
-.float-mod{position:absolute;left:0;top:0;display:flex;align-items:center;gap:9px;min-width:104px;padding:9px 12px;border:1px solid #ffb16d38;border-radius:15px;background:linear-gradient(135deg,#211b17d9,#111111d9);box-shadow:0 9px 30px #0004,0 0 20px #ff8a3509;backdrop-filter:blur(9px);color:#e9e1d7;font-size:10px;font-weight:800;letter-spacing:.15px;white-space:nowrap;pointer-events:auto;cursor:grab;touch-action:none;user-select:none;will-change:transform;transition:box-shadow .2s,border-color .2s,background .2s;opacity:.84}
+.float-mod{position:absolute;left:0;top:0;display:flex;align-items:center;gap:9px;min-width:104px;padding:9px 12px;border:1px solid #ffb16d38;border-radius:5px;background:linear-gradient(145deg,#c89b62,#8d623c);color:#25180d;box-shadow:inset 0 0 0 2px #e1bd89,0 7px 18px #0008;background:linear-gradient(135deg,#211b17d9,#111111d9);box-shadow:0 9px 30px #0004,0 0 20px #ff8a3509;backdrop-filter:blur(9px);color:#e9e1d7;font-size:10px;font-weight:800;letter-spacing:.15px;white-space:nowrap;pointer-events:auto;cursor:grab;touch-action:none;user-select:none;will-change:transform;transition:box-shadow .2s,border-color .2s,background .2s;opacity:.84}
 .float-mod:hover{opacity:1;border-color:#ffad66a8;box-shadow:0 10px 34px #0006,0 0 24px #ff8a3524;z-index:3}
 .float-mod.is-grabbed{opacity:1;cursor:grabbing;z-index:5;border-color:#ffb66f;background:#352318f2;box-shadow:0 15px 48px #0008,0 0 30px #ff8a3550;scale:1.07}
-.float-mod-icon{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border-radius:9px;background:#ff8a351b;font-size:16px}
-.float-mod-name{max-width:78px;overflow:hidden;text-overflow:ellipsis}
+.float-mod:before{content:"";position:absolute;inset:4px;pointer-events:none;border:1px dashed #5e3c20a8;opacity:.7}.float-mod:after{content:attr(data-mark);position:absolute;right:5px;top:-8px;padding:2px 4px;background:#f0e4c8;color:#332416;border:1px solid #765536;font-size:10px;font-weight:900;transform:rotate(5deg);box-shadow:1px 2px 2px #0004}.float-mod-icon{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border-radius:2px;background:#e4c18c;font-size:16px;border:1px solid #75502e}
+.float-mod-name{max-width:78px;overflow:hidden;text-overflow:ellipsis;font-weight:800;color:#24170e}.float-mod-spark{color:#4b3018}
 .float-mod-spark{color:#ffad66;font-size:10px;margin-left:auto}
 .topbar,main,footer,.section{position:relative;z-index:1}
 .topbar{backdrop-filter:blur(16px);background:linear-gradient(180deg,#0d0c0be8,#0d0c0b92);border-bottom-color:#ffffff12}
@@ -326,7 +326,7 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 .wall-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 5px 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at 5px calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px)}
 .wall-panel.loose{border-color:#d3b84b;background:#f0cb42;transform:rotate(-3deg);box-shadow:5px 7px 0 #0008,inset 0 0 0 4px #c3a12f}
 .wall-panel.loose:after{content:"SFERA.CO";position:absolute;inset:0;display:grid;place-items:center;color:#c52b23;font-size:9px;font-weight:900;letter-spacing:.3px;text-shadow:0 1px #fff5}
-.wall-panel.loose:before{inset:0;background:radial-gradient(circle at 5px 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at 5px calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px)}
+.wall-panel.loose:before{display:none}
 .wall-panel.p1{left:calc(12% - 32px);top:calc(23% - 32px)}.wall-panel.p2{left:calc(12% - 32px);top:calc(23% + 32px)}.wall-panel.p3{left:calc(12% + 32px);top:calc(23% - 32px)}
 .wall-panel.p4{left:calc(76% - 32px);top:calc(36% - 32px)}.wall-panel.p5{left:calc(76% + 32px);top:calc(36% - 32px)}.wall-panel.p6{left:calc(76% + 32px);top:calc(36% + 32px)}
 .wall-panel.p7{left:calc(28% - 32px);top:calc(68% - 32px)}.wall-panel.p8{left:calc(28% + 32px);top:calc(68% + 32px)}
@@ -338,7 +338,7 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 <div class="industrial-scene" aria-hidden="true"><div class="wall-panel p1"></div><div class="wall-panel p2 loose"></div><div class="wall-panel p3"></div><div class="wall-panel p4"></div><div class="wall-panel p5 loose"></div><div class="wall-panel p6"></div><div class="wall-panel p7 loose"></div><div class="wall-panel p8"></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
 <header class="topbar">
 <a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
-<div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="false">♫ Музыка: выкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
+<div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="true">♫ Музыка: вкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
 </header>
 <main>
 <section class="hero">
@@ -424,7 +424,7 @@ function getUmarAudio(){const A=window.AudioContext||window.webkitAudioContext;i
 function playUiTone(kind="soft"){try{const c=getUmarAudio();if(!c)return;const now=c.currentTime;const base=kind==="primary"?[587.33,659.25,783.99,880,987.77][Math.floor(Math.random()*5)]:[392,440,493.88,523.25,587.33,659.25][Math.floor(Math.random()*6)];const o=c.createOscillator(),g=c.createGain();o.type=["sine","triangle","sine","triangle"][Math.floor(Math.random()*4)];o.frequency.setValueAtTime(base,now);o.frequency.exponentialRampToValueAtTime(base*(1.1+Math.random()*.17),now+.065);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.022,now+.009);g.gain.exponentialRampToValueAtTime(.0001,now+.12);o.connect(g);g.connect(c.destination);o.start(now);o.stop(now+.13)}catch(e){}}
 document.addEventListener("click",event=>{const b=event.target.closest("button");if(!b)return;b.classList.remove("button-pulse");void b.offsetWidth;b.classList.add("button-pulse");if(b.id!=="ambientToggle")playUiTone(b.matches(".find-btn,.export-btn")?"primary":"soft")},true);
 document.querySelectorAll(".filter-field select").forEach(select=>select.addEventListener("change",()=>playUiTone("soft")));
-let ambientNodes=null,ambientRequested=false,ambientUserChoice=false;
+let ambientNodes=null,ambientRequested=true,ambientUserChoice=false;
 const ambientChords=[[130.81,164.81,196,261.63],[110,146.83,174.61,220],[123.47,155.56,185,246.94],[98,130.81,164.81,196]];
 function syncAmbientButton(){const button=document.getElementById("ambientToggle");button.textContent="♫ Музыка: "+(ambientRequested?"вкл.":"выкл.");button.setAttribute("aria-pressed",String(ambientRequested));button.classList.toggle("ambient-on",ambientRequested)}
 function startAmbient(){if(!ambientRequested||ambientNodes)return;try{const c=getUmarAudio();if(!c)return;
@@ -522,7 +522,7 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
  }
  function escapeName(value){return String(value).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
  function spawn(i){
-  const el=document.createElement("div");el.className="float-mod";el.setAttribute("role","link");el.setAttribute("tabindex","0");
+  const el=document.createElement("div");el.className="float-mod";const shippingMarks=["FRAGILE ◇","↑ ↑","KEEP DRY","HANDLE WITH CARE","RECYCLE ♻","THIS SIDE UP","⚠ CHECK"];el.dataset.mark=shippingMarks[Math.floor(Math.random()*shippingMarks.length)];el.setAttribute("role","link");el.setAttribute("tabindex","0");
   sky.appendChild(el);
   const item={el,x:Math.random()*Math.max(1,innerWidth-170),y:-80-Math.random()*Math.max(1,innerHeight),vx:(Math.random()-.5)*.22,vy:.18+Math.random()*.24,rot:(Math.random()-.5)*12,vr:(Math.random()-.5)*.045,held:false,falling:true,disposing:false,life:0};
   items.push(item);
