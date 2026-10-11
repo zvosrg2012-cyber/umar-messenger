@@ -87,6 +87,39 @@ body:before{background:radial-gradient(ellipse at 14% 14%,rgba(255,138,53,.15),t
 .support-card:after{background:#ff8a3518}
 @media(max-width:760px){.hero{padding:48px 17px 0}.hero h1{letter-spacing:-3px}.hero-showcase{grid-template-columns:1fr}.showcase-art{min-height:190px}.showcase-copy{padding:23px}.features{grid-template-columns:1fr}.feature{min-height:0}.section-head{text-align:left}.topbar{height:68px}.hero-showcase{margin-top:23px}}
 
+
+/* Layout pass: remove decorative filler, put filters in a persistent left sidebar */
+.hero-showcase,.showcase-copy,.showcase-art{display:none!important}
+.workspace-grid{display:grid;grid-template-columns:minmax(260px,310px) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:22px;row-gap:14px;align-items:start;margin-top:30px}
+.workspace-grid>.filters-panel{grid-column:1;grid-row:1 / span 4;position:sticky;top:18px;margin:0;max-height:calc(100vh - 36px);overflow:auto;scrollbar-width:thin;scrollbar-color:#5b4735 transparent}
+.workspace-grid>.search-box{grid-column:2;grid-row:1;margin:0}
+.workspace-grid>.suggestions{grid-column:2;grid-row:2;margin:0;justify-content:flex-start}
+.workspace-grid>.result-area{grid-column:2;grid-row:3;margin:0;min-width:0}
+.workspace-grid>.build-panel{grid-column:2;grid-row:4;margin:0;min-width:0}
+.filters-panel .filters-top{align-items:flex-start}
+.filters-panel .filters-title-icon{flex-shrink:0}
+.filters-panel .choice-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+.filters-panel .filter-controls,.filters-panel .filter-bottom{grid-template-columns:1fr}
+.filters-panel .environment-row{max-width:none}
+.filters-panel .filter-field{padding:12px}
+.filters-panel .filter-section{padding:15px 0}
+.filters-panel .choice-card{min-height:68px}
+.result-card{margin-bottom:12px}
+.empty-results{border-color:#ffffff14;background:#151514}
+@media(max-width:850px){
+ .workspace-grid{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:14px}
+ .workspace-grid>.filters-panel,.workspace-grid>.search-box,.workspace-grid>.suggestions,.workspace-grid>.result-area,.workspace-grid>.build-panel{grid-column:1;grid-row:auto}
+ .workspace-grid>.filters-panel{position:static;max-height:none;overflow:visible}
+ .filters-panel .filter-controls,.filters-panel .filter-bottom{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .filters-panel .choice-row{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .filters-panel .environment-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+ .filters-panel .filter-controls,.filters-panel .filter-bottom{grid-template-columns:1fr}
+ .filters-panel .choice-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .workspace-grid{margin-top:22px}
+}
+
 </style>
 </head>
 <body>
@@ -99,7 +132,7 @@ body:before{background:radial-gradient(ellipse at 14% 14%,rgba(255,138,53,.15),t
 <div class="eyebrow"><span class="spark">✳</span> Конструктор Minecraft-сборок</div>
 <h1>Собери мир.<br><span class="gradient">По-своему.</span></h1>
 <p class="subtitle"><strong>UMAR AI</strong> помогает собрать свой Minecraft-мир: подбери моды, шейдеры и ресурспаки по версии игры, загрузчику и категориям, а затем собери всё в одну подборку.</p>
-<div class="hero-showcase"><div class="showcase-copy"><span class="showcase-kicker">ТВОЙ МИР · ТВОИ ПРАВИЛА</span><h2>Не просто ищи моды.<br>Создай свою игру.</h2><p>Подбирай новые механики, меняй атмосферу и собирай собственный Minecraft — от идеи до списка проектов.</p></div><div class="showcase-art" aria-label="Декоративная иллюстрация кубического игрового мира"><span class="art-label">UMAR WORLD / 01</span><span class="art-orb"></span><span class="voxel voxel-one"></span><span class="voxel voxel-two"></span><span class="voxel voxel-three"></span><span class="art-caption">BUILD YOUR WORLD<br>BLOCK BY BLOCK</span></div></div>
+<div class="workspace-grid">
 <form class="search-box" id="searchForm">
 <div class="search-top"><div class="ai-mini">✳</div><textarea id="prompt" aria-label="Опиши свою сборку" placeholder="Например: сборка для выживания с исследованием, новыми биомами и оптимизацией..." maxlength="1200" rows="3"></textarea></div>
 <div class="search-bottom"><span class="search-hint">Опиши идею своими словами</span><div class="search-actions"><button class="clear-btn" id="clearBtn" type="button">Очистить</button><button class="find-btn" type="submit">Подобрать проекты <span>↗</span></button></div></div>
@@ -144,6 +177,7 @@ body:before{background:radial-gradient(ellipse at 14% 14%,rgba(255,138,53,.15),t
 <div class="suggestions"><span class="suggestion-label">Попробуй поиск:</span><button class="chip" type="button" data-prompt="Красивые шейдеры для Minecraft">✦ Шейдеры</button><button class="chip" type="button" data-prompt="Моды на технику и транспорт для Minecraft">⚙ Техника и транспорт</button><button class="chip" type="button" data-prompt="Моды на новые биомы и приключения">⌁ Приключения</button></div>
 <div class="result-area" id="resultArea" aria-live="polite"></div>
 <div class="build-panel" id="buildPanel" hidden><div class="build-head"><div><strong>Моя сборка</strong><span id="buildCount">0 проектов</span></div><div class="build-actions"><button type="button" id="copyBuild" class="build-secondary">Скопировать состав</button><button type="button" id="clearBuild" class="build-secondary">Очистить</button></div></div><div id="buildItems" class="build-items"></div><p class="build-note">Это подборка проектов. Для готового устанавливаемого .mrpack-файла потребуется отдельная сборка и проверка совместимости зависимостей.</p></div>
+</div>
 </section>
 <section class="section">
 <div class="section-head"><span class="section-kicker">От идеи до сборки</span><h2>Собери свой Minecraft</h2><p>Выбирай версии, загрузчики и категории, добавляй проекты в подборку и копируй состав сборки.</p></div>
@@ -182,8 +216,10 @@ resultArea.addEventListener("click",event=>{const b=event.target.closest("[data-
 function formatDownloads(value){return new Intl.NumberFormat('ru-RU',{notation:value>=1000000?'compact':'standard',maximumFractionDigits:1}).format(value||0)}
 function renderMods(data){
  const mods=Array.isArray(data.mods)?data.mods:[];
- const intro='<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">✳</span> UMAR AI · Найдено: '+mods.length+'</div><p>'+escapeText(data.summary||'Результаты из каталога Modrinth.')+'</p><div class="source-note">Источник: <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth</a> · ссылки ведут на страницы проектов</div></div>';
- if(!mods.length)return intro+'<div class="empty-results">По этому запросу моды не нашлись. Попробуй описать механику иначе или используй английские названия.</div>';
+ const intro=mods.length
+  ? '<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">✳</span> UMAR AI · Найдено: '+mods.length+'</div><p>'+escapeText(data.summary||'Результаты из каталога Modrinth.')+'</p><div class="source-note">Источник: <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth</a> · ссылки ведут на страницы проектов</div></div>'
+  : '<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">⌕</span> Ничего не найдено</div><p>'+escapeText(data.summary||'Modrinth не вернул проекты по этому запросу и выбранным фильтрам.')+'</p><div class="source-note">Источник: <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth</a></div></div>';
+ if(!mods.length)return intro+'<div class="empty-results">Попробуй более короткий запрос или временно убери фильтры версии, загрузчика и категории. Если запрос написан по-русски, попробуй добавить английские ключевые слова — без работающего ИИ-перевода каталог может не понять формулировку.</div>';
  const cards=mods.map(mod=>{
   const icon=mod.icon?'<img class="mod-icon" src="'+escapeText(mod.icon)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<div class="mod-icon mod-placeholder">◇</div>';
   const tags=[...(mod.versions||[]).slice(0,3),...(mod.categories||[]).slice(0,2)].map(v=>'<span class="mod-tag">'+escapeText(v)+'</span>').join('');
