@@ -55,11 +55,21 @@ module.exports = async function handler(req, res) {
         if (typeof parsed.searchQuery === "string" && parsed.searchQuery.trim()) searchQuery = parsed.searchQuery.trim().slice(0, 120);
         if (typeof parsed.summary === "string" && parsed.summary.trim()) aiSummary = parsed.summary.trim().slice(0, 220);
       } else {
-        console.error("Gemini API status:", aiRes.status);
+        const detail = await aiRes.text().catch(() => "");
+        console.error("Gemini API status:", aiRes.status, detail.slice(0, 500));
+        return send(res, 502, {
+          error: aiRes.status === 400 || aiRes.status === 404
+            ? "Gemini отклонил запрос. Проверь переменную GEMINI_MODEL в Vercel (можно удалить её, чтобы использовать модель по умолчанию)."
+            : aiRes.status === 401 || aiRes.status === 403
+              ? "Gemini не принял API-ключ. Проверь GEMINI_API_KEY в Vercel и доступ ключа к Gemini API."
+              : "Gemini временно не ответил (HTTP " + aiRes.status + "). Попробуй ещё раз."
+        });
       }
     } catch (error) {
       console.error("Gemini request failed:", error.message);
-      // Search still works with the user's original query if Gemini is temporarily unavailable.
+      return send(res, 502, {
+        error: "Не удалось обработать запрос через Gemini. Проверь GEMINI_API_KEY и GEMINI_MODEL в настройках Vercel, затем повтори поиск."
+      });
     }
   } else {
     return send(res, 503, { error: "API-ключ Gemini ещё не добавлен в переменные окружения Vercel." });
