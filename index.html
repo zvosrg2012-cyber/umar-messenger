@@ -168,6 +168,7 @@ button,a,.choice-card,.mod-card,.feature,.support-card,.build-item{transition:tr
 @media(max-width:520px){.status{display:none}.support-btn{font-size:10px;padding:8px}.hero h1{font-size:clamp(43px,12vw,65px)}}
 
 
+.umar-mascot{width:16px;height:16px;image-rendering:pixelated;object-fit:contain;flex:0 0 16px;filter:drop-shadow(0 0 5px #ff8a3570)}
 /* UMAR atmosphere: music, interactive mod sprites, and softer glass surfaces */
 body{background:radial-gradient(ellipse at 50% -10%,#302016 0%,#15120f 34%,#0b0b0d 78%);isolation:isolate}
 body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,transparent 34%),radial-gradient(ellipse at 87% 42%,#8d5aff14,transparent 31%),radial-gradient(ellipse at 54% 90%,#00c4a710,transparent 35%);background-size:160% 160%;animation:umarGlow 26s ease-in-out infinite alternate}
@@ -338,7 +339,7 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 <body>
 <div class="industrial-scene" aria-hidden="true"><div class="wall-panel p1"></div><div class="wall-panel p2 loose"></div><div class="wall-panel p3"></div><div class="wall-panel p4"></div><div class="wall-panel p5 loose"></div><div class="wall-panel p6"></div><div class="wall-panel p7 loose"></div><div class="wall-panel p8"></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
 <header class="topbar">
-<a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
+<a class="brand" href="#" aria-label="UMAR AI — главная"><img class="umar-mascot" src="assets/umar-mascot.png" width="16" height="16" alt=""><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
 <div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="true">♫ Музыка: вкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
 </header>
 <main>
@@ -435,7 +436,7 @@ function startAmbient(){if(!ambientRequested||ambientNodes)return;try{const c=ge
  const oscillators=[];[0,1,2].forEach((slot,i)=>{const o=c.createOscillator(),g=c.createGain();o.type=i===1?"triangle":"sine";o.frequency.value=ambientChords[0][slot];g.gain.value=[.17,.11,.075][i];o.connect(g);g.connect(padGain);o.start();oscillators.push(o)});
  const lfo=c.createOscillator(),lfoGain=c.createGain();lfo.frequency.value=.075;lfoGain.gain.value=.025;lfo.connect(lfoGain);lfoGain.connect(padGain.gain);lfo.start();
  const timers=[];let chordIndex=0;const melodyScale=[0,2,4,7,9,11,14];
- function melody(){if(!ambientRequested||!ambientNodes)return;try{const chord=ambientChords[chordIndex],degree=melodyScale[Math.floor(Math.random()*melodyScale.length)],freq=chord[0]*2*Math.pow(2,degree/12),o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter();o.type=Math.random()>.5?"sine":"triangle";o.frequency.value=freq;lp.type="lowpass";lp.frequency.value=1800;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.18,c.currentTime+.035);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.15);o.connect(lp);lp.connect(g);g.connect(master);o.start();o.stop(c.currentTime+1.2)}catch(e){}timers.push(setTimeout(melody,1900+Math.random()*1250))}
+ function melody(){if(!ambientRequested||!ambientNodes)return;try{const chord=ambientChords[chordIndex],degree=melodyScale[Math.floor(Math.random()*melodyScale.length)],freq=chord[0]*2*Math.pow(2,degree/12),o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter();o.type=Math.random()>.5?"sine":"triangle";o.frequency.value=freq;lp.type="lowpass";lp.frequency.value=1800;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.075,c.currentTime+.06);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.35);o.connect(lp);lp.connect(g);g.connect(master);o.start();o.stop(c.currentTime+1.2)}catch(e){}timers.push(setTimeout(melody,2600+Math.random()*1700))}
  function changeChord(){if(!ambientRequested||!ambientNodes)return;chordIndex=(chordIndex+1)%ambientChords.length;oscillators.forEach((o,i)=>o.frequency.setTargetAtTime(ambientChords[chordIndex][i],c.currentTime,.9));timers.push(setTimeout(changeChord,6800))}
  ambientNodes={oscillators,lfo,master,compressor,delay,feedback,wet,padGain,lfoGain,timers};melody();timers.push(setTimeout(changeChord,6800));syncAmbientButton();
  }catch(e){console.warn("Ambient music unavailable",e);showToast("Не удалось запустить музыку. Попробуй нажать кнопку ещё раз.")}}
@@ -490,7 +491,7 @@ document.getElementById('searchForm').addEventListener('submit',async event=>{
   const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query,filters:getFilters()}),signal:AbortSignal.timeout(35000)});
   const data=await response.json().catch(()=>({}));
   if(!response.ok)throw Object.assign(new Error("search_failed"),{status:response.status,code:data.errorCode||response.status});
-  resultArea.innerHTML=renderMods(data);renderBuild();
+  resultArea.innerHTML=renderMods(data);for(const mod of (Array.isArray(data.mods)?data.mods:[])){if(!mod.id||selectedBuild.has(String(mod.id)))continue;selectedBuild.set(String(mod.id),{id:String(mod.id),title:mod.title||"Без названия",url:mod.url||"",icon:mod.icon||"",type:mod.type||"mod",enabled:true,source:"search",isLibrary:false,dependencies:[]});}renderBuild();
  }catch(error){
   const code=Number.isInteger(error.code)?error.code:(error.name==="TimeoutError"?408:(error.status||503));resultArea.innerHTML='<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">✳</span> Сейчас не получилось обновить подборку</div><p>Попробуй повторить поиск через несколько секунд. Твоя сборка и выбранные фильтры сохранены.</p><div class="small">Код: '+String(code).padStart(3,"0").slice(-3)+'</div></div>';
  }finally{
