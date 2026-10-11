@@ -71,8 +71,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const allowedTypes = new Set(["mod", "modpack", "resourcepack", "shader"]);
-    const allowedEnvironments = new Set(["client_and_server", "client_only", "client_only_server_optional", "singleplayer_only", "server_only", "server_only_client_optional", "dedicated_server_only", "client_or_server", "client_or_server_prefers_both", "unknown"]);
-    const allowedLicenses = new Set(["MIT", "Apache-2.0", "LGPL-3.0-or-later", "GPL-3.0-or-later", "MPL-2.0", "ARR"]);
+    const allowedEnvironments = new Set(["client_only", "server_only"]);
     const projectType = allowedTypes.has(filters.projectType) ? filters.projectType : "mod";
     const facets = [[ "project_type:" + projectType ]];
     const safeTag = value => typeof value === "string" && /^[a-z0-9_-]{1,64}$/i.test(value) ? value : "";
@@ -83,8 +82,6 @@ module.exports = async function handler(req, res) {
     if (loader) facets.push(["categories:" + loader]);
     if (category) facets.push(["categories:" + category]);
     if (allowedEnvironments.has(filters.environment)) facets.push(["environment:" + filters.environment]);
-    if (allowedLicenses.has(filters.license)) facets.push(["license:" + filters.license]);
-    if (filters.openSource === "true" || filters.openSource === "false") facets.push(["open_source:" + filters.openSource]);
     const minDownloads = [0, 1000, 10000, 100000, 1000000].includes(Number(filters.minDownloads)) ? Number(filters.minDownloads) : 0;
     if (minDownloads > 0) facets.push(["downloads:>=" + minDownloads]);
     const allowedSorts = new Set(["relevance", "downloads", "follows", "newest", "updated"]);
@@ -117,7 +114,7 @@ module.exports = async function handler(req, res) {
         source: "Modrinth"
       };
     }).filter(mod => mod.url);
-    return send(res, 200, { query, searchQuery, summary: aiSummary, source: "Modrinth", filters: { projectType, version, loader, category, environment: filters.environment || "", license: filters.license || "", openSource: filters.openSource || "", minDownloads, sort }, count: mods.length, mods });
+    return send(res, 200, { query, searchQuery, summary: aiSummary, source: "Modrinth", filters: { projectType, version, loader, category, environment: filters.environment || "", minDownloads, sort }, count: mods.length, mods });
   } catch (error) {
     console.error("Modrinth search failed:", error.message);
     return send(res, 503, { errorCode: 503, error: "Search unavailable." });
