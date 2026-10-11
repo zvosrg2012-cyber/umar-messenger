@@ -301,29 +301,23 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 @media(max-width:650px){.scene-pipe.pipe-a{left:3%;width:15px}.scene-pipe.pipe-b{right:3%;width:13px}.scene-pipe.pipe-c{left:14%;width:8px}.scene-pipe.pipe-d{right:14%;width:8px}.trash-chute{width:min(270px,72vw);height:78px}.worker{right:3%;bottom:calc(94px + 2px);transform:scale(.78);transform-origin:bottom right}}
 
 
-/* Minimal industrial ambience: one animated cross-vent with drifting smoke */
-.industrial-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:transparent}
+/* Compact top-right cross ventilation, grille and drifting smoke; restore tiled wall */
+.industrial-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background-color:#0d1114;background-image:linear-gradient(180deg,#121a20a8,#090c0fc9),repeating-linear-gradient(0deg,transparent 0 63px,#9aabb31b 64px,#05070980 66px),repeating-linear-gradient(90deg,transparent 0 63px,#9aabb31b 64px,#05070980 66px)}
 .industrial-scene:before,.industrial-scene:after{display:none!important}
 .scene-pipe,.scene-exit,.scene-floor,.trash-chute,.worker,.scene-vent.vent-b{display:none!important}
-.scene-vent.vent-a{display:block!important;position:fixed;top:auto;right:28px;bottom:26px;left:auto;width:154px;height:154px;transform:none;border:5px solid #596970;border-radius:5px;background:linear-gradient(145deg,#526168,#161e23 40%,#080d10);box-shadow:0 0 0 5px #090e11,0 12px 28px #0009,inset 0 0 0 4px #263238;overflow:visible}
-.scene-vent.vent-a:after{left:-9px;right:-9px;top:-9px;bottom:-9px;height:auto;border:2px solid #87979d;background:linear-gradient(135deg,#3b474d,#11171a);box-shadow:0 0 0 3px #0a0f12,0 5px 14px #0009}
-.scene-vent.vent-a:before{inset:9px;background:repeating-linear-gradient(0deg,#11171a 0 3px,#89979b 4px 5px,#263238 6px 9px);box-shadow:inset 0 0 15px #000;animation:ventFlow .35s linear infinite}
-.vent-cross{position:absolute;z-index:2;inset:17px;border:2px solid #7d8b90;border-radius:50%;background:radial-gradient(circle,#0b1114 0 8%,#596970 9% 12%,#151d21 13% 100%);box-shadow:0 0 0 3px #11191d,0 0 14px #000b;animation:crossVentSpin 2.2s linear infinite;overflow:hidden}
-.vent-cross i{position:absolute;left:calc(50% - 5px);top:0;width:10px;height:50%;transform-origin:50% 100%;background:linear-gradient(90deg,#263238,#a8b4b7 48%,#3c4a50);border:1px solid #151c20;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
-.vent-cross i:nth-child(2){transform:rotate(90deg)}
-.vent-cross i:nth-child(3){transform:rotate(180deg)}
-.vent-cross i:nth-child(4){transform:rotate(270deg)}
+.scene-vent.vent-a{display:block!important;position:fixed;top:104px;right:26px;bottom:auto;left:auto;width:94px;height:94px;transform:none;border:4px solid #596970;border-radius:4px;background:linear-gradient(145deg,#526168,#161e23 40%,#080d10);box-shadow:0 0 0 4px #090e11,0 10px 24px #0009,inset 0 0 0 3px #263238;overflow:visible}
+.scene-vent.vent-a:after{z-index:4;left:-7px;right:-7px;top:-7px;bottom:-7px;height:auto;border:2px solid #87979d;background:linear-gradient(135deg,#3b474d,#11171a);box-shadow:0 0 0 2px #0a0f12,0 5px 14px #0009}
+.scene-vent.vent-a:before{z-index:3;inset:5px;background:repeating-linear-gradient(0deg,transparent 0 7px,#a7b5ba 8px 9px,transparent 10px 13px),repeating-linear-gradient(90deg,transparent 0 7px,#a7b5ba 8px 9px,transparent 10px 13px);box-shadow:inset 0 0 15px #000;animation:none}
+.vent-cross{position:absolute;z-index:2;inset:12px;border:2px solid #7d8b90;border-radius:50%;background:radial-gradient(circle,#0b1114 0 8%,#596970 9% 12%,#151d21 13% 100%);box-shadow:0 0 0 3px #11191d,0 0 14px #000b;animation:crossVentSpin 2.2s linear infinite;overflow:hidden}
+.vent-cross i{position:absolute;left:calc(50% - 4px);top:0;width:8px;height:50%;transform-origin:50% 100%;background:linear-gradient(90deg,#263238,#a8b4b7 48%,#3c4a50);border:1px solid #151c20;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
+.vent-cross i:nth-child(2){transform:rotate(90deg)}.vent-cross i:nth-child(3){transform:rotate(180deg)}.vent-cross i:nth-child(4){transform:rotate(270deg)}
 @keyframes crossVentSpin{to{rotate:360deg}}
-.vent-smoke{position:absolute;z-index:4;left:50%;top:-17px;width:90px;height:120px;transform:translateX(-50%);pointer-events:none;filter:blur(7px)}
-.vent-smoke i{position:absolute;bottom:0;left:calc(10% + var(--smoke-x,0px));width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#c8d5d955,#a4b5bd2b 45%,transparent 72%);opacity:0;animation:ventSmoke 3s ease-out infinite}
-.vent-smoke i:nth-child(1){--smoke-x:-20px;animation-delay:0s}
-.vent-smoke i:nth-child(2){--smoke-x:0px;animation-delay:.6s}
-.vent-smoke i:nth-child(3){--smoke-x:18px;animation-delay:1.2s}
-.vent-smoke i:nth-child(4){--smoke-x:-7px;animation-delay:1.8s}
-.vent-smoke i:nth-child(5){--smoke-x:28px;animation-delay:2.4s}
-@keyframes ventSmoke{0%{opacity:0;transform:translate(0,0) scale(.45)}15%{opacity:.65}100%{opacity:0;transform:translate(20px,-105px) scale(2.2)}}
-@media(max-width:650px){.scene-vent.vent-a{right:15px;bottom:15px;width:112px;height:112px}.vent-cross{inset:14px}.vent-smoke{top:-12px;transform:translateX(-50%) scale(.75)}}
-@media(prefers-reduced-motion:reduce){.vent-cross,.vent-smoke i,.scene-vent.vent-a:before{animation:none!important}}
+.vent-smoke{position:absolute;z-index:5;left:50%;top:-13px;width:66px;height:85px;transform:translateX(-50%);pointer-events:none;filter:blur(6px)}
+.vent-smoke i{position:absolute;bottom:0;left:calc(10% + var(--smoke-x,0px));width:17px;height:17px;border-radius:50%;background:radial-gradient(circle,#c8d5d955,#a4b5bd2b 45%,transparent 72%);opacity:0;animation:ventSmoke 3s ease-out infinite}
+.vent-smoke i:nth-child(1){--smoke-x:-14px;animation-delay:0s}.vent-smoke i:nth-child(2){--smoke-x:0px;animation-delay:.6s}.vent-smoke i:nth-child(3){--smoke-x:13px;animation-delay:1.2s}.vent-smoke i:nth-child(4){--smoke-x:-5px;animation-delay:1.8s}.vent-smoke i:nth-child(5){--smoke-x:20px;animation-delay:2.4s}
+@keyframes ventSmoke{0%{opacity:0;transform:translate(0,0) scale(.45)}15%{opacity:.65}100%{opacity:0;transform:translate(14px,-76px) scale(1.8)}}
+@media(max-width:650px){.scene-vent.vent-a{top:82px;right:13px;width:78px;height:78px}.vent-cross{inset:10px}.vent-smoke{top:-10px;transform:translateX(-50%) scale(.75)}}
+@media(prefers-reduced-motion:reduce){.vent-cross,.vent-smoke i{animation:none!important}}
 
 </style>
 </head>
@@ -331,7 +325,7 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 <div class="industrial-scene" aria-hidden="true"><div class="scene-vent vent-a"><div class="vent-cross"><i></i><i></i><i></i><i></i></div><div class="vent-smoke"><i></i><i></i><i></i><i></i><i></i></div></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
 <header class="topbar">
 <a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
-<div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="true">♫ Музыка: вкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
+<div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="false">♫ Музыка: выкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
 </header>
 <main>
 <section class="hero">
@@ -417,27 +411,27 @@ function getUmarAudio(){const A=window.AudioContext||window.webkitAudioContext;i
 function playUiTone(kind="soft"){try{const c=getUmarAudio();if(!c)return;const now=c.currentTime;const base=kind==="primary"?[587.33,659.25,783.99,880,987.77][Math.floor(Math.random()*5)]:[392,440,493.88,523.25,587.33,659.25][Math.floor(Math.random()*6)];const o=c.createOscillator(),g=c.createGain();o.type=["sine","triangle","sine","triangle"][Math.floor(Math.random()*4)];o.frequency.setValueAtTime(base,now);o.frequency.exponentialRampToValueAtTime(base*(1.1+Math.random()*.17),now+.065);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.022,now+.009);g.gain.exponentialRampToValueAtTime(.0001,now+.12);o.connect(g);g.connect(c.destination);o.start(now);o.stop(now+.13)}catch(e){}}
 document.addEventListener("click",event=>{const b=event.target.closest("button");if(!b)return;b.classList.remove("button-pulse");void b.offsetWidth;b.classList.add("button-pulse");if(b.id!=="ambientToggle")playUiTone(b.matches(".find-btn,.export-btn")?"primary":"soft")},true);
 document.querySelectorAll(".filter-field select").forEach(select=>select.addEventListener("change",()=>playUiTone("soft")));
-let ambientNodes=null,ambientRequested=true;
+let ambientNodes=null,ambientRequested=false,ambientUserChoice=false;
 const ambientChords=[[130.81,164.81,196,261.63],[110,146.83,174.61,220],[123.47,155.56,185,246.94],[98,130.81,164.81,196]];
+function syncAmbientButton(){const button=document.getElementById("ambientToggle");button.textContent="♫ Музыка: "+(ambientRequested?"вкл.":"выкл.");button.setAttribute("aria-pressed",String(ambientRequested));button.classList.toggle("ambient-on",ambientRequested)}
 function startAmbient(){if(!ambientRequested||ambientNodes)return;try{const c=getUmarAudio();if(!c)return;
  const compressor=c.createDynamicsCompressor();compressor.threshold.value=-18;compressor.knee.value=18;compressor.ratio.value=3;compressor.connect(c.destination);
  const master=c.createGain();master.gain.value=.3;master.connect(compressor);
  const delay=c.createDelay(1.2),feedback=c.createGain(),wet=c.createGain();delay.delayTime.value=.38;feedback.gain.value=.22;wet.gain.value=.18;master.connect(delay);delay.connect(feedback);feedback.connect(delay);delay.connect(wet);wet.connect(compressor);
  const padGain=c.createGain();padGain.gain.value=.48;padGain.connect(master);
- const oscillators=[];const freqs=[0,1,2];freqs.forEach((slot,i)=>{const o=c.createOscillator(),g=c.createGain();o.type=i===1?"triangle":"sine";o.frequency.value=ambientChords[0][slot];g.gain.value=[.17,.11,.075][i];o.connect(g);g.connect(padGain);o.start();oscillators.push(o)});
+ const oscillators=[];[0,1,2].forEach((slot,i)=>{const o=c.createOscillator(),g=c.createGain();o.type=i===1?"triangle":"sine";o.frequency.value=ambientChords[0][slot];g.gain.value=[.17,.11,.075][i];o.connect(g);g.connect(padGain);o.start();oscillators.push(o)});
  const lfo=c.createOscillator(),lfoGain=c.createGain();lfo.frequency.value=.075;lfoGain.gain.value=.025;lfo.connect(lfoGain);lfoGain.connect(padGain.gain);lfo.start();
- let chordIndex=0,step=0,timers=[];
- const melodyScale=[0,2,4,7,9,11,14];
- function melody(){if(!ambientRequested||!ambientNodes)return;try{const chord=ambientChords[chordIndex],degree=melodyScale[Math.floor(Math.random()*melodyScale.length)],root=chord[0]*2, semitone=Math.pow(2,degree/12),freq=root*semitone;const o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter();o.type=Math.random()>.5?"sine":"triangle";o.frequency.value=freq;lp.type="lowpass";lp.frequency.value=1800;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.18,c.currentTime+.035);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.15);o.connect(lp);lp.connect(g);g.connect(master);o.start();o.stop(c.currentTime+1.2)}catch(e){}const t=setTimeout(melody,1900+Math.random()*1250);timers.push(t)}
- function changeChord(){if(!ambientRequested||!ambientNodes)return;chordIndex=(chordIndex+1)%ambientChords.length;const chord=ambientChords[chordIndex];oscillators.forEach((o,i)=>o.frequency.setTargetAtTime(chord[i],c.currentTime,.9));const t=setTimeout(changeChord,6800);timers.push(t)}
- ambientNodes={oscillators,lfo,master,compressor,delay,feedback,wet,padGain,lfoGain,timers};melody();const t=setTimeout(changeChord,6800);timers.push(t);
- const button=document.getElementById("ambientToggle");button.textContent="♫ Музыка: вкл.";button.setAttribute("aria-pressed","true");button.classList.add("ambient-on");
- }catch(e){console.warn("Ambient music unavailable",e)}}
-function stopAmbient(){ambientRequested=false;if(ambientNodes){ambientNodes.timers.forEach(clearTimeout);try{ambientNodes.oscillators.forEach(o=>o.stop());ambientNodes.lfo.stop();ambientNodes.master.disconnect();ambientNodes.delay.disconnect();ambientNodes.feedback.disconnect();ambientNodes.wet.disconnect();ambientNodes.compressor.disconnect()}catch(e){}ambientNodes=null}const button=document.getElementById("ambientToggle");button.textContent="♫ Музыка: выкл.";button.setAttribute("aria-pressed","false");button.classList.remove("ambient-on")}
-function toggleAmbient(){if(ambientRequested){stopAmbient();return}ambientRequested=true;startAmbient();if(!ambientNodes)showToast("Нажми ещё раз после взаимодействия со страницей, чтобы включить звук")}
+ const timers=[];let chordIndex=0;const melodyScale=[0,2,4,7,9,11,14];
+ function melody(){if(!ambientRequested||!ambientNodes)return;try{const chord=ambientChords[chordIndex],degree=melodyScale[Math.floor(Math.random()*melodyScale.length)],freq=chord[0]*2*Math.pow(2,degree/12),o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter();o.type=Math.random()>.5?"sine":"triangle";o.frequency.value=freq;lp.type="lowpass";lp.frequency.value=1800;g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.18,c.currentTime+.035);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.15);o.connect(lp);lp.connect(g);g.connect(master);o.start();o.stop(c.currentTime+1.2)}catch(e){}timers.push(setTimeout(melody,1900+Math.random()*1250))}
+ function changeChord(){if(!ambientRequested||!ambientNodes)return;chordIndex=(chordIndex+1)%ambientChords.length;oscillators.forEach((o,i)=>o.frequency.setTargetAtTime(ambientChords[chordIndex][i],c.currentTime,.9));timers.push(setTimeout(changeChord,6800))}
+ ambientNodes={oscillators,lfo,master,compressor,delay,feedback,wet,padGain,lfoGain,timers};melody();timers.push(setTimeout(changeChord,6800));syncAmbientButton();
+ }catch(e){console.warn("Ambient music unavailable",e);showToast("Не удалось запустить музыку. Попробуй нажать кнопку ещё раз.")}}
+function stopAmbient(){ambientRequested=false;if(ambientNodes){ambientNodes.timers.forEach(clearTimeout);try{ambientNodes.oscillators.forEach(o=>o.stop());ambientNodes.lfo.stop();ambientNodes.master.disconnect();ambientNodes.delay.disconnect();ambientNodes.feedback.disconnect();ambientNodes.wet.disconnect();ambientNodes.compressor.disconnect()}catch(e){}ambientNodes=null}syncAmbientButton()}
+function toggleAmbient(){ambientUserChoice=true;if(ambientRequested){stopAmbient();return}ambientRequested=true;startAmbient();if(!ambientNodes)showToast("Нажми ещё раз, чтобы разрешить звук в браузере");syncAmbientButton()}
 document.getElementById("ambientToggle").addEventListener("click",toggleAmbient);
-function enableAmbientOnGesture(event){if(event&&event.target&&event.target.closest&&event.target.closest("#ambientToggle"))return;if(ambientRequested)startAmbient()}
-window.addEventListener("pointerdown",enableAmbientOnGesture,{once:true,passive:true});window.addEventListener("keydown",enableAmbientOnGesture,{once:true});
+function enableAmbientOnGesture(event){if(ambientUserChoice||!event.isTrusted)return;if(event.target&&event.target.closest&&event.target.closest("#ambientToggle"))return;ambientRequested=true;startAmbient();window.removeEventListener("pointerdown",enableAmbientOnGesture);window.removeEventListener("keydown",enableAmbientOnGesture)}
+window.addEventListener("pointerdown",enableAmbientOnGesture,{passive:true});window.addEventListener("keydown",enableAmbientOnGesture);
+syncAmbientButton();
 document.getElementById("resetFilters").addEventListener("click",()=>{document.querySelectorAll(".choice-card").forEach(b=>b.classList.toggle("selected",b.dataset.filterGroup==="type"&&b.dataset.value==="mod"));["filterVersion","filterLoader","filterCategory"].forEach(id=>document.getElementById(id).value="");document.getElementById("filterDownloads").value="0";document.getElementById("filterSort").value="relevance";});
 document.querySelectorAll(".choice-card").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll('[data-filter-group="'+button.dataset.filterGroup+'"]').forEach(b=>b.classList.remove("selected"));button.classList.add("selected");}));
 async function loadGameVersions(){const select=document.getElementById("filterVersion");try{const response=await fetch("https://api.modrinth.com/v2/tag/game_version");if(!response.ok)throw new Error("versions unavailable");const versions=await response.json();const stable=versions.filter(v=>v.version_type==="release"&&/^\d+(?:\.\d+){0,2}$/.test(v.version)&&/^(?:26\.3|26\.2|26\.1|26\.0|25\.\d+|24\.\d+|23\.\d+|22\.\d+|21\.\d+|20\.\d+|19\.\d+|18\.\d+|17\.\d+|16\.\d+|15\.\d+|14\.\d+|13\.\d+|12\.\d+|11\.\d+|10\.\d+|[1-9]\.\d+(?:\.\d+)?|1\.\d+(?:\.\d+)?)$/.test(v.version));const current=select.value;select.innerHTML='<option value="">Все версии</option>'+stable.map(v=>'<option value="'+escapeText(v.version)+'">'+escapeText(v.version)+'</option>').join("");if(stable.some(v=>v.version===current))select.value=current;}catch(error){console.warn("Could not load Modrinth game versions",error);}}
