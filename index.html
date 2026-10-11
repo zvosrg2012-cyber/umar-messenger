@@ -300,10 +300,35 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 .worker-boot{height:14px;background:linear-gradient(#434d51,#101417);box-shadow:inset 0 2px #7c898d,0 3px 0 #050708}
 @media(max-width:650px){.scene-pipe.pipe-a{left:3%;width:15px}.scene-pipe.pipe-b{right:3%;width:13px}.scene-pipe.pipe-c{left:14%;width:8px}.scene-pipe.pipe-d{right:14%;width:8px}.trash-chute{width:min(270px,72vw);height:78px}.worker{right:3%;bottom:calc(94px + 2px);transform:scale(.78);transform-origin:bottom right}}
 
+
+/* Minimal industrial ambience: one animated cross-vent with drifting smoke */
+.industrial-scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:transparent}
+.industrial-scene:before,.industrial-scene:after{display:none!important}
+.scene-pipe,.scene-exit,.scene-floor,.trash-chute,.worker,.scene-vent.vent-b{display:none!important}
+.scene-vent.vent-a{display:block!important;position:fixed;top:auto;right:28px;bottom:26px;left:auto;width:154px;height:154px;transform:none;border:5px solid #596970;border-radius:5px;background:linear-gradient(145deg,#526168,#161e23 40%,#080d10);box-shadow:0 0 0 5px #090e11,0 12px 28px #0009,inset 0 0 0 4px #263238;overflow:visible}
+.scene-vent.vent-a:after{left:-9px;right:-9px;top:-9px;bottom:-9px;height:auto;border:2px solid #87979d;background:linear-gradient(135deg,#3b474d,#11171a);box-shadow:0 0 0 3px #0a0f12,0 5px 14px #0009}
+.scene-vent.vent-a:before{inset:9px;background:repeating-linear-gradient(0deg,#11171a 0 3px,#89979b 4px 5px,#263238 6px 9px);box-shadow:inset 0 0 15px #000;animation:ventFlow .35s linear infinite}
+.vent-cross{position:absolute;z-index:2;inset:17px;border:2px solid #7d8b90;border-radius:50%;background:radial-gradient(circle,#0b1114 0 8%,#596970 9% 12%,#151d21 13% 100%);box-shadow:0 0 0 3px #11191d,0 0 14px #000b;animation:crossVentSpin 2.2s linear infinite;overflow:hidden}
+.vent-cross i{position:absolute;left:calc(50% - 5px);top:0;width:10px;height:50%;transform-origin:50% 100%;background:linear-gradient(90deg,#263238,#a8b4b7 48%,#3c4a50);border:1px solid #151c20;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
+.vent-cross i:nth-child(2){transform:rotate(90deg)}
+.vent-cross i:nth-child(3){transform:rotate(180deg)}
+.vent-cross i:nth-child(4){transform:rotate(270deg)}
+@keyframes crossVentSpin{to{rotate:360deg}}
+.vent-smoke{position:absolute;z-index:4;left:50%;top:-17px;width:90px;height:120px;transform:translateX(-50%);pointer-events:none;filter:blur(7px)}
+.vent-smoke i{position:absolute;bottom:0;left:calc(10% + var(--smoke-x,0px));width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#c8d5d955,#a4b5bd2b 45%,transparent 72%);opacity:0;animation:ventSmoke 3s ease-out infinite}
+.vent-smoke i:nth-child(1){--smoke-x:-20px;animation-delay:0s}
+.vent-smoke i:nth-child(2){--smoke-x:0px;animation-delay:.6s}
+.vent-smoke i:nth-child(3){--smoke-x:18px;animation-delay:1.2s}
+.vent-smoke i:nth-child(4){--smoke-x:-7px;animation-delay:1.8s}
+.vent-smoke i:nth-child(5){--smoke-x:28px;animation-delay:2.4s}
+@keyframes ventSmoke{0%{opacity:0;transform:translate(0,0) scale(.45)}15%{opacity:.65}100%{opacity:0;transform:translate(20px,-105px) scale(2.2)}}
+@media(max-width:650px){.scene-vent.vent-a{right:15px;bottom:15px;width:112px;height:112px}.vent-cross{inset:14px}.vent-smoke{top:-12px;transform:translateX(-50%) scale(.75)}}
+@media(prefers-reduced-motion:reduce){.vent-cross,.vent-smoke i,.scene-vent.vent-a:before{animation:none!important}}
+
 </style>
 </head>
 <body>
-<div class="industrial-scene" aria-hidden="true"><div class="scene-pipe pipe-a"></div><div class="scene-pipe pipe-b"></div><div class="scene-pipe pipe-c"></div><div class="scene-pipe pipe-d"></div><div class="scene-vent vent-a"></div><div class="scene-vent vent-b"></div><div class="scene-exit"></div><div class="scene-floor"></div><div class="trash-chute"><div class="shredder-mouth"><div class="shredder-roller roller-a"></div><div class="shredder-roller roller-b"></div></div></div><div class="worker" aria-label="Рабочий записывает результаты"><div class="worker-helmet"></div><div class="worker-hair"></div><div class="worker-head"></div><div class="worker-body"><div class="worker-vest"></div></div><div class="worker-arm left"></div><div class="worker-arm right"></div><div class="worker-clipboard"></div><div class="worker-leg left"></div><div class="worker-leg right"></div><div class="worker-boot left"></div><div class="worker-boot right"></div></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
+<div class="industrial-scene" aria-hidden="true"><div class="scene-vent vent-a"><div class="vent-cross"><i></i><i></i><i></i><i></i></div><div class="vent-smoke"><i></i><i></i><i></i><i></i><i></i></div></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
 <header class="topbar">
 <a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
 <div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="true">♫ Музыка: вкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
@@ -497,7 +522,7 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
   if(projectPool.length)setProject(item,projectPool[i%projectPool.length]);else{el.style.display="none";}
   el.addEventListener("pointerdown",e=>{e.preventDefault();dragged=item;item.held=true;item.falling=false;item.disposing=false;item.vx=item.vy=item.vr=0;lastPointer={x:e.clientX,y:e.clientY,t:performance.now()};el.classList.add("is-grabbed");try{el.setPointerCapture(e.pointerId)}catch(_){}if(typeof playUiTone==="function")playUiTone("soft")});
   el.addEventListener("pointermove",e=>{if(dragged!==item)return;const now=performance.now(),dt=Math.max(8,now-(lastPointer?.t||now));item.x=e.clientX-el.offsetWidth/2;item.y=e.clientY-el.offsetHeight/2;item.vx=(e.clientX-lastPointer.x)/dt*15;item.vy=(e.clientY-lastPointer.y)/dt*15;lastPointer={x:e.clientX,y:e.clientY,t:now}});
-  const release=()=>{if(dragged!==item)return;item.held=false;item.falling=true;item.el.classList.remove("is-grabbed");item.el.classList.add("is-falling");dragged=null;lastPointer=null;item.vy=Math.max(item.vy,1.2)};
+  const release=()=>{if(dragged!==item)return;item.held=false;item.falling=false;item.disposing=false;item.el.classList.remove("is-grabbed","is-falling","is-disposing");dragged=null;lastPointer=null;item.vx+=(Math.random()-.5)*.7;item.vy+=(Math.random()-.5)*.5};
   el.addEventListener("pointerup",release);el.addEventListener("pointercancel",release);
   el.addEventListener("dblclick",()=>{if(item.project?.url)window.open(item.project.url,"_blank","noopener,noreferrer")});
   el.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(item.project?.url)window.open(item.project.url,"_blank","noopener,noreferrer")}if(e.key===" "){e.preventDefault();item.held=false;item.falling=true;item.vy=3;item.vx=(Math.random()-.5)*4}});
@@ -508,26 +533,22 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
   if(projectPool.length)setProject(p,projectPool[Math.floor(Math.random()*projectPool.length)]);else p.el.style.display="none";
  }
  function frame(){
-  const w=innerWidth,h=innerHeight,pitX=w/2,pitW=Math.min(innerWidth<=650?270:360,w*(innerWidth<=650?.72:.52)),pitTop=h-(innerWidth<=650?94:115)-(innerWidth<=650?78:108)+5;
+  const w=innerWidth,h=innerHeight;
   for(const p of items){
    if(!p.held){
     p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
-    if(p.falling){p.vy=Math.min(p.vy+.10,9);p.vx*=.995}
-    else {p.vx*=.999;p.vy+=.001;if(p.x<0){p.x=0;p.vx=Math.abs(p.vx)*.8}if(p.x>w-p.el.offsetWidth){p.x=w-p.el.offsetWidth;p.vx=-Math.abs(p.vx)*.8}if(p.y<0){p.y=0;p.vy=Math.abs(p.vy)*.8}}
-    const center=p.x+p.el.offsetWidth/2;
-    if(p.y+p.el.offsetHeight>pitTop){
-     p.falling=true;p.el.classList.add("is-falling");
-     const target=pitX+(Math.random()-.5)*pitW*.42;
-     p.vx+=(pitX-center)*.012;
-     p.vx=Math.max(-6,Math.min(6,p.vx));
-     p.x+=Math.max(-5,Math.min(5,(pitX-center)*.045));
-     p.vy=Math.max(p.vy,1.4);
-     if(p.y>pitTop-8&&Math.abs(center-pitX)<pitW*.62){p.disposing=true;p.life+=1;p.el.classList.add("is-disposing");p.vy=Math.max(p.vy,2.1);p.rot+=p.vr*2;if(p.life>26){respawn(p);continue}}
-    }
-    if(p.y>h+30){respawn(p);continue}
-    if(!p.falling&&Math.abs(p.vx)<.09&&Math.abs(p.vy)<.09){p.vx+=Math.sin(performance.now()/1400+p.x)*.01;p.vy+=Math.cos(performance.now()/1600+p.y)*.01}
+    p.vx*=.999;p.vy*=.999;
+    p.vx+=Math.sin(performance.now()/1800+p.x*.013)*.008;
+    p.vy+=Math.cos(performance.now()/2100+p.y*.012)*.007;
+    const maxX=Math.max(0,w-p.el.offsetWidth),maxY=Math.max(0,h-p.el.offsetHeight);
+    if(p.x<0){p.x=0;p.vx=Math.abs(p.vx)*.9}
+    if(p.x>maxX){p.x=maxX;p.vx=-Math.abs(p.vx)*.9}
+    if(p.y<0){p.y=0;p.vy=Math.abs(p.vy)*.9}
+    if(p.y>maxY){p.y=maxY;p.vy=-Math.abs(p.vy)*.9}
+    if(Math.abs(p.vx)<.12)p.vx+=(Math.random()-.5)*.06;
+    if(Math.abs(p.vy)<.10)p.vy+=(Math.random()-.5)*.05;
    }
-   p.el.style.transform="translate3d("+p.x+"px,"+p.y+"px,0) rotate("+p.rot+"deg) scale("+(p.disposing?Math.max(.08,1-p.life/27):1)+")";
+   p.el.style.transform="translate3d("+p.x+"px,"+p.y+"px,0) rotate("+p.rot+"deg)";
   }
   raf=requestAnimationFrame(frame);
  }
