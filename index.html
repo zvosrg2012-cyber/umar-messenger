@@ -466,8 +466,7 @@ function renderMods(data){
  const intro=mods.length
   ? '<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">✳</span> UMAR AI · Найдено: '+mods.length+'</div><p>'+escapeText(data.summary||'Результаты из каталога Modrinth.')+'</p><div class="source-note">Источник: <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth</a> · ссылки ведут на страницы проектов</div></div>'
   : '<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">⌕</span> Ничего не найдено</div><p>'+escapeText(data.summary||'Modrinth не вернул проекты по этому запросу и выбранным фильтрам.')+'</p><div class="source-note">Источник: <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth</a></div></div>';
- const translation=data.englishTranslation?'<div class="translation-preview"><span>✦ AI TRANSLATION · ENGLISH</span><p>'+escapeText(data.englishTranslation)+'</p></div>':'';
- const introTranslated=intro.replace('<div class="source-note">',translation+'<div class="source-note">');
+ const introTranslated=intro;
  if(!mods.length)return introTranslated+'<div class="empty-results">Попробуй более короткий запрос или временно убери фильтры версии, загрузчика и категории. Если ИИ-перевод недоступен, проверь настройки GEMINI_API_KEY на сервере.</div>';
  const cards=mods.map(mod=>{
   const icon=mod.icon?'<img class="mod-icon" src="'+escapeText(mod.icon)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<div class="mod-icon mod-placeholder">◇</div>';
