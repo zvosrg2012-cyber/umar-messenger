@@ -320,18 +320,22 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 @media(prefers-reduced-motion:reduce){.vent-cross,.vent-smoke i{animation:none!important}}
 
 
-/* Four corner fasteners and occasional lifted panels exposing yellow SFERA.CO foam */
-.float-mod{position:absolute!important;isolation:isolate;padding:13px 12px 9px!important;border-radius:3px!important;border:1px solid #64747a!important;background-image:radial-gradient(circle at 7px 7px,#d0d5d4 0 1.3px,#303a3e 1.8px 3px,transparent 3.5px),radial-gradient(circle at calc(100% - 7px) 7px,#d0d5d4 0 1.3px,#303a3e 1.8px 3px,transparent 3.5px),radial-gradient(circle at 7px calc(100% - 7px),#d0d5d4 0 1.3px,#303a3e 1.8px 3px,transparent 3.5px),radial-gradient(circle at calc(100% - 7px) calc(100% - 7px),#d0d5d4 0 1.3px,#303a3e 1.8px 3px,transparent 3.5px),linear-gradient(135deg,#202a2d,#0c1114)!important;box-shadow:0 5px 15px #0008!important}
-.float-mod:before{content:"";position:absolute;z-index:-1;inset:3px;background:#f0cb42;opacity:0;pointer-events:none}
-.float-mod.loose{border-color:#a9a17c!important;box-shadow:5px 7px 0 #0008,0 0 0 2px #d1b44755!important}
-.float-mod.loose:before{opacity:1;content:"SFERA.CO";display:flex;align-items:center;justify-content:center;color:#c92f24;font-size:11px;font-weight:900;letter-spacing:1px;inset:-5px;background:#f0cb42;box-shadow:0 0 0 2px #b99b35}
-.float-mod.loose .float-mod-icon,.float-mod.loose .float-mod-name,.float-mod.loose .float-mod-spark{position:relative;z-index:3}
-.float-mod.loose .float-mod-name{background:#121719e8;padding:3px 4px;border-radius:3px}
+
+/* Wall panels: corner screws and a few peeled panels revealing SFERA.CO insulation */
+.wall-panel{position:fixed;width:64px;height:64px;pointer-events:none;border:1px solid #8b9ba31b;background:linear-gradient(145deg,#25313980,#11191edb);box-shadow:inset 0 0 0 2px #0003,0 2px 5px #0003}
+.wall-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 5px 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at 5px calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px)}
+.wall-panel.loose{border-color:#d3b84b;background:#f0cb42;transform:rotate(-3deg);box-shadow:5px 7px 0 #0008,inset 0 0 0 4px #c3a12f}
+.wall-panel.loose:after{content:"SFERA.CO";position:absolute;inset:0;display:grid;place-items:center;color:#c52b23;font-size:9px;font-weight:900;letter-spacing:.3px;text-shadow:0 1px #fff5}
+.wall-panel.loose:before{inset:0;background:radial-gradient(circle at 5px 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) 5px,#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at 5px calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#d5d9d8 0 1px,#515d62 1.5px 2.6px,transparent 3px)}
+.wall-panel.p1{left:calc(12% - 32px);top:calc(23% - 32px)}.wall-panel.p2{left:calc(12% - 32px);top:calc(23% + 32px)}.wall-panel.p3{left:calc(12% + 32px);top:calc(23% - 32px)}
+.wall-panel.p4{left:calc(76% - 32px);top:calc(36% - 32px)}.wall-panel.p5{left:calc(76% + 32px);top:calc(36% - 32px)}.wall-panel.p6{left:calc(76% + 32px);top:calc(36% + 32px)}
+.wall-panel.p7{left:calc(28% - 32px);top:calc(68% - 32px)}.wall-panel.p8{left:calc(28% + 32px);top:calc(68% + 32px)}
+@media(max-width:650px){.wall-panel{width:64px;height:64px}.wall-panel.p1{left:8%;top:30%}.wall-panel.p2{left:calc(8% + 32px);top:calc(30% + 32px)}.wall-panel.p4{left:calc(70% - 32px);top:42%}.wall-panel.p5{left:70%;top:calc(42% + 32px)}}
 
 </style>
 </head>
 <body>
-<div class="industrial-scene" aria-hidden="true"></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
+<div class="industrial-scene" aria-hidden="true"><div class="wall-panel p1"></div><div class="wall-panel p2 loose"></div><div class="wall-panel p3"></div><div class="wall-panel p4"></div><div class="wall-panel p5 loose"></div><div class="wall-panel p6"></div><div class="wall-panel p7 loose"></div><div class="wall-panel p8"></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
 <header class="topbar">
 <a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
 <div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="false">♫ Музыка: выкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
