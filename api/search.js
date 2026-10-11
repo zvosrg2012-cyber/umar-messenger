@@ -94,11 +94,23 @@ module.exports = async function handler(req, res) {
       limit: "24",
       index: sort
     });
-    const modRes = await fetch("https://api.modrinth.com/v2/search?" + params.toString(), {
-      headers: { "User-Agent": "UMAR-AI/1.0 (Minecraft mod discovery)" },
-      signal: AbortSignal.timeout(15000)
-    });
-    if (!modRes.ok) throw new Error("Modrinth status " + modRes.status);
+    let modRes;
+    let lastModrinthError;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        modRes = await fetch("https://api.modrinth.com/v2/search?" + params.toString(), {
+          headers: { "User-Agent": "UMAR-AI/1.0 (Minecraft mod discovery)" },
+          signal: AbortSignal.timeout(12000)
+        });
+        if (modRes.ok) break;
+        lastModrinthError = new Error("Modrinth status " + modRes.status);
+        if (modRes.status < 500 && modRes.status !== 429) break;
+      } catch (error) {
+        lastModrinthError = error;
+      }
+      if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 350 * (attempt + 1)));
+    }
+    if (!modRes || !modRes.ok) throw lastModrinthError || new Error("Modrinth search unavailable");
     const data = await modRes.json();
     const mods = (Array.isArray(data.hits) ? data.hits : []).map(hit => {
       const slug = String(hit.slug || "");
