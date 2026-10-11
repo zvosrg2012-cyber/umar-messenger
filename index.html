@@ -90,6 +90,14 @@ function showToast(message='Скоро будет доступно ✨'){toast.t
 document.querySelectorAll('[data-prompt]').forEach(button=>button.addEventListener('click',()=>{promptBox.value=button.dataset.prompt;promptBox.focus();promptBox.dispatchEvent(new Event('input'));}));
 document.getElementById('clearBtn').addEventListener('click',()=>{promptBox.value='';resultArea.innerHTML='';promptBox.focus()});
 const API_URL = 'https://umar-messenger.vercel.app/api/search';
+const selectedBuild = new Map();
+function getFilters(){return {projectType:document.getElementById("filterType").value,version:document.getElementById("filterVersion").value,loader:document.getElementById("filterLoader").value,category:document.getElementById("filterCategory").value,environment:document.getElementById("filterEnvironment").value,license:document.getElementById("filterLicense").value,openSource:document.getElementById("filterOpenSource").value,minDownloads:document.getElementById("filterDownloads").value,sort:document.getElementById("filterSort").value};}
+function renderBuild(){const panel=document.getElementById("buildPanel"),items=document.getElementById("buildItems");panel.hidden=selectedBuild.size===0;document.getElementById("buildCount").textContent=selectedBuild.size+" проект"+(selectedBuild.size===1?"":"ов");items.innerHTML=[...selectedBuild.values()].map(p=>'<div class="build-item"><a href="'+escapeText(p.url)+'" target="_blank" rel="noopener noreferrer">'+escapeText(p.title)+'</a><button type="button" data-remove-build="'+escapeText(p.id)+'">Удалить</button></div>').join("");document.querySelectorAll("[data-add-build]").forEach(b=>{const added=selectedBuild.has(b.dataset.projectId);b.classList.toggle("added",added);b.textContent=added?"✓ В сборке":"+ В сборку";});}
+document.getElementById("resetFilters").addEventListener("click",()=>{document.getElementById("filterType").value="mod";["filterVersion","filterLoader","filterCategory","filterEnvironment","filterLicense","filterOpenSource"].forEach(id=>document.getElementById(id).value="");document.getElementById("filterDownloads").value="0";document.getElementById("filterSort").value="relevance";});
+document.getElementById("clearBuild").addEventListener("click",()=>{selectedBuild.clear();renderBuild();});
+document.getElementById("copyBuild").addEventListener("click",async()=>{if(!selectedBuild.size)return;const list=[...selectedBuild.values()].map((p,i)=>(i+1)+". "+p.title+" — "+p.url).join("\n");try{await navigator.clipboard.writeText("UMAR AI — состав сборки\n"+list);showToast("Состав сборки скопирован ✨");}catch{showToast("Не удалось скопировать. Попробуй ещё раз.");}});
+document.getElementById("buildItems").addEventListener("click",event=>{const b=event.target.closest("[data-remove-build]");if(b){selectedBuild.delete(b.dataset.removeBuild);renderBuild();}});
+resultArea.addEventListener("click",event=>{const b=event.target.closest("[data-add-build]");if(!b)return;const id=b.dataset.projectId;if(selectedBuild.has(id))selectedBuild.delete(id);else selectedBuild.set(id,{id,title:b.dataset.projectTitle,url:b.dataset.projectUrl});renderBuild();});
 function formatDownloads(value){return new Intl.NumberFormat('ru-RU',{notation:value>=1000000?'compact':'standard',maximumFractionDigits:1}).format(value||0)}
 function renderMods(data){
  const mods=Array.isArray(data.mods)?data.mods:[];
@@ -97,8 +105,8 @@ function renderMods(data){
  if(!mods.length)return intro+'<div class="empty-results">По этому запросу моды не нашлись. Попробуй описать механику иначе или используй английские названия.</div>';
  const cards=mods.map(mod=>{
   const icon=mod.icon?'<img class="mod-icon" src="'+escapeText(mod.icon)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<div class="mod-icon mod-placeholder">◇</div>';
-  const tags=(mod.versions||[]).slice(0,3).map(v=>'<span class="mod-tag">'+escapeText(v)+'</span>').join('');
-  return '<article class="mod-card">'+icon+'<div class="mod-content"><div class="mod-title-row"><h3>'+escapeText(mod.title)+'</h3><span class="mod-source">MODRINTH</span></div><p class="mod-description">'+escapeText(mod.description||'Описание не предоставлено.')+'</p><div class="mod-meta"><span>Автор: <b>'+escapeText(mod.author||'Не указан')+'</b></span><span>↓ '+escapeText(formatDownloads(mod.downloads))+' загрузок</span></div><div class="mod-extra"><div class="mod-tags">'+(tags||'<span class="mod-tag">Minecraft</span>')+'</div><p>'+escapeText(mod.description||'Описание не предоставлено.')+'</p><a class="mod-link" href="'+escapeText(mod.url)+'" target="_blank" rel="noopener noreferrer">Открыть мод <span>↗</span></a></div></div></article>';
+  const tags=[...(mod.versions||[]).slice(0,3),...(mod.categories||[]).slice(0,2)].map(v=>'<span class="mod-tag">'+escapeText(v)+'</span>').join('');
+  return '<article class="mod-card">'+icon+'<div class="mod-content"><div class="mod-title-row"><h3>'+escapeText(mod.title)+'</h3><span class="mod-source">MODRINTH</span></div><p class="mod-description">'+escapeText(mod.description||'Описание не предоставлено.')+'</p><div class="mod-meta"><span>Автор: <b>'+escapeText(mod.author||'Не указан')+'</b></span><span>↓ '+escapeText(formatDownloads(mod.downloads))+' загрузок</span></div><div class="mod-extra"><div class="mod-tags">'+(tags||'<span class="mod-tag">Minecraft</span>')+'</div><p>'+escapeText(mod.description||'Описание не предоставлено.')+'</p><a class="mod-link" href="'+escapeText(mod.url)+'" target="_blank" rel="noopener noreferrer">Открыть проект <span>↗</span></a><button class="build-add" type="button" data-add-build data-project-id="'+escapeText(mod.id)+'" data-project-title="'+escapeText(mod.title)+'" data-project-url="'+escapeText(mod.url)+'">+ В сборку</button></div></div></article>';
  }).join('');
  return intro+'<div class="mod-grid">'+cards+'</div>';
 }
@@ -114,14 +122,14 @@ document.getElementById('searchForm').addEventListener('submit',async event=>{
  submitButton.disabled=true;submitButton.innerHTML='<span class="spinner"></span> Ищем моды…';
  resultArea.innerHTML='<div class="result-card loading-card"><div class="result-title"><span class="spinner"></span> UMAR AI ищет моды</div><p>Обращаемся к Gemini и каталогу Modrinth. Обычно это занимает несколько секунд.</p></div>';
  try{
-  const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query}),signal:AbortSignal.timeout(35000)});
+  const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query,filters:getFilters()}),signal:AbortSignal.timeout(35000)});
   const data=await response.json().catch(()=>({}));
-  if(!response.ok)throw new Error(data.error||'Ошибка поиска ('+response.status+').');
-  resultArea.innerHTML=renderMods(data);
+  if(!response.ok)throw Object.assign(new Error("search_failed"),{status:response.status,code:data.errorCode||response.status});
+  resultArea.innerHTML=renderMods(data);renderBuild();
  }catch(error){
-  resultArea.innerHTML='<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">!</span> Не удалось выполнить поиск</div><p>'+escapeText(error.name==='TimeoutError'?'Сервер долго отвечает. Попробуй ещё раз.':error.message||'Проверь адрес API и настройки CORS в Vercel.')+'</p><div class="small">Проверь, что backend развернут, а переменные окружения сохранены в Vercel.</div></div>';
+  const code=Number.isInteger(error.code)?error.code:(error.name==="TimeoutError"?408:(error.status||503));resultArea.innerHTML='<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">✳</span> Сейчас не получилось обновить подборку</div><p>Попробуй повторить поиск через несколько секунд. Твоя сборка и выбранные фильтры сохранены.</p><div class="small">Код: '+String(code).padStart(3,"0").slice(-3)+'</div></div>';
  }finally{
-  submitButton.disabled=false;submitButton.innerHTML='Найти мод <span>↗</span>';
+  submitButton.disabled=false;submitButton.innerHTML='Подобрать проекты <span>↗</span>';
   resultArea.scrollIntoView({behavior:'smooth',block:'nearest'});
  }
 });
