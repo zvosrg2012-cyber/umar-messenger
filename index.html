@@ -322,7 +322,7 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 </style>
 </head>
 <body>
-<div class="industrial-scene" aria-hidden="true"><div class="scene-vent vent-a"><div class="vent-cross"><i></i><i></i><i></i><i></i></div><div class="vent-smoke"><i></i><i></i><i></i><i></i><i></i></div></div></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
+<div class="industrial-scene" aria-hidden="true"></div><div class="mod-sky" id="modSky" aria-label="Интерактивные моды из Modrinth"></div>
 <header class="topbar">
 <a class="brand" href="#" aria-label="UMAR AI — главная"><span class="brand-icon">U</span><span>UMAR <em>AI</em></span></a>
 <div class="top-actions"><div class="status"><span class="dot"></span> Конструктор сборок</div><button class="support-btn sound-toggle" id="ambientToggle" type="button" aria-pressed="false">♫ Музыка: выкл.</button><button class="support-btn" id="topSupport" type="button">Поддержка ↗</button></div>
@@ -511,7 +511,7 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
  function spawn(i){
   const el=document.createElement("div");el.className="float-mod";el.setAttribute("role","link");el.setAttribute("tabindex","0");
   sky.appendChild(el);
-  const item={el,x:Math.random()*Math.max(1,innerWidth-170),y:-80-Math.random()*Math.max(1,innerHeight),vx:(Math.random()-.5)*.45,vy:.65+Math.random()*.9,rot:(Math.random()-.5)*18,vr:(Math.random()-.5)*.12,held:false,falling:true,disposing:false,life:0};
+  const item={el,x:Math.random()*Math.max(1,innerWidth-170),y:-80-Math.random()*Math.max(1,innerHeight),vx:(Math.random()-.5)*.22,vy:.18+Math.random()*.24,rot:(Math.random()-.5)*12,vr:(Math.random()-.5)*.045,held:false,falling:true,disposing:false,life:0};
   items.push(item);
   if(projectPool.length)setProject(item,projectPool[i%projectPool.length]);else{el.style.display="none";}
   el.addEventListener("pointerdown",e=>{e.preventDefault();dragged=item;item.held=true;item.falling=false;item.disposing=false;item.vx=item.vy=item.vr=0;lastPointer={x:e.clientX,y:e.clientY,t:performance.now()};el.classList.add("is-grabbed");try{el.setPointerCapture(e.pointerId)}catch(_){}if(typeof playUiTone==="function")playUiTone("soft")});
@@ -523,7 +523,7 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
  }
  for(let i=0;i<18;i++)spawn(i);
  function respawn(p){
-  p.x=Math.random()*Math.max(1,innerWidth-p.el.offsetWidth);p.y=-p.el.offsetHeight-Math.random()*220;p.vx=(Math.random()-.5)*.5;p.vy=.65+Math.random()*.9;p.rot=(Math.random()-.5)*15;p.vr=(Math.random()-.5)*.12;p.falling=true;p.disposing=false;p.life=0;p.el.classList.remove("is-falling","is-disposing");
+  p.x=Math.random()*Math.max(1,innerWidth-p.el.offsetWidth);p.y=-p.el.offsetHeight-Math.random()*220;p.vx=(Math.random()-.5)*.22;p.vy=.18+Math.random()*.24;p.rot=(Math.random()-.5)*12;p.vr=(Math.random()-.5)*.045;p.falling=true;p.disposing=false;p.life=0;p.el.classList.remove("is-falling","is-disposing");
   if(projectPool.length)setProject(p,projectPool[Math.floor(Math.random()*projectPool.length)]);else p.el.style.display="none";
  }
  function frame(){
@@ -532,7 +532,7 @@ document.getElementById('supportBtn').addEventListener('click',()=>showToast('Te
    if(!p.held){
     p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
     p.vx*=.999;
-    p.vy=Math.min(3.2,p.vy+.006);
+    p.vy=Math.min(1.15,p.vy+.0015);
     p.vx+=Math.sin(performance.now()/1800+p.x*.013)*.006;
     const maxX=Math.max(0,w-p.el.offsetWidth);
     if(p.x<0){p.x=0;p.vx=Math.abs(p.vx)*.9}
