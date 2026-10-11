@@ -1,5 +1,5 @@
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "*";
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 const MAX_QUERY_LENGTH = 500;
 
 function send(res, status, body) {
