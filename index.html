@@ -190,6 +190,12 @@ body:before{z-index:-2;background:radial-gradient(ellipse at 13% 20%,#ff8a3525,t
 @media(max-width:850px){.float-mod{padding:7px 9px;min-width:0;gap:6px;font-size:9px}.float-mod-icon{width:24px;height:24px;flex-basis:24px}.float-mod-spark{display:none}}
 @media(prefers-reduced-motion:reduce){body:before{animation:none!important}.float-mod{transition:none!important}}
 
+
+.translation-preview{margin:14px 0 12px;padding:13px 15px;border:1px solid #ffad6638;border-radius:13px;background:linear-gradient(120deg,#ff8a3510,#ffffff03)}
+.translation-preview>span{display:block;margin-bottom:7px;color:#ffb779;font-size:9px;font-weight:900;letter-spacing:1.4px}
+.translation-preview p{margin:0!important;color:#e9ded2;font-size:12px;line-height:1.65;overflow-wrap:anywhere}
+.float-mod:nth-child(3n){border-color:#8b78e93d}.float-mod:nth-child(4n){border-color:#65cdb13d}.float-mod:nth-child(5n){border-color:#ffb16d45}
+
 </style>
 </head>
 <body>
@@ -318,13 +324,15 @@ function renderMods(data){
  const intro=mods.length
   ? '<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">✳</span> UMAR AI · Найдено: '+mods.length+'</div><p>'+escapeText(data.summary||'Результаты из каталога Modrinth.')+'</p><div class="source-note">Источник: <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth</a> · ссылки ведут на страницы проектов</div></div>'
   : '<div class="result-card"><div class="result-title"><span style="color:#ff9a4d">⌕</span> Ничего не найдено</div><p>'+escapeText(data.summary||'Modrinth не вернул проекты по этому запросу и выбранным фильтрам.')+'</p><div class="source-note">Источник: <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer">Modrinth</a></div></div>';
- if(!mods.length)return intro+'<div class="empty-results">Попробуй более короткий запрос или временно убери фильтры версии, загрузчика и категории. Если запрос написан по-русски, попробуй добавить английские ключевые слова — без работающего ИИ-перевода каталог может не понять формулировку.</div>';
+ const translation=data.englishTranslation?'<div class="translation-preview"><span>✦ AI TRANSLATION · ENGLISH</span><p>'+escapeText(data.englishTranslation)+'</p></div>':'';
+ const introTranslated=intro.replace('<div class="source-note">',translation+'<div class="source-note">');
+ if(!mods.length)return introTranslated+'<div class="empty-results">Попробуй более короткий запрос или временно убери фильтры версии, загрузчика и категории. Если ИИ-перевод недоступен, проверь настройки GEMINI_API_KEY на сервере.</div>';
  const cards=mods.map(mod=>{
   const icon=mod.icon?'<img class="mod-icon" src="'+escapeText(mod.icon)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<div class="mod-icon mod-placeholder">◇</div>';
   const tags=[...(mod.versions||[]).slice(0,3),...(mod.categories||[]).slice(0,2)].map(v=>'<span class="mod-tag">'+escapeText(v)+'</span>').join('');
   return '<article class="mod-card">'+icon+'<div class="mod-content"><div class="mod-title-row"><h3>'+escapeText(mod.title)+'</h3><span class="mod-source">MODRINTH</span></div><p class="mod-description">'+escapeText(mod.description||'Описание не предоставлено.')+'</p><div class="mod-meta"><span>Автор: <b>'+escapeText(mod.author||'Не указан')+'</b></span><span>↓ '+escapeText(formatDownloads(mod.downloads))+' загрузок</span></div><div class="mod-extra"><div class="mod-tags">'+(tags||'<span class="mod-tag">Minecraft</span>')+'</div><p>'+escapeText(mod.description||'Описание не предоставлено.')+'</p><a class="mod-link" href="'+escapeText(mod.url)+'" target="_blank" rel="noopener noreferrer">Открыть проект <span>↗</span></a><button class="build-add" type="button" data-add-build data-project-id="'+escapeText(mod.id)+'" data-project-title="'+escapeText(mod.title)+'" data-project-url="'+escapeText(mod.url)+'" data-project-icon="'+escapeText(mod.icon||"")+'" data-project-type="'+escapeText(mod.type||"mod")+'">+ В сборку</button></div></div></article>';
  }).join('');
- return intro+'<div class="mod-grid">'+cards+'</div>';
+ return introTranslated+'<div class="mod-grid">'+cards+'</div>';
 }
 document.getElementById('searchForm').addEventListener('submit',async event=>{
  event.preventDefault();
