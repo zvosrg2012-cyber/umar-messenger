@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анти-Хаос Контроль</title>
+    <style>
+        :root {
+            --bg-color: #0d0e12;
+            --neon-orange: #ff6a00;
+            --neon-glow: #ffb300;
+            --card-bg: #161920;
+            --text-color: #e2e8f0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            padding: 10px 20px;
+            border-bottom: 2px solid var(--neon-orange);
+            box-shadow: 0 4px 20px rgba(255, 106, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-orange), 0 0 20px var(--neon-glow);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            gap: 30px;
+        }
+
+        .counter-box {
+            background: var(--card-bg);
+            padding: 40px 60px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 106, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            min-width: 280px;
+        }
+
+        .counter-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8892b0;
+            margin-bottom: 10px;
+        }
+
+        .counter-value {
+            font-size: 4.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 15px var(--neon-glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-mute {
+            background: linear-gradient(135deg, var(--neon-orange), #ff4500);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 106, 0, 0.4);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-mute:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--neon-orange);
+        }
+
+        .btn-mute:active {
+            transform: scale(0.98);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            background-color: #1f242e;
+            border-left: 4px solid #00ff88;
+            color: #00ff88;
+            padding: 15px 25px;
+            border-radius: 4px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--neon-orange)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--neon-glow)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--neon-orange)); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🍊</div>
+        <h1>Анти-Хаос</h1>
+    </header>
+
+    <div class="container">
+        <div class="counter-box">
+            <div class="counter-label">Уровень флуда в Блендере</div>
+            <div class="counter-value" id="counter">0</div>
+        </div>
+        
+        <button class="btn-mute" id="muteBtn">Заткнуть блендер</button>
+    </div>
+
+    <div class="toast" id="toast">💥 Сообщение удалено. В чате наступил абсолютный ЛО-покой.</div>
+
+    <script>
+        const counterEl = document.getElementById('counter');
+        const muteBtn = document.getElementById('muteBtn');
+        const toastEl = document.getElementById('toast');
+        
+        let floodCount = 0;
+
+        // Живой счетчик: растет каждые 2 секунды на случайное число от 1 до 3
+        const intervalId = setInterval(() => {
+            floodCount += Math.floor(Math.random() * 3) + 1;
+            counterEl.textContent = floodCount;
+        }, 2000);
+
+        // Кнопка сброса и фейковый тост
+        muteBtn.addEventListener('click', () => {
+            if (floodCount === 0) return;
+            
+            floodCount = 0;
+            counterEl.textContent = floodCount;
+            
+            // Анимация вспышки при сбросе
+            counterEl.style.transform = 'scale(0.8)';
+            setTimeout(() => counterEl.style.transform = 'scale(1)', 200);
+
+            // Показ уведомления
+            toastEl.classList.add('show');
+            setTimeout(() => {
+                toastEl.classList.remove('show');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
