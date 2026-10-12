@@ -560,7 +560,7 @@ for(const x of [14,118,257,461,632]){R(x,199,x+1,209,2,6,3);R(x-2,198,x+3,199,2,
 for(const x of [138,145,258,462]){R(x,207,x+4,209,2,9,3);R(x+1,206,x+3,206,1,14,3)}
 /* Комнаты и декорируемые помещения реально привязаны к корпусу */
 finalizeRooms(roomStart);
-for(const r of reactorRooms){try{if(r.kind==="server")furnish(r,BASE,"server");else if(r.kind==="office")furnish(r,BASE,"office");else furnish(r,BASE,"mech")}catch(e){}}
+for(const r of reactorRooms){try{const floor=r.y1+1;if(r.kind==="server")furnish(r,floor,"server");else if(r.kind==="office")furnish(r,floor,"office");else furnish(r,floor,"mech")}catch(e){}}
 /* Рабочие на открытых дорожках и внутри доступных комнат; не в толще стен */
 people.length=0;stats.dead=0;
 const workerXs=[10,58,116,143,254,262,397,403,455,468,520,578,625,88,430,180];
