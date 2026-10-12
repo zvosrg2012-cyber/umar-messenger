@@ -1,0 +1,32 @@
+{
+  "applicationId": "io.itch.itslamba.wreckbox",
+  "version": "1.6.0",
+  "defaultMode": "window",
+  "documentRoot": "/resources/",
+  "url": "/index.html",
+  "enableServer": true,
+  "enableNativeAPI": false,
+  "tokenSecurity": "one-time",
+  "logging": { "enabled": false, "writeToLogFile": false },
+  "modes": {
+    "window": {
+      "title": "Wreckbox",
+      "width": 1280,
+      "height": 760,
+      "minWidth": 800,
+      "minHeight": 500,
+      "center": true,
+      "fullScreen": true,
+      "enableInspector": false,
+      "resizable": true,
+      "exitProcessOnClose": true
+    }
+  },
+  "cli": {
+    "binaryName": "Wreckbox",
+    "resourcesPath": "/resources/",
+    "extensionsPath": "/extensions/",
+    "binaryVersion": "6.4.0",
+    "clientVersion": "6.4.0"
+  }
+}
