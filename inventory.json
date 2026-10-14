@@ -1,0 +1,163 @@
+{
+  "input_file": "Wreckbox(1).exe",
+  "input_bytes": 5854720,
+  "sha256": "214bd0507035c891829db1915144d44924a617cd2cbf10469246be46f6ef4f89",
+  "identified_application": "Wreckbox",
+  "application_id": "io.itch.itslamba.wreckbox",
+  "application_version": "1.7",
+  "runtime": "Neutralinojs 6.4.0 (identified in embedded config)",
+  "extracted_html_bytes": 3222527,
+  "inline_script_count": 3,
+  "external_resource_references": [
+    "/__neutralino_globals.js"
+  ],
+  "embedded_audio_samples": [
+    {
+      "name": "traffic",
+      "loop_points_seconds": ".25,18.25",
+      "file": "assets/audio/traffic.mp3",
+      "bytes": 92865,
+      "sha256": "7d50b78c92b0bbbbdab2e6667bf568e9f577eae67887af478fe6396e777c428e"
+    },
+    {
+      "name": "street",
+      "loop_points_seconds": ".25,18.25",
+      "file": "assets/audio/street.mp3",
+      "bytes": 92865,
+      "sha256": "85614b4f4b6033f1efc28aca32b67c0730bd7f1844662a6f87b8629c789a19c4"
+    },
+    {
+      "name": "crickets",
+      "loop_points_seconds": ".25,16.25",
+      "file": "assets/audio/crickets.mp3",
+      "bytes": 82808,
+      "sha256": "d532e84d5e56e5bb956d82152259749cf135d83efc7478bb440b928bbff9ad29"
+    },
+    {
+      "name": "crickets2",
+      "loop_points_seconds": ".25,10.25",
+      "file": "assets/audio/crickets2.mp3",
+      "bytes": 52767,
+      "sha256": "8308d62e96cba9ea58f26c783915366e2880a5e1e99d4ab4ca4b58e54c85c158"
+    },
+    {
+      "name": "sirenS",
+      "loop_points_seconds": ".25,13.39",
+      "file": "assets/audio/sirenS.mp3",
+      "bytes": 68571,
+      "sha256": "f3ad6c904df7f7840d11feaae86066224ceba177aeee0f0b3022a673323c47be"
+    },
+    {
+      "name": "waterS",
+      "loop_points_seconds": ".25,6.75",
+      "file": "assets/audio/waterS.mp3",
+      "bytes": 35265,
+      "sha256": "efb8dc37a5900091d9f0c63b9e110999dc11df53ce0c2160c6ec408427246f14"
+    },
+    {
+      "name": "windT",
+      "loop_points_seconds": ".25,12.25",
+      "file": "assets/audio/windT.mp3",
+      "bytes": 62824,
+      "sha256": "29fd87c1a7f8aa6845c12f35d9aca86394637d96d23b9c90871050e32a29d82e"
+    },
+    {
+      "name": "windN",
+      "loop_points_seconds": ".25,12.25",
+      "file": "assets/audio/windN.mp3",
+      "bytes": 62824,
+      "sha256": "f4222450fff538bc3b8441241c84672ad333432b5beb59e77f3683dd1da7b0ab"
+    },
+    {
+      "name": "windV",
+      "loop_points_seconds": ".25,14.25",
+      "file": "assets/audio/windV.mp3",
+      "bytes": 72882,
+      "sha256": "f17e0155a3706c9195389d4409051e363b9e0cdf0b88b615a5299bc6cc8c12df"
+    },
+    {
+      "name": "hole",
+      "loop_points_seconds": ".25,4.25",
+      "file": "assets/audio/hole.mp3",
+      "bytes": 22857,
+      "sha256": "60dc06c4a6c4825e72de3ac1855b0a9f561df10c6fd014a2b9206baf24747206"
+    },
+    {
+      "name": "laser",
+      "loop_points_seconds": ".25,2.65",
+      "file": "assets/audio/laser.mp3",
+      "bytes": 14890,
+      "sha256": "c3698abb395008076ed4339940e55a62a99f34466570180068e131c6e3f29b47"
+    },
+    {
+      "name": "flameS",
+      "loop_points_seconds": ".25,4.25",
+      "file": "assets/audio/flameS.mp3",
+      "bytes": 22857,
+      "sha256": "27f30230e808d61fee8125c03154ffcd45db497153c3b1de88c80c231510e905"
+    },
+    {
+      "name": "rocketL",
+      "loop_points_seconds": ".25,3.75",
+      "file": "assets/audio/rocketL.mp3",
+      "bytes": 20375,
+      "sha256": "14dd781eae668ad6c8098b98da8c935b3b2b683404900293a215432ff3060065"
+    },
+    {
+      "name": "crackL",
+      "loop_points_seconds": ".25,2.25",
+      "file": "assets/audio/crackL.mp3",
+      "bytes": 12800,
+      "sha256": "a008297f2df892b53a9e9c12ec4f59a5c5d0dcfc3fb5213ac116585244bda1eb"
+    },
+    {
+      "name": "fireL",
+      "loop_points_seconds": ".25,8.25",
+      "file": "assets/audio/fireL.mp3",
+      "bytes": 42841,
+      "sha256": "e83846e5f9857a7226f0ed61ba7664ebd99b4d6a8bef869debb4b570cc1bbb3c"
+    },
+    {
+      "name": "rumbleL",
+      "loop_points_seconds": ".25,10.25",
+      "file": "assets/audio/rumbleL.mp3",
+      "bytes": 52767,
+      "sha256": "d60e1099df2deac05c6cdd348b0dde8f3ccc486a22646afd16ae1f695649c2d7"
+    },
+    {
+      "name": "stonesL",
+      "loop_points_seconds": ".25,10.25",
+      "file": "assets/audio/stonesL.mp3",
+      "bytes": 52767,
+      "sha256": "1b3df624a6807c25a8e91c5204818b046da0d60dcbda78b8a45e7deb31e34621"
+    },
+    {
+      "name": "seaL",
+      "loop_points_seconds": ".25,12.25",
+      "file": "assets/audio/seaL.mp3",
+      "bytes": 62824,
+      "sha256": "d22264ac21049a70ee59c312da3f4b773197db1469b43220d13073469325b3da"
+    },
+    {
+      "name": "birds",
+      "loop_points_seconds": ".25,18.25",
+      "file": "assets/audio/birds.mp3",
+      "bytes": 92865,
+      "sha256": "428f0a5bcf79f32decf1eb4fa567abb1d9730431d98a895e7b8fa4b37191e781"
+    },
+    {
+      "name": "seaP",
+      "loop_points_seconds": ".25,18.25",
+      "file": "assets/audio/seaP.mp3",
+      "bytes": 92865,
+      "sha256": "5dc6ce9ceeab7661dc1dc2da83c6de81faf8b78a1d705a6c47b9167bf50375b0"
+    }
+  ],
+  "notes": [
+    "The EXE was not executed.",
+    "The HTML was carved from the executable by locating its DOCTYPE and closing html tag.",
+    "20 embedded MP3 audio samples were decoded from base64 strings in the inline JavaScript.",
+    "A large script block appears obfuscated/encrypted; it has not been safely deobfuscated or executed.",
+    "No separate image files or model files were referenced directly by HTML src/href attributes."
+  ]
+}
