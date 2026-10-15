@@ -63,8 +63,9 @@
       // becomes a volumetric block, extruded five block units along depth.
       for (const [id,count] of counts) {
         const meta = state.K && state.K[id];
-        const color = (meta && (meta.color || meta.col)) || palette[id % palette.length] || 0x999999;
-        const mat = new THREE.MeshStandardMaterial({color: typeof color === 'number' ? color : palette[id % palette.length], roughness:0.92, metalness:0.02});
+        const base = meta && Array.isArray(meta.base) ? meta.base : null;
+        const color = base ? ((Math.max(0,Math.min(255,base[0]))<<16) | (Math.max(0,Math.min(255,base[1]))<<8) | Math.max(0,Math.min(255,base[2]))) : palette[id % palette.length];
+        const mat = new THREE.MeshStandardMaterial({color, roughness:0.92, metalness:0.02});
         const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(unit,unit,5), mat, count);
         mesh.name = 'material-' + id;
         let j=0;
