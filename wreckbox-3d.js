@@ -49,31 +49,34 @@
       }
 
       const palette = [0x000000,0x9d6b42,0xb96e45,0x8e969c,0x6e9cb0,0xd6d7d8,0x9a8b7a,0x5d6268,0x4c4a48,0x789b4b,0x77654c,0x4c555d,0xd4b878,0x7f8b91,0x6b4935,0x9e9e9e];
-      const counts = new Map();
       const cells = state.et;
       const w = state.u, h = state.d;
-      for (let i=0;i<Math.min(cells.length,w*h);i++) {
+      const cellCount = Math.min(cells.length, w*h);
+      // Group occupied cells in one pass instead of rescanning the full grid per material.
+      const cellsByMaterial = new Map();
+      for (let i=0;i<cellCount;i++) {
         const id = cells[i] || 0;
-        if (id) counts.set(id,(counts.get(id)||0)+1);
+        if (!id) continue;
+        let indices = cellsByMaterial.get(id);
+        if (!indices) cellsByMaterial.set(id, indices = []);
+        indices.push(i);
       }
       const dummy = new THREE.Object3D();
       const materials = new Map();
-      const unit = 1;
-      // The game's native 6px material grid is mapped directly: every occupied cell
-      // becomes a volumetric block, extruded five block units along depth.
-      for (const [id,count] of counts) {
+      const blockGeometry = new THREE.BoxGeometry(1,1,5);
+      // Every occupied native material cell becomes a volumetric block, extruded five units.
+      for (const [id,indices] of cellsByMaterial) {
         const meta = state.K && state.K[id];
         const base = meta && Array.isArray(meta.base) ? meta.base : null;
         const color = base ? ((Math.max(0,Math.min(255,base[0]))<<16) | (Math.max(0,Math.min(255,base[1]))<<8) | Math.max(0,Math.min(255,base[2]))) : palette[id % palette.length];
         const mat = new THREE.MeshStandardMaterial({color, roughness:0.92, metalness:0.02});
-        const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(unit,unit,5), mat, count);
+        const mesh = new THREE.InstancedMesh(blockGeometry, mat, indices.length);
         mesh.name = 'material-' + id;
-        let j=0;
-        for (let i=0;i<Math.min(cells.length,w*h);i++) {
-          if ((cells[i]||0)!==id) continue;
-          const gx=i%w, gy=Math.floor(i/w);
+        for (let j=0;j<indices.length;j++) {
+          const i=indices[j], gx=i%w, gy=Math.floor(i/w);
           dummy.position.set(gx-w/2, (h-1-gy)-h/2, 0);
-          dummy.updateMatrix(); mesh.setMatrixAt(j++,dummy.matrix);
+          dummy.updateMatrix();
+          mesh.setMatrixAt(j,dummy.matrix);
         }
         mesh.instanceMatrix.needsUpdate=true;
         mesh.computeBoundingSphere();
