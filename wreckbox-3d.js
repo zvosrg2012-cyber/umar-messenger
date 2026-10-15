@@ -42,9 +42,9 @@
       renderer = new THREE.WebGLRenderer({ canvas: overlay, alpha: true, antialias: true, powerPreference: 'low-power' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
       renderer.setSize(window.innerWidth, window.innerHeight, false);
-      renderer.setClearColor(0x000000, 0);
+      renderer.setClearColor(0x87cefa, 1);
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x78c8f5);
+      scene.background = new THREE.Color(0x87cefa);
       // Procedural 3D sky: a real sphere for the sun and soft, layered cloud clusters.
       const sky = new THREE.Group();
       const sun = new THREE.Mesh(
@@ -59,7 +59,7 @@
       );
       sunGlow.position.copy(sun.position);
       sky.add(sunGlow);
-      const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, transparent: true, opacity: 0.94 });
+      const cloudMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.98, depthWrite: false });
       const cloudData = [
         [-65, 25, -70, 1.3], [-28, 42, -105, 1.8], [18, 29, -85, 1.5],
         [57, 43, -115, 2.0], [82, 18, -95, 1.4], [5, 52, -135, 1.7]
@@ -185,10 +185,8 @@
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      const distance = Math.max(1, camera.position.distanceTo(plane.position));
-      const vh = 2 * distance * Math.tan(camera.fov * Math.PI / 360);
-      plane.geometry.dispose();
-      plane.geometry = new THREE.PlaneGeometry(vh * w / h, vh);
+      // Keep the game image at a fixed size in world space. Never resize it to
+      // the viewport: that was the bug making the camera feel glued to a 2D screen.
     };
 
     document.addEventListener('pointerlockchange', onPointerLock);
@@ -202,6 +200,8 @@
     let frame = 0;
     const render = () => {
       if (!document.body.contains(overlay)) return;
+      // Keep the sky at a large distance around the moving camera, like a skybox.
+      sky.position.copy(camera.position);
       texture.needsUpdate = true;
       renderer.render(scene, camera);
       frame = requestAnimationFrame(render);
