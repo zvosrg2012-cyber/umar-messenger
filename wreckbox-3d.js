@@ -48,11 +48,18 @@
     const label = document.getElementById('wreckbox-load-label');
     const note = document.getElementById('wreckbox-load-note');
     const card = loader && loader.querySelector('.ld');
-    if (label) label.textContent = 'Не удалось запустить игру';
-    if (note) note.textContent = 'Загрузка превысила 15 секунд. Обнови страницу; исходное поле будет восстановлено, если доступно.';
+    if (label) label.textContent = 'Переключаемся на исходную игру…';
+    if (note) note.textContent = '3D-режим не ответил за 15 секунд. Убираем экран загрузки и пробуем показать оригинальное поле.';
+    game.style.visibility = 'visible';
+    const failedView = document.getElementById('wreckbox-3d-view');
+    if (failedView) failedView.remove();
+    if (loader) {
+      loader.classList.add('gone');
+      setTimeout(() => { if (loader.isConnected) loader.style.display = 'none'; }, 450);
+    }
     if (card && !card.querySelector('button')) {
       const b = document.createElement('button');
-      b.textContent = 'Обновить страницу';
+      b.textContent = 'Перезагрузить';
       b.onclick = () => location.reload();
       card.appendChild(b);
     }
