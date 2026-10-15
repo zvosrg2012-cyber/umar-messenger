@@ -98,9 +98,9 @@
       updateCamera();
       game.style.visibility='hidden';
 
-      let drag=false, pan=false, lastX=0,lastY=0;
+      let drag=false, pan=false, uiMode=true, lastX=0,lastY=0;
       const uiTarget=e=>!!(e.target&&e.target.closest&&e.target.closest('button,input,select,textarea,a,[role="button"],.panel,#dock,#hudTop,#hudBottom,#menu'));
-      const onDown=e=>{if(uiTarget(e))return;if(e.button===0){drag=true;lastX=e.clientX;lastY=e.clientY;}else if(e.button===2){pan=true;lastX=e.clientX;lastY=e.clientY;}};
+      const onDown=e=>{if(uiMode||uiTarget(e))return;if(e.button===0){drag=true;lastX=e.clientX;lastY=e.clientY;}else if(e.button===2){pan=true;lastX=e.clientX;lastY=e.clientY;}};
       const onUp=()=>{drag=false;pan=false;};
       const onMove=e=>{
         const dx=e.clientX-lastX,dy=e.clientY-lastY;
@@ -108,9 +108,9 @@
         if(pan){const right=new THREE.Vector3().setFromMatrixColumn(camera.matrix,0);const up=new THREE.Vector3().setFromMatrixColumn(camera.matrix,1);const scale=radius*0.0018;target.addScaledVector(right,-dx*scale);target.addScaledVector(up,dy*scale);updateCamera();}
         lastX=e.clientX;lastY=e.clientY;
       };
-      const onWheel=e=>{if(uiTarget(e))return;e.preventDefault();radius*=Math.exp(e.deltaY*0.001);updateCamera();};
-      const onContext=e=>{if(!uiTarget(e))e.preventDefault();};
-      const onKey=e=>{const typing=e.target&&(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable);if(e.code==='Tab'){e.preventDefault();e.stopImmediatePropagation();const panels=document.querySelectorAll('.panel,#dock,#hudTop,#hudBottom,#menu');panels.forEach(p=>p.classList.toggle('wreckbox-ui-hidden'));return;}if(!typing){e.preventDefault();e.stopImmediatePropagation();}};
+      const onWheel=e=>{if(uiMode||uiTarget(e))return;e.preventDefault();radius*=Math.exp(e.deltaY*0.001);updateCamera();};
+      const onContext=e=>{if(!uiMode&&!uiTarget(e))e.preventDefault();};
+      const panels=document.querySelectorAll('.panel,#dock,#hudTop,#hudBottom,#menu');\n      const setUIMode=show=>{uiMode=show;panels.forEach(p=>p.classList.toggle('wreckbox-ui-hidden',!show));overlay.style.pointerEvents=show?'none':'auto';if(show){drag=false;pan=false;}};\n      setUIMode(true);\n      const onKey=e=>{const typing=e.target&&(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable);if(e.code==='Tab'){e.preventDefault();e.stopImmediatePropagation();setUIMode(!uiMode);return;}if(!typing){e.preventDefault();e.stopImmediatePropagation();}};
       const style=document.createElement('style');style.textContent='.wreckbox-ui-hidden{visibility:hidden!important}';document.head.appendChild(style);
       overlay.style.pointerEvents='auto';
       overlay.addEventListener('mousedown',onDown);window.addEventListener('mouseup',onUp);window.addEventListener('mousemove',onMove);
