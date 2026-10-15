@@ -44,6 +44,39 @@
       renderer.setSize(window.innerWidth, window.innerHeight, false);
       renderer.setClearColor(0x000000, 0);
       scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x78c8f5);
+      // Procedural 3D sky: a real sphere for the sun and soft, layered cloud clusters.
+      const sky = new THREE.Group();
+      const sun = new THREE.Mesh(
+        new THREE.SphereGeometry(5.5, 32, 24),
+        new THREE.MeshBasicMaterial({ color: 0xffdf70 })
+      );
+      sun.position.set(-48, 31, -90);
+      sky.add(sun);
+      const sunGlow = new THREE.Mesh(
+        new THREE.SphereGeometry(7.2, 24, 16),
+        new THREE.MeshBasicMaterial({ color: 0xffedaa, transparent: true, opacity: 0.22, depthWrite: false })
+      );
+      sunGlow.position.copy(sun.position);
+      sky.add(sunGlow);
+      const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, transparent: true, opacity: 0.94 });
+      const cloudData = [
+        [-65, 25, -70, 1.3], [-28, 42, -105, 1.8], [18, 29, -85, 1.5],
+        [57, 43, -115, 2.0], [82, 18, -95, 1.4], [5, 52, -135, 1.7]
+      ];
+      for (const [cx, cy, cz, scale] of cloudData) {
+        const cloud = new THREE.Group();
+        for (const [dx, dy, dz, s] of [[0,0,0,1.8],[3,0.5,0,1.35],[-2.7,0.2,0.4,1.2],[0.8,1.1,-0.3,1.25]]) {
+          const puff = new THREE.Mesh(new THREE.SphereGeometry(scale * s, 16, 12), cloudMat);
+          puff.scale.set(1.45, 0.65, 0.85);
+          puff.position.set(dx * scale, dy * scale, dz * scale);
+          cloud.add(puff);
+        }
+        cloud.position.set(cx, cy, cz);
+        sky.add(cloud);
+      }
+      scene.add(sky);
+      scene.add(new THREE.HemisphereLight(0xc8eaff, 0x657080, 1.4));
       camera = new THREE.PerspectiveCamera(65, window.innerWidth / Math.max(1, window.innerHeight), 0.05, 2000);
       camera.position.set(0, 0, 48);
       texture = new THREE.CanvasTexture(game);
@@ -51,8 +84,24 @@
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
       const viewHeight = 2 * 16 * Math.tan(65 * Math.PI / 360);
-      plane = new THREE.Mesh(new THREE.PlaneGeometry(viewHeight * window.innerWidth / Math.max(1, window.innerHeight), viewHeight),
-        new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false, side: THREE.DoubleSide }));
+      const keyedMaterial = new THREE.ShaderMaterial({
+        uniforms: { map: { value: texture } },
+        vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+        fragmentShader: `uniform sampler2D map; varying vec2 vUv;
+          void main(){
+            vec4 c=texture2D(map,vUv);
+            // Make common sky pixels in the upper part of the 2D frame transparent,
+            // so the independent 3D sky can show through.
+            bool upper = vUv.y > 0.56;
+            bool blueSky = c.b > c.r*1.16 && c.b > c.g*1.02 && c.b > 0.38;
+            bool whiteCloud = c.r > 0.78 && c.g > 0.78 && c.b > 0.76 && abs(c.r-c.g)<0.13;
+            bool yellowSun = c.r > 0.78 && c.g > 0.58 && c.g < c.r*0.96 && c.b < 0.48;
+            if(upper && (blueSky || whiteCloud || yellowSun)) discard;
+            gl_FragColor=c;
+          }`,
+        transparent: true, depthWrite: false, side: THREE.DoubleSide
+      });
+      plane = new THREE.Mesh(new THREE.PlaneGeometry(viewHeight * window.innerWidth / Math.max(1, window.innerHeight), viewHeight), keyedMaterial);
       plane.position.set(0, 0, 32);
       scene.add(plane);
       // Keep the canvas alive for CanvasTexture updates, but don't show the original 2D copy underneath.
@@ -87,12 +136,30 @@
     const onPointerLock = () => {
       if (!uiUnlocked) reticle.style.display = 'block';
     };
+    let dragOrbit = false, lastX = 0, lastY = 0;
+    document.addEventListener('mousedown', e => {
+      if (uiUnlocked && !isUI(e.target) && e.button === 0) { dragOrbit = true; lastX = e.clientX; lastY = e.clientY; }
+    }, true);
+    document.addEventListener('mouseup', () => { dragOrbit = false; }, true);
     const onMouseMove = e => {
-      if (uiUnlocked || document.pointerLockElement !== overlay) return;
-      yaw -= (e.movementX || 0) * 0.0024;
-      pitch = clamp(pitch - (e.movementY || 0) * 0.0024, -Math.PI * 0.495, Math.PI * 0.495);
-      euler.set(pitch, yaw, 0, 'YXZ');
-      camera.quaternion.setFromEuler(euler);
+      if (!uiUnlocked && document.pointerLockElement === overlay) {
+        yaw -= (e.movementX || 0) * 0.0024;
+        pitch = clamp(pitch - (e.movementY || 0) * 0.0024, -Math.PI * 0.495, Math.PI * 0.495);
+        euler.set(pitch, yaw, 0, 'YXZ');
+        camera.quaternion.setFromEuler(euler);
+      } else if (uiUnlocked && dragOrbit) {
+        yaw -= (e.clientX - lastX) * 0.006;
+        pitch = clamp(pitch - (e.clientY - lastY) * 0.006, -1.25, 1.25);
+        lastX = e.clientX; lastY = e.clientY;
+        const target = plane.position.clone();
+        const radius = Math.max(8, camera.position.distanceTo(target));
+        camera.position.set(
+          target.x + radius * Math.sin(yaw) * Math.cos(pitch),
+          target.y + radius * Math.sin(pitch),
+          target.z + radius * Math.cos(yaw)
+        );
+        camera.lookAt(target);
+      }
     };
     const onClick = e => {
       if (uiUnlocked || isUI(e.target)) return;
@@ -106,8 +173,11 @@
     const onWheel = e => {
       if (uiUnlocked || isUI(e.target)) return;
       e.preventDefault();
-      const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
-      camera.position.addScaledVector(forward, clamp(e.deltaY * 0.018, -4, 4));
+      const target = plane.position;
+      const direction = camera.position.clone().sub(target).normalize();
+      const radius = clamp(camera.position.distanceTo(target) + e.deltaY * 0.06, 8, 260);
+      camera.position.copy(target).addScaledVector(direction, radius);
+      camera.lookAt(target);
     };
     const resize = () => {
       const w = Math.max(1, window.innerWidth), h = Math.max(1, window.innerHeight);
