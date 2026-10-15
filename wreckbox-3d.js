@@ -109,7 +109,7 @@
       };
       const onWheel=e=>{if(uiTarget(e))return;e.preventDefault();radius*=Math.exp(e.deltaY*0.001);updateCamera();};
       const onContext=e=>{if(!uiTarget(e))e.preventDefault();};
-      const onKey=e=>{if(e.code==='Tab'){e.preventDefault();const panels=document.querySelectorAll('.panel,#dock,#hudTop,#hudBottom,#menu');panels.forEach(p=>p.classList.toggle('wreckbox-ui-hidden'));}};
+      const onKey=e=>{const typing=e.target&&(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable);if(e.code==='Tab'){e.preventDefault();e.stopImmediatePropagation();const panels=document.querySelectorAll('.panel,#dock,#hudTop,#hudBottom,#menu');panels.forEach(p=>p.classList.toggle('wreckbox-ui-hidden'));return;}if(!typing){e.preventDefault();e.stopImmediatePropagation();}};
       const style=document.createElement('style');style.textContent='.wreckbox-ui-hidden{visibility:hidden!important}';document.head.appendChild(style);
       overlay.style.pointerEvents='auto';
       overlay.addEventListener('mousedown',onDown);window.addEventListener('mouseup',onUp);window.addEventListener('mousemove',onMove);
