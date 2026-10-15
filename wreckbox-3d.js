@@ -115,30 +115,43 @@
       const palette = [0x000000,0x9d6b42,0xb96e45,0x8e969c,0x6e9cb0,0xd6d7d8,0x9a8b7a,0x5d6268,0x4c4a48,0x789b4b,0x77654c,0x4c555d,0xd4b878,0x7f8b91,0x6b4935,0x9e9e9e];
       const cells = state.et;
       const w = state.u, h = state.d;
+      // Aggregate the native simulation grid into 6x6 material tiles before creating meshes.
+      // The source grid is 499,200 cells; one Three.js instance per cell stalls WebGL on many devices.
       const cellCount = Math.min(cells.length, w*h);
-      // Group occupied cells in one pass instead of rescanning the full grid per material.
+      const tile = 6;
+      const gridW = Math.ceil(w/tile), gridH = Math.ceil(h/tile);
       const cellsByMaterial = new Map();
-      for (let i=0;i<cellCount;i++) {
-        const id = cells[i] || 0;
-        if (!id) continue;
-        let indices = cellsByMaterial.get(id);
-        if (!indices) cellsByMaterial.set(id, indices = []);
-        indices.push(i);
+      for(let ty=0; ty<gridH; ty++){
+        for(let tx=0; tx<gridW; tx++){
+          const frequency = new Map();
+          for(let py=ty*tile; py<Math.min(h,(ty+1)*tile); py++){
+            const row=py*w;
+            for(let px=tx*tile; px<Math.min(w,(tx+1)*tile); px++){
+              const id=cells[row+px]||0;
+              if(id) frequency.set(id,(frequency.get(id)||0)+1);
+            }
+          }
+          let chosen=0, most=0;
+          for(const [id,n] of frequency) if(n>most){chosen=id;most=n;}
+          if(chosen){
+            if(!cellsByMaterial.has(chosen)) cellsByMaterial.set(chosen,[]);
+            cellsByMaterial.get(chosen).push([tx,ty]);
+          }
+        }
       }
       const dummy = new THREE.Object3D();
       const materials = new Map();
-      const blockGeometry = new THREE.BoxGeometry(1,1,5);
-      // Every occupied native material cell becomes a volumetric block, extruded five units.
-      for (const [id,indices] of cellsByMaterial) {
+      // Each visible tile is a solid block, five units deep; geometry count is reduced by ~36x.
+      for (const [id,positions] of cellsByMaterial) {
         const meta = state.K && state.K[id];
         const base = meta && Array.isArray(meta.base) ? meta.base : null;
         const color = base ? ((Math.max(0,Math.min(255,base[0]))<<16) | (Math.max(0,Math.min(255,base[1]))<<8) | Math.max(0,Math.min(255,base[2]))) : palette[id % palette.length];
         const mat = new THREE.MeshStandardMaterial({color, roughness:0.92, metalness:0.02});
-        const mesh = new THREE.InstancedMesh(blockGeometry, mat, indices.length);
+        const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(tile,tile,5), mat, positions.length);
         mesh.name = 'material-' + id;
-        for (let j=0;j<indices.length;j++) {
-          const i=indices[j], gx=i%w, gy=Math.floor(i/w);
-          dummy.position.set(gx-w/2, (h-1-gy)-h/2, 0);
+        for(let j=0;j<positions.length;j++){
+          const [gx,gy]=positions[j];
+          dummy.position.set(gx*tile+tile/2-w/2, h/2-(gy*tile+tile/2), 0);
           dummy.updateMatrix();
           mesh.setMatrixAt(j,dummy.matrix);
         }
@@ -184,7 +197,7 @@
       setUIMode(true);
       const onKey=e=>{const typing=e.target&&(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable);if(e.code==='Tab'){e.preventDefault();e.stopImmediatePropagation();setUIMode(!uiMode);return;}if(!typing){e.preventDefault();e.stopImmediatePropagation();}};
       const style=document.createElement('style');style.textContent='.wreckbox-ui-hidden{visibility:hidden!important}';document.head.appendChild(style);
-      overlay.style.pointerEvents='auto';
+      // Keep the original menus clickable while UI mode is active; Tab enables camera controls.
       overlay.addEventListener('mousedown',onDown);window.addEventListener('mouseup',onUp);window.addEventListener('mousemove',onMove);
       overlay.addEventListener('wheel',onWheel,{passive:false});overlay.addEventListener('contextmenu',onContext);window.addEventListener('keydown',onKey,true);
       const resize=()=>{renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.setSize(window.innerWidth,window.innerHeight,false);camera.aspect=window.innerWidth/Math.max(1,window.innerHeight);camera.updateProjectionMatrix();};
@@ -194,7 +207,7 @@
       frame=requestAnimationFrame(render);
       window.addEventListener('pagehide',()=>{cancelAnimationFrame(frame);overlay.remove();style.remove();game.style.visibility=originalVisibility;renderer.dispose();world.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose();});},{once:true});
       setLoadProgress(100, 'Готово!', 'Мир загружен'); finishLoading();
-      console.info('[Wreckbox 3D] Built voxel scene from native simulation grid', {width:w,height:h,occupiedCells:cells.filter(Boolean).length});
+      console.info('[Wreckbox 3D] Optimized voxel scene', {width:w,height:h,nativeCells:cellCount,voxelTiles:[...cellsByMaterial.values()].reduce((n,a)=>n+a.length,0)});
     } catch(err) {
       overlay.remove();game.style.visibility=originalVisibility;
       console.warn('[Wreckbox 3D] 3D conversion failed; original game view restored.',err);
