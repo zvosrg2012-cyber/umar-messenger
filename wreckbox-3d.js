@@ -84,24 +84,13 @@
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
       const viewHeight = 2 * 16 * Math.tan(65 * Math.PI / 360);
-      const keyedMaterial = new THREE.ShaderMaterial({
-        uniforms: { map: { value: texture } },
-        vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
-        fragmentShader: `uniform sampler2D map; varying vec2 vUv;
-          void main(){
-            vec4 c=texture2D(map,vUv);
-            // Make common sky pixels in the upper part of the 2D frame transparent,
-            // so the independent 3D sky can show through.
-            bool upper = vUv.y > 0.56;
-            bool blueSky = c.b > c.r*1.16 && c.b > c.g*1.02 && c.b > 0.38;
-            bool whiteCloud = c.r > 0.78 && c.g > 0.78 && c.b > 0.76 && abs(c.r-c.g)<0.13;
-            bool yellowSun = c.r > 0.78 && c.g > 0.58 && c.g < c.r*0.96 && c.b < 0.48;
-            if(upper && (blueSky || whiteCloud || yellowSun)) discard;
-            gl_FragColor=c;
-          }`,
-        transparent: true, depthWrite: false, side: THREE.DoubleSide
+      const imageMaterial = new THREE.MeshBasicMaterial({
+        map: texture, transparent: false, side: THREE.DoubleSide
       });
-      plane = new THREE.Mesh(new THREE.PlaneGeometry(viewHeight * window.innerWidth / Math.max(1, window.innerHeight), viewHeight), keyedMaterial);
+      plane = new THREE.Mesh(
+        new THREE.PlaneGeometry(viewHeight * window.innerWidth / Math.max(1, window.innerHeight), viewHeight),
+        imageMaterial
+      );
       plane.position.set(0, 0, 32);
       scene.add(plane);
       // Keep the canvas alive for CanvasTexture updates, but don't show the original 2D copy underneath.
