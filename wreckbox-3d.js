@@ -15,7 +15,7 @@
     if (!loader || loadDone) return;
     loader.classList.remove('gone');
     loader.classList.remove('wreckbox-load-error');
-    loader.innerHTML = '<div class="ld wreckbox-load-card"><b>Wreckbox</b><span id="wreckbox-load-label">Подготовка игры…</span><div class="wreckbox-progress"><i id="wreckbox-progress-fill"></i></div><strong id="wreckbox-progress-pct">4%</strong><small id="wreckbox-load-note">Инициализация движка</small></div>';
+    loader.innerHTML = '<div class="ld wreckbox-load-card"><div class="tape"></div><b>Wreckbox</b><span id="wreckbox-load-label">Подготовка игры…</span><div class="wreckbox-progress"><i id="wreckbox-progress-fill"></i></div><strong id="wreckbox-progress-pct">4%</strong><small id="wreckbox-load-note">Инициализация движка</small></div>';
     let css = document.getElementById('wreckbox-loader-style');
     if (!css) { css = document.createElement('style'); css.id = 'wreckbox-loader-style'; document.head.appendChild(css); }
     css.textContent = '#loading{z-index:99999!important;opacity:1!important;pointer-events:auto!important;background:#101820!important}.wreckbox-load-card{width:min(360px,84vw);padding:28px;background:#18232b;border:1px solid #4a6571;box-shadow:0 16px 50px #0008;color:#f4f7f8}.wreckbox-load-card b{font-size:28px;letter-spacing:.08em}.wreckbox-load-card span,.wreckbox-load-card small{color:#c2d0d5;text-align:center}.wreckbox-progress{width:100%;height:12px;background:#34434b;border:1px solid #617780;overflow:hidden}.wreckbox-progress i{display:block;width:4%;height:100%;background:#ffc21a;transition:width .18s ease}.wreckbox-load-card strong{font:700 20px system-ui;color:#ffc21a}.wreckbox-load-card button{padding:9px 16px;background:#ffc21a;border:0;font-weight:700;cursor:pointer}.wreckbox-load-error{pointer-events:auto!important}';
@@ -179,7 +179,10 @@
       };
       const onWheel=e=>{if(uiMode||uiTarget(e))return;e.preventDefault();radius*=Math.exp(e.deltaY*0.001);updateCamera();};
       const onContext=e=>{if(!uiMode&&!uiTarget(e))e.preventDefault();};
-      const panels=document.querySelectorAll('.panel,#dock,#hudTop,#hudBottom,#menu');\n      const setUIMode=show=>{uiMode=show;panels.forEach(p=>p.classList.toggle('wreckbox-ui-hidden',!show));overlay.style.pointerEvents=show?'none':'auto';if(show){drag=false;pan=false;}};\n      setUIMode(true);\n      const onKey=e=>{const typing=e.target&&(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable);if(e.code==='Tab'){e.preventDefault();e.stopImmediatePropagation();setUIMode(!uiMode);return;}if(!typing){e.preventDefault();e.stopImmediatePropagation();}};
+      const panels=document.querySelectorAll('.panel,#dock,#hudTop,#hudBottom,#menu');
+      const setUIMode=show=>{uiMode=show;panels.forEach(p=>p.classList.toggle('wreckbox-ui-hidden',!show));overlay.style.pointerEvents=show?'none':'auto';if(show){drag=false;pan=false;}};
+      setUIMode(true);
+      const onKey=e=>{const typing=e.target&&(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable);if(e.code==='Tab'){e.preventDefault();e.stopImmediatePropagation();setUIMode(!uiMode);return;}if(!typing){e.preventDefault();e.stopImmediatePropagation();}};
       const style=document.createElement('style');style.textContent='.wreckbox-ui-hidden{visibility:hidden!important}';document.head.appendChild(style);
       overlay.style.pointerEvents='auto';
       overlay.addEventListener('mousedown',onDown);window.addEventListener('mouseup',onUp);window.addEventListener('mousemove',onMove);
