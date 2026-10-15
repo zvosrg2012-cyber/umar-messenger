@@ -30,7 +30,8 @@
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
       const aspect = Math.max(0.2, window.innerWidth / Math.max(1, window.innerHeight));
-      plane = new THREE.Mesh(new THREE.PlaneGeometry(48 * aspect, 48), new THREE.MeshBasicMaterial({
+      const viewHeight = 2 * 48 * Math.tan(48 * Math.PI / 360);
+      plane = new THREE.Mesh(new THREE.PlaneGeometry(viewHeight * aspect, viewHeight), new THREE.MeshBasicMaterial({
         map:texture, transparent:true, depthWrite:false, side:THREE.DoubleSide
       }));
       plane.position.z = 32;
@@ -51,7 +52,8 @@
       camera.position.z = zoom;
       camera.updateProjectionMatrix();
       plane.geometry.dispose();
-      plane.geometry = new THREE.PlaneGeometry(zoom * w / h, zoom);
+      const viewHeight = 2 * zoom * Math.tan(48 * Math.PI / 360);
+      plane.geometry = new THREE.PlaneGeometry(viewHeight * w / h, viewHeight);
     };
     const pointerDown = e => {
       if (e.button !== 0 || e.target.closest('button, input, select, textarea, a, .panel, #dock, #hudTop, #hudBottom, #menu')) return;
