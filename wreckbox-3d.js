@@ -171,7 +171,7 @@
       setMode(!uiUnlocked);
     };
     const onWheel = e => {
-      if (uiUnlocked || isUI(e.target)) return;
+      if (isUI(e.target)) return;
       e.preventDefault();
       const target = plane.position;
       const direction = camera.position.clone().sub(target).normalize();
