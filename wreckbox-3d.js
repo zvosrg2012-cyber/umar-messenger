@@ -5,14 +5,71 @@
   const game = document.getElementById('game');
   if (!game) return;
 
+  // Determinate startup UI: report real milestones and never leave the original
+  // full-screen loader blocking the page forever.
+  const loader = document.getElementById('loading');
+  let loadPct = 4;
+  let loadDone = false;
+  let loadTimer;
+  const showProgress = () => {
+    if (!loader || loadDone) return;
+    loader.classList.remove('gone');
+    loader.classList.remove('wreckbox-load-error');
+    loader.innerHTML = '<div class="ld wreckbox-load-card"><b>Wreckbox</b><span id="wreckbox-load-label">Подготовка игры…</span><div class="wreckbox-progress"><i id="wreckbox-progress-fill"></i></div><strong id="wreckbox-progress-pct">4%</strong><small id="wreckbox-load-note">Инициализация движка</small></div>';
+    let css = document.getElementById('wreckbox-loader-style');
+    if (!css) { css = document.createElement('style'); css.id = 'wreckbox-loader-style'; document.head.appendChild(css); }
+    css.textContent = '#loading{z-index:99999!important;opacity:1!important;pointer-events:auto!important;background:#101820!important}.wreckbox-load-card{width:min(360px,84vw);padding:28px;background:#18232b;border:1px solid #4a6571;box-shadow:0 16px 50px #0008;color:#f4f7f8}.wreckbox-load-card b{font-size:28px;letter-spacing:.08em}.wreckbox-load-card span,.wreckbox-load-card small{color:#c2d0d5;text-align:center}.wreckbox-progress{width:100%;height:12px;background:#34434b;border:1px solid #617780;overflow:hidden}.wreckbox-progress i{display:block;width:4%;height:100%;background:#ffc21a;transition:width .18s ease}.wreckbox-load-card strong{font:700 20px system-ui;color:#ffc21a}.wreckbox-load-card button{padding:9px 16px;background:#ffc21a;border:0;font-weight:700;cursor:pointer}.wreckbox-load-error{pointer-events:auto!important}';
+    setLoadProgress(4, 'Подготовка игры…', 'Проверка игровых данных');
+  };
+  const setLoadProgress = (pct, label, note) => {
+    loadPct = Math.max(loadPct, Math.min(99, pct));
+    const fill = document.getElementById('wreckbox-progress-fill');
+    const number = document.getElementById('wreckbox-progress-pct');
+    const text = document.getElementById('wreckbox-load-label');
+    const sub = document.getElementById('wreckbox-load-note');
+    if (fill) fill.style.width = loadPct + '%';
+    if (number) number.textContent = loadPct + '%';
+    if (text) text.textContent = label;
+    if (sub) sub.textContent = note;
+  };
+  const finishLoading = (message) => {
+    if (loadDone) return;
+    loadDone = true;
+    clearTimeout(loadTimer);
+    if (loader) {
+      loader.classList.add('gone');
+      setTimeout(() => { if (loader.isConnected) loader.style.display = 'none'; }, 450);
+    }
+  };
+  showProgress();
+  setLoadProgress(12, 'Запуск движка…', 'Загрузка 3D-движка');
+  loadTimer = setTimeout(() => {
+    if (loadDone) return;
+    const label = document.getElementById('wreckbox-load-label');
+    const note = document.getElementById('wreckbox-load-note');
+    const card = loader && loader.querySelector('.ld');
+    if (label) label.textContent = 'Не удалось запустить игру';
+    if (note) note.textContent = 'Загрузка превысила 15 секунд. Обнови страницу; исходное поле будет восстановлено, если доступно.';
+    if (card && !card.querySelector('button')) {
+      const b = document.createElement('button');
+      b.textContent = 'Обновить страницу';
+      b.onclick = () => location.reload();
+      card.appendChild(b);
+    }
+  }, 15000);
+
   const boot = () => {
+    setLoadProgress(35, 'Подготовка мира…', 'Чтение состояния симуляции');
     if (!window.THREE || typeof window.__WRECKBOX3D_STATE !== 'function') {
-      console.warn('[Wreckbox 3D] Original simulation grid is not available; keeping the original game view.');
+      console.warn('[Wreckbox 3D] Simulation bridge unavailable; keeping original game view.');
+      setLoadProgress(85, 'Запуск исходной игры…', '3D-режим недоступен; показываем оригинальное поле');
+      finishLoading();
       return;
     }
     let state;
     try { state = window.__WRECKBOX3D_STATE(); } catch (e) { console.warn(e); return; }
-    if (!state || !state.et || !state.u || !state.d) return;
+    if (!state || !state.et || !state.u || !state.d) { setLoadProgress(85, 'Запуск исходной игры…', 'Не удалось прочитать карту для 3D'); finishLoading(); return; }
+    setLoadProgress(45, 'Построение карты…', 'Создание объёмных блоков');
 
     const THREE = window.THREE;
     const overlay = document.createElement('canvas');
@@ -83,6 +140,7 @@
         world.add(mesh); materials.set(id,mesh);
       }
 
+      setLoadProgress(76, 'Освещение и окружение…', 'Настройка камеры и неба');
       // Ground plane matches the native grid bounds; no original-screen texture is used.
       const ground = new THREE.Mesh(new THREE.PlaneGeometry(w+24,h+24), new THREE.MeshStandardMaterial({color:0x8b9b70, roughness:1}));
       ground.rotation.x=-Math.PI/2;
@@ -100,6 +158,7 @@
       };
       updateCamera();
       game.style.visibility='hidden';
+      setLoadProgress(92, 'Почти готово…', 'Запуск 3D-сцены');
 
       let drag=false, pan=false, uiMode=true, lastX=0,lastY=0;
       const uiTarget=e=>!!(e.target&&e.target.closest&&e.target.closest('button,input,select,textarea,a,[role="button"],.panel,#dock,#hudTop,#hudBottom,#menu'));
@@ -124,12 +183,14 @@
       const render=()=>{if(!document.body.contains(overlay))return;sky.position.copy(camera.position);renderer.render(scene,camera);frame=requestAnimationFrame(render);};
       frame=requestAnimationFrame(render);
       window.addEventListener('pagehide',()=>{cancelAnimationFrame(frame);overlay.remove();style.remove();game.style.visibility=originalVisibility;renderer.dispose();world.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose();});},{once:true});
+      setLoadProgress(100, 'Готово!', 'Мир загружен'); finishLoading();
       console.info('[Wreckbox 3D] Built voxel scene from native simulation grid', {width:w,height:h,occupiedCells:cells.filter(Boolean).length});
     } catch(err) {
       overlay.remove();game.style.visibility=originalVisibility;
       console.warn('[Wreckbox 3D] 3D conversion failed; original game view restored.',err);
+      setLoadProgress(85, 'Запуск исходной игры…', '3D-режим не запустился; возвращено исходное поле'); finishLoading();
     }
   };
-  const loadThree=()=>{if(window.THREE){boot();return;}const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';s.onload=boot;s.onerror=()=>console.warn('[Wreckbox 3D] Three.js failed to load.');document.head.appendChild(s);};
+  const loadThree=()=>{if(window.THREE){setLoadProgress(25, 'Движок готов…', 'Подготовка 3D-сцены');boot();return;}const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';s.onload=()=>{setLoadProgress(25, 'Движок готов…', 'Подготовка 3D-сцены');boot();};s.onerror=()=>{console.warn('[Wreckbox 3D] Three.js failed to load.');setLoadProgress(85, 'Запуск исходной игры…', 'Не загрузился 3D-движок; показываем оригинальную игру');finishLoading();};document.head.appendChild(s);};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadThree,{once:true});else loadThree();
 })();
